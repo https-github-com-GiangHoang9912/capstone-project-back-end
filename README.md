@@ -19,6 +19,7 @@ nest g module <Module name>
 
 ```
 
+```
 src
 ---cats
 -------dto
@@ -30,7 +31,7 @@ src
 -------cats.service.ts
 ---app.module.ts
 ---main.ts
-
+```
 
 ### run server
 ```
