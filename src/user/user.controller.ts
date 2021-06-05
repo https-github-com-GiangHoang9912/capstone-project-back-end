@@ -1,3 +1,4 @@
+import { AuthenticatedGuard } from './../auth/authenticated.guard';
 import { ContactInfo } from './../entities/contactInfo.entity';
 import { ObjectID } from 'typeorm';
 import {
@@ -8,11 +9,14 @@ import {
   Delete,
   Param,
   Body,
+  UseGuards,
 } from '@nestjs/common';
 import { User } from '../entities/user.entity';
 import { UserService } from '../services/user.service';
 import { CreateUserDto } from '../dto/user.dto';
 
+
+@UseGuards(AuthenticatedGuard)
 @Controller('user')
 export class UserController {
   constructor(

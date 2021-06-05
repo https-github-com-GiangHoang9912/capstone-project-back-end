@@ -11,6 +11,7 @@ import { User } from '../entities/user.entity';
   imports: [TypeOrmModule.forFeature([User, ContactInfo])],
   controllers: [UserController],
   providers: [UserService],
+  exports: [UserService]
 })
 export class UserModule {
   configure(consumer: MiddlewareConsumer) {
