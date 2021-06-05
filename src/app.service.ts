@@ -3,8 +3,8 @@ import { User } from './entities/user.entity';
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { ROLE } from './constant'
-import * as md5 from 'md5'
+import * as CONSTANT from './constant'
+import * as bcrypt from 'bcrypt'
 
 @Injectable()
 export class AppService {
@@ -21,8 +21,8 @@ export class AppService {
 
       const admin = await this.userRepository.create({
         userName: "admin",
-        passwordEncryption: md5("12345678"),
-        role: ROLE.ADMIN
+        passwordEncryption: await bcrypt.hash("12345678", CONSTANT.ROUND_HASH_PASSWORD.ROUND),
+        role: CONSTANT.ROLE.ADMIN
       }).save()
 
       Logger.log(admin)

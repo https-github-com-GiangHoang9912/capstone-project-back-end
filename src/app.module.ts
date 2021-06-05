@@ -6,6 +6,7 @@ import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
 import { User } from './entities/user.entity';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -25,7 +26,8 @@ import { User } from './entities/user.entity';
         entitiesDir: 'src/entities',
       },
     }),
-    TypeOrmModule.forFeature([User, ContactInfo])
+    TypeOrmModule.forFeature([User, ContactInfo]),
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
