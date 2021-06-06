@@ -19,9 +19,7 @@ import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 @UseGuards(JwtAuthGuard)
 @Controller('user')
 export class UserController {
-  constructor(
-    private readonly userService: UserService,
-  ) {}
+  constructor(private readonly userService: UserService) {}
 
   @Get()
   getUsers(): Promise<User[]> {
@@ -37,7 +35,7 @@ export class UserController {
   async createUser(@Body() user: CreateUserDto): Promise<User> {
     const newUser = await this.userService.insertUser(user);
 
-    return newUser
+    return newUser;
   }
 
   // @Post('/profile')

@@ -1,4 +1,4 @@
-  import {
+import {
   Column,
   Entity,
   OneToOne,
@@ -7,7 +7,7 @@
   JoinColumn,
   BaseEntity,
 } from 'typeorm';
-import { User } from './user.entity'
+import { User } from './user.entity';
 
 @Entity('contact')
 export class ContactInfo extends BaseEntity {
@@ -35,7 +35,7 @@ export class ContactInfo extends BaseEntity {
   @Column()
   ownerId: object;
 
-  @OneToOne(() => User, user => user.contactInfo, {onDelete:'CASCADE'})
-  @JoinColumn({name : "ownerId", referencedColumnName: "_id"})
+  @OneToOne(() => User, (user) => user.contactInfo, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'ownerId', referencedColumnName: '_id' })
   user: User;
 }

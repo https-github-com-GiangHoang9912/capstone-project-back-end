@@ -8,7 +8,7 @@ import { LocalStrategy } from './local.strategy';
 import { JwtModule } from '@nestjs/jwt';
 import { config } from 'dotenv';
 
-config()
+config();
 @Module({
   //.register({ session: true })
   imports: [
@@ -20,6 +20,6 @@ config()
     }),
   ],
   providers: [AuthService, LocalStrategy, JwtStrategy],
-  exports: [AuthService]
+  exports: [AuthService],
 })
 export class AuthModule {}

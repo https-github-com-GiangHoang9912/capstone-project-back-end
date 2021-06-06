@@ -9,7 +9,7 @@ import { User } from './entities/user.entity';
 import { AuthModule } from './auth/auth.module';
 import { config } from 'dotenv';
 
-config()
+config();
 
 @Module({
   imports: [

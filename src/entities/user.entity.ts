@@ -6,7 +6,7 @@ import {
   ObjectID,
   PrimaryGeneratedColumn,
   BaseEntity,
-  Generated
+  Generated,
 } from 'typeorm';
 import { ContactInfo } from './contactInfo.entity';
 
