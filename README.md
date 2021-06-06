@@ -38,6 +38,11 @@ src
 cp .env.example .env
 ```
 
+### before push - run format all
+```
+npm run format
+```
+
 ### run server
 ```
 npm start:dev
