@@ -33,9 +33,15 @@ src
 ---main.ts
 ```
 
+### copy .env.example to .env
+```
+cp .env.example .env
+```
+
 ### run server
 ```
 npm start:dev
 
 yarn start:dev
 ```
+

@@ -3,3 +3,7 @@ export const ROLE = {
   STAFF: 2,
   USER: 3,
 };
+
+export const ROUND_HASH_PASSWORD = {
+  ROUND: 10,
+};

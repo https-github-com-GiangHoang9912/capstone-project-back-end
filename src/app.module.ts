@@ -6,6 +6,10 @@ import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
 import { User } from './entities/user.entity';
+import { AuthModule } from './auth/auth.module';
+import { config } from 'dotenv';
+
+config();
 
 @Module({
   imports: [
@@ -13,10 +17,10 @@ import { User } from './entities/user.entity';
     TypeOrmModule.forRoot({
       name: 'default',
       type: 'mongodb',
-      host: 'localhost',
+      host: process.env.HOST,
       logging: false,
-      port: 27017,
-      database: 'DDSGQ',
+      port: Number(process.env.DB_PORT),
+      database: process.env.DATABASE_NAME,
       useNewUrlParser: true,
       autoLoadEntities: true,
       useUnifiedTopology: true,
@@ -25,7 +29,8 @@ import { User } from './entities/user.entity';
         entitiesDir: 'src/entities',
       },
     }),
-    TypeOrmModule.forFeature([User, ContactInfo])
+    TypeOrmModule.forFeature([User, ContactInfo]),
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

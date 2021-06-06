@@ -4,7 +4,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as CONSTANT from '../constant';
-import * as md5 from 'md5';
+import * as bcrypt from 'bcrypt';
 
 interface IUser {
   userName: string;
@@ -31,8 +31,8 @@ export class UserService {
     return this.userRepository.find();
   }
 
-  async getUserByName(username: string): Promise<User[]> {
-    return this.userRepository.find({ userName: username });
+  async getUserByName(username: string): Promise<User> {
+    return this.userRepository.findOne({ userName: username });
   }
 
   async insertUser(user: IUser): Promise<User> {
@@ -44,7 +44,10 @@ export class UserService {
       const newUser = await this.userRepository
         .create({
           userName: user.userName,
-          passwordEncryption: md5(user.password),
+          passwordEncryption: await bcrypt.hash(
+            user.password,
+            CONSTANT.ROUND_HASH_PASSWORD.ROUND,
+          ),
           role: CONSTANT.ROLE.USER,
         })
         .save();
@@ -57,7 +60,7 @@ export class UserService {
           dateOfBirth: user.dateOfBirth,
           email: user.email,
           phone: user.phone,
-          user: newUser
+          user: newUser,
         })
         .save();
 
@@ -67,4 +70,6 @@ export class UserService {
       return error;
     }
   }
+
+  async updatePassword() {}
 }

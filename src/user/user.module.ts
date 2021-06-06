@@ -6,16 +6,14 @@ import { LoggerMiddleware } from '../common/middleware/logger.middleware';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from '../entities/user.entity';
 
-
 @Module({
   imports: [TypeOrmModule.forFeature([User, ContactInfo])],
   controllers: [UserController],
   providers: [UserService],
+  exports: [UserService],
 })
 export class UserModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(LoggerMiddleware)
-      .forRoutes(UserController);
+    consumer.apply(LoggerMiddleware).forRoutes(UserController);
   }
 }
