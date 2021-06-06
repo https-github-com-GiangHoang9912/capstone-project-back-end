@@ -14,9 +14,9 @@ import {
 import { User } from '../entities/user.entity';
 import { UserService } from '../services/user.service';
 import { CreateUserDto } from '../dto/user.dto';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
-
-@UseGuards(AuthenticatedGuard)
+@UseGuards(JwtAuthGuard)
 @Controller('user')
 export class UserController {
   constructor(
