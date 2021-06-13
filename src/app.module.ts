@@ -17,6 +17,8 @@ config();
     TypeOrmModule.forRoot({
       name: 'default',
       type: 'mongodb',
+      username: process.env.USERNAME,
+      password: process.env.PASSWORD,
       host: process.env.HOST,
       logging: false,
       port: Number(process.env.DB_PORT),
