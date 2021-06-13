@@ -19,7 +19,7 @@ config();
       signOptions: { expiresIn: '60s' },
     }),
   ],
-  providers: [AuthService, JwtStrategy],
+  providers: [AuthService, LocalStrategy, JwtStrategy],
   exports: [AuthService],
 })
 export class AuthModule {}
