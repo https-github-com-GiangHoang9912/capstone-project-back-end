@@ -32,19 +32,22 @@ export class UserService {
   }
 
   async getUserByName(username: string): Promise<User> {
-    return this.userRepository.findOne({ userName: username });
+    const user = await this.userRepository.createQueryBuilder('users')
+                .leftJoinAndSelect('users.contactInfo', 'contacts')
+                .getOne()
+    return user;
   }
 
   async insertUser(user: IUser): Promise<User> {
     try {
-      if (await this.userRepository.findOne({ userName: user.userName })) {
+      if (await this.userRepository.findOne({ username: user.userName })) {
         throw new Error('username already exists...!');
       }
 
       const newUser = await this.userRepository
         .create({
-          userName: user.userName,
-          passwordEncryption: await bcrypt.hash(
+          username: user.userName,
+          password: await bcrypt.hash(
             user.password,
             CONSTANT.ROUND_HASH_PASSWORD.ROUND,
           ),

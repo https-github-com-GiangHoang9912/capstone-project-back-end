@@ -15,11 +15,9 @@ export class AppController {
   @UseGuards(LocalAuthGuard)
   @Post('auth/login')
   async login(@Req() req) {
-    console.log(req.body);
     return this.authService.login(req.body);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get()
   async createAdmin() {
     await this.appService.seed();

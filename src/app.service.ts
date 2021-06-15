@@ -16,14 +16,14 @@ export class AppService {
 
   async seed() {
     try {
-      if (await this.userRepository.findOne({ userName: 'admin' })) {
+      if (await this.userRepository.findOne({ username: 'admin' })) {
         throw new Error('admin  already exists...!');
       }
 
       const admin = await this.userRepository
         .create({
-          userName: 'admin',
-          passwordEncryption: await bcrypt.hash(
+          username: 'admin',
+          password: await bcrypt.hash(
             '12345678',
             CONSTANT.ROUND_HASH_PASSWORD.ROUND,
           ),
@@ -36,6 +36,7 @@ export class AppService {
       const contact = await this.contactInfoRepository
         .create({
           firstName: 'admin',
+          lastName: '',
           email: 'admin@fpt.edu.vn',
           phone: '0819169868',
           address: 'Ha Noi - Vietnam',
