@@ -15,17 +15,15 @@ config();
   imports: [
     UserModule,
     TypeOrmModule.forRoot({
-      name: 'default',
-      type: 'mongodb',
-      username: process.env.USERNAME,
-      password: process.env.PASSWORD,
-      host: process.env.HOST,
-      logging: false,
+      type: 'mysql',
+      host: 'localhost',
       port: Number(process.env.DB_PORT),
       database: process.env.DATABASE_NAME,
-      useNewUrlParser: true,
+      synchronize: false,
+      username: process.env.USERNAME,
+      password: process.env.PASSWORD,
+      logging: false,
       autoLoadEntities: true,
-      useUnifiedTopology: true,
       entities: [join(__dirname, '**/**.entity{.ts,.js}')],
       cli: {
         entitiesDir: 'src/entities',

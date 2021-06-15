@@ -2,24 +2,21 @@ import {
   Column,
   Entity,
   OneToOne,
-  ObjectIdColumn,
-  ObjectID,
   PrimaryGeneratedColumn,
   BaseEntity,
-  Generated,
 } from 'typeorm';
 import { ContactInfo } from './contactInfo.entity';
 
-@Entity()
+@Entity('users')
 export class User extends BaseEntity {
-  @ObjectIdColumn()
-  _id: ObjectID;
-
-  @Column({ unique: true })
-  userName: string;
+  @PrimaryGeneratedColumn('increment')
+  id: number;
 
   @Column()
-  passwordEncryption: string;
+  username: string;
+
+  @Column()
+  password: string;
 
   @Column()
   role: number;

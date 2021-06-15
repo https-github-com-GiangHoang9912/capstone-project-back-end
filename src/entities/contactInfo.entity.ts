@@ -2,17 +2,16 @@ import {
   Column,
   Entity,
   OneToOne,
-  ObjectIdColumn,
-  ObjectID,
   JoinColumn,
   BaseEntity,
+  PrimaryGeneratedColumn,
 } from 'typeorm';
 import { User } from './user.entity';
 
-@Entity('contact')
+@Entity('contacts')
 export class ContactInfo extends BaseEntity {
-  @ObjectIdColumn()
-  _id: ObjectID;
+  @PrimaryGeneratedColumn('increment')
+  id: number;
 
   @Column()
   firstName: string;
@@ -33,9 +32,9 @@ export class ContactInfo extends BaseEntity {
   address?: string;
 
   @Column()
-  ownerId: object;
+  ownerId: number;
 
   @OneToOne(() => User, (user) => user.contactInfo, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'ownerId', referencedColumnName: '_id' })
+  @JoinColumn({ name: 'ownerId', referencedColumnName: 'id' })
   user: User;
 }
