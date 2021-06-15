@@ -32,6 +32,9 @@ export class ContactInfo extends BaseEntity {
   address?: string;
 
   @Column()
+  avatar?: string;
+
+  @Column()
   ownerId: number;
 
   @OneToOne(() => User, (user) => user.contactInfo, { onDelete: 'CASCADE' })
