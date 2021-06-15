@@ -37,4 +37,24 @@ export class AuthService {
       },
     };
   }
+
+  async loginGoogle(payload: any) {
+    let user = await this.usersService.getUserByName(payload.email); 
+
+    if (!user) {
+      user = await this.usersService.insertUserByLoginGoogle(payload);
+    }
+
+    return {
+      access_token: this.jwtService.sign({
+        name: user.username,
+        sub: user.id,
+      }),
+      account: {
+        role: user.role,
+        username: user.username,
+        profile: user.contactInfo,
+      },
+    };
+  }
 }

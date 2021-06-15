@@ -18,6 +18,15 @@ interface IUser {
   dateOfBirth?: string;
 }
 
+interface GoogleUser {
+  email: string;
+  familyName: string;
+  givenName: string;
+  googleId: string;
+  imageUrl: string;
+  name: string;
+}
+
 @Injectable()
 export class UserService {
   constructor(
@@ -33,6 +42,7 @@ export class UserService {
 
   async getUserByName(username: string): Promise<User> {
     const user = await this.userRepository.createQueryBuilder('users')
+                .where("username = :username", { username: username })
                 .leftJoinAndSelect('users.contactInfo', 'contacts')
                 .getOne()
     return user;
@@ -74,5 +84,38 @@ export class UserService {
     }
   }
 
-  async updatePassword() {}
+  async insertUserByLoginGoogle(user: GoogleUser): Promise<User> {
+    try {
+      if (await this.contactRepository.findOne({ email: user.email })) {
+        throw new Error('email already exists...!');
+      }
+      const randomPassword = Math.random().toString(36).slice(-8);
+      console.log(randomPassword)
+      const newUser = await this.userRepository
+        .create({
+          username: user.email,
+          password: await bcrypt.hash(
+            randomPassword,
+            CONSTANT.ROUND_HASH_PASSWORD.ROUND,
+          ),
+          role: CONSTANT.ROLE.USER,
+        })
+        .save();
+
+      await this.contactRepository
+        .create({
+          firstName: user.givenName,
+          lastName: user.familyName,
+          email: user.email,
+          avatar: user.imageUrl,
+          user: newUser,
+        })
+        .save();
+
+      return newUser;
+    } catch (error) {
+      Logger.error(error);
+      return error;
+    }
+  }
 }

@@ -18,6 +18,11 @@ export class AppController {
     return this.authService.login(req.body);
   }
 
+  @Post('google-auth/login')
+  async loginByGoogle(@Req() req) {
+    return this.authService.loginGoogle(req.body);
+  }
+
   @Get()
   async createAdmin() {
     await this.appService.seed();
