@@ -2,25 +2,19 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import * as session from 'express-session';
 import * as passport from 'passport';
+import * as cookieParser from 'cookie-parser'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.enableCors({
+    origin: "http://localhost:3000",
+    credentials: true
+  });
 
   app.setGlobalPrefix('api');
 
-  // app.use(
-  //   session({
-  //     secret: 'keyboard cat',
-  //     resave: false,
-  //     saveUninitialzed: false,
-  //     cookie: { maxAge: 3600000 },
-  //   }),
-  // );
-
-  // app.use(passport.initialize());
-  // app.use(passport.session());
-
-  app.enableCors();
+  app.use(cookieParser())
+  
   await app.listen(3001);
 }
 bootstrap();

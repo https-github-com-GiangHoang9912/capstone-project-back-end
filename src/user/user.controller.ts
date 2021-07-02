@@ -1,13 +1,7 @@
-import { AuthenticatedGuard } from './../auth/authenticated.guard';
-import { ContactInfo } from './../entities/contactInfo.entity';
-import { ObjectID } from 'typeorm';
 import {
   Controller,
   Get,
   Post,
-  Put,
-  Delete,
-  Param,
   Body,
   UseGuards,
 } from '@nestjs/common';
@@ -16,7 +10,7 @@ import { UserService } from '../services/user.service';
 import { CreateUserDto } from '../dto/user.dto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
-@UseGuards(JwtAuthGuard)
+// @UseGuards(JwtAuthGuard)
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}

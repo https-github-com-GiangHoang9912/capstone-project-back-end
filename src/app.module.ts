@@ -1,3 +1,5 @@
+import { CheckDuplicatedService } from 'src/services/check-duplicated.service';
+import { CheckDuplicatedController } from './check-duplicated/check-duplicated.controller';
 import { ContactInfo } from './entities/contactInfo.entity';
 import { UserModule } from './user/user.module';
 import { Module } from '@nestjs/common';
@@ -8,6 +10,7 @@ import { join } from 'path';
 import { User } from './entities/user.entity';
 import { AuthModule } from './auth/auth.module';
 import { config } from 'dotenv';
+import { CheckDuplicatedModule } from './check-duplicated/check-duplicated.module';
 
 config();
 
@@ -31,6 +34,7 @@ config();
     }),
     TypeOrmModule.forFeature([User, ContactInfo]),
     AuthModule,
+    CheckDuplicatedModule,
   ],
   controllers: [AppController],
   providers: [AppService],

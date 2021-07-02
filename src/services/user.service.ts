@@ -2,8 +2,10 @@ import { ContactInfo } from './../entities/contactInfo.entity';
 import { User } from '../entities/user.entity';
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import * as CONSTANT from '../constant';
+import { MoreThan, MoreThanOrEqual, Repository } from 'typeorm';
+import * as randomToken from 'rand-token';
+import * as moment from 'moment';
+import * as CONSTANTS from '../constant';
 import * as bcrypt from 'bcrypt';
 
 interface IUser {
@@ -41,10 +43,11 @@ export class UserService {
   }
 
   async getUserByName(username: string): Promise<User> {
-    const user = await this.userRepository.createQueryBuilder('users')
-                .where("username = :username", { username: username })
-                .leftJoinAndSelect('users.contactInfo', 'contacts')
-                .getOne()
+    const user = await this.userRepository
+      .createQueryBuilder('users')
+      .where('username = :username', { username: username })
+      .leftJoinAndSelect('users.contactInfo', 'contacts')
+      .getOne();
     return user;
   }
 
@@ -59,9 +62,11 @@ export class UserService {
           username: user.userName,
           password: await bcrypt.hash(
             user.password,
-            CONSTANT.ROUND_HASH_PASSWORD.ROUND,
+            CONSTANTS.ROUND_HASH_PASSWORD.ROUND,
           ),
-          role: CONSTANT.ROLE.USER,
+          role: CONSTANTS.ROLE.USER,
+          refreshToken: randomToken.generate(16),
+          refreshTokenExp: moment().day(1).format('YYYY/MM/DD HH:mm:ss'),
         })
         .save();
 
@@ -90,15 +95,17 @@ export class UserService {
         throw new Error('email already exists...!');
       }
       const randomPassword = Math.random().toString(36).slice(-8);
-      console.log(randomPassword)
+      console.log(randomPassword);
       const newUser = await this.userRepository
         .create({
           username: user.email,
           password: await bcrypt.hash(
             randomPassword,
-            CONSTANT.ROUND_HASH_PASSWORD.ROUND,
+            CONSTANTS.ROUND_HASH_PASSWORD.ROUND,
           ),
-          role: CONSTANT.ROLE.USER,
+          role: CONSTANTS.ROLE.USER,
+          refreshToken: randomToken.generate(16),
+          refreshTokenExp: moment().day(1).format('YYYY/MM/DD HH:mm:ss'),
         })
         .save();
 
@@ -117,5 +124,30 @@ export class UserService {
       Logger.error(error);
       return error;
     }
+  }
+
+  async updateRefreshToken(userId: number): Promise<string> {
+    const user = await this.userRepository.findOne(userId);
+    user.refreshToken = randomToken.generate(16);
+    user.refreshTokenExp = new Date(moment().day(1).format('YYYY/MM/DD HH:mm:ss'));
+    await user.save();
+    return user.refreshToken;
+  }
+
+  async getUserWithRefreshToken(username: string, refreshToken: string, refreshTokenExp: Date): Promise<User> {
+    const user = await this.userRepository.findOne({
+      username: username,
+      refreshToken: refreshToken,
+      refreshTokenExp: MoreThanOrEqual(refreshTokenExp)
+    });
+    if (!user) {
+      return null
+    }
+    return user
+  }
+
+  async getUserById(userId: number): Promise<User> {
+    const user = this.userRepository.findOne(userId)
+    return user
   }
 }
