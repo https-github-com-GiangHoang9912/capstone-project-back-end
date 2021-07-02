@@ -21,6 +21,12 @@ export class User extends BaseEntity {
   @Column()
   role: number;
 
+  @Column({ nullable: true, name: 'refreshtoken' })
+  refreshToken: string;
+
+  @Column({ type: 'datetime', nullable: true, name: 'refreshtokenexp' })
+  refreshTokenExp: Date;
+
   @OneToOne(() => ContactInfo, (contactInfo) => contactInfo.user, {
     onDelete: 'CASCADE',
   })
