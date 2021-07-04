@@ -19,7 +19,7 @@ config();
     UserModule,
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: 'localhost',
+      host: process.env.DB_HOST,
       port: Number(process.env.DB_PORT),
       database: process.env.DATABASE_NAME,
       synchronize: false,
