@@ -42,7 +42,7 @@ export class AppController {
       .cookie('token', secretData, {
         sameSite: 'strict',
         path: '/',
-        expires: new Date(new Date().getTime() + 30000),
+        expires: new Date(new Date().getTime() + 1800 *1000),
         secure: true,
         httpOnly: true,
       })
@@ -61,7 +61,7 @@ export class AppController {
       .cookie('token', secretData, {
         sameSite: 'strict',
         path: '/',
-        expires: new Date(new Date().getTime() + 30000),
+        expires: new Date(new Date().getTime()  + 1800 *1000),
         secure: true,
         httpOnly: true,
       })
