@@ -11,6 +11,8 @@ import { User } from './entities/user.entity';
 import { AuthModule } from './auth/auth.module';
 import { config } from 'dotenv';
 import { CheckDuplicatedModule } from './check-duplicated/check-duplicated.module';
+import { SelfGenerateController } from './self-generate/self-generate.controller';
+import { SelfGenerateModule } from './self-generate/self-generate.module';
 
 config();
 
@@ -35,8 +37,9 @@ config();
     TypeOrmModule.forFeature([User, ContactInfo]),
     AuthModule,
     CheckDuplicatedModule,
+    SelfGenerateModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, SelfGenerateController],
   providers: [AppService],
 })
 export class AppModule {}

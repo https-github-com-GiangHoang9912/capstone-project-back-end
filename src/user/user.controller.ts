@@ -9,8 +9,10 @@ import { User } from '../entities/user.entity';
 import { UserService } from '../services/user.service';
 import { CreateUserDto } from '../dto/user.dto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { ContactInfo } from 'src/entities/contactInfo.entity';
+import { GetInformationDto } from 'src/dto/get-info.dto';
 
-// @UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard)
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
@@ -32,10 +34,11 @@ export class UserController {
     return newUser;
   }
 
-  // @Post('/profile')
-  // async updateProfile(@Body() userId: ObjectID): Promise<ContactInfo> {
-  //   const contact = this.contactService.createOrUpdateUserInfo()
-  // }
+  @Post('/get-information')
+  async updateProfile(@Body() body: GetInformationDto): Promise<ContactInfo> {
+    const contact = await this.userService.getUserByName(body.username)
+    return contact.contactInfo
+  }
 
   // @Post('/contact')
   // async createContact(@Body() contact: CreateContactInfoDto): Promise<any> {
