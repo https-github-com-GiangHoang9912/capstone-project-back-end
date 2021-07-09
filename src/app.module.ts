@@ -1,5 +1,3 @@
-import { CheckDuplicatedService } from 'src/services/check-duplicated.service';
-import { CheckDuplicatedController } from './check-duplicated/check-duplicated.controller';
 import { ContactInfo } from './entities/contactInfo.entity';
 import { UserModule } from './user/user.module';
 import { Module } from '@nestjs/common';
@@ -11,9 +9,10 @@ import { User } from './entities/user.entity';
 import { AuthModule } from './auth/auth.module';
 import { config } from 'dotenv';
 import { CheckDuplicatedModule } from './check-duplicated/check-duplicated.module';
-import { SelfGenerateController } from './self-generate/self-generate.controller';
 import { SelfGenerateModule } from './self-generate/self-generate.module';
 import { MailModule } from './mail/mail.module';
+import { HistoryTypeModule } from './history-type/history-type.module';
+import { HistoryModule } from './history/history.module';
 
 config();
 
@@ -28,7 +27,7 @@ config();
       synchronize: false,
       username: process.env.USERNAME,
       password: process.env.PASSWORD,
-      logging: true,
+      logging: false,
       autoLoadEntities: true,
       entities: [join(__dirname, '**/**.entity{.ts,.js}')],
       cli: {
@@ -40,8 +39,10 @@ config();
     CheckDuplicatedModule,
     SelfGenerateModule,
     MailModule,
+    HistoryTypeModule,
+    HistoryModule,
   ],
-  controllers: [AppController, SelfGenerateController],
+  controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {}

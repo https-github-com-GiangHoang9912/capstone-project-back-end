@@ -1,3 +1,5 @@
+import { AuthModule } from './../auth/auth.module';
+import { HistoryModule } from './../history/history.module';
 import { ContactInfo } from './../entities/contactInfo.entity';
 import { Module, MiddlewareConsumer } from '@nestjs/common';
 import { UserController } from './user.controller';
@@ -7,7 +9,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from '../entities/user.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User, ContactInfo])],
+  imports: [TypeOrmModule.forFeature([User, ContactInfo]), HistoryModule],
   controllers: [UserController],
   providers: [UserService],
   exports: [UserService],

@@ -1,11 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Put,
-  UseGuards,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Put, UseGuards } from '@nestjs/common';
 import { User } from '../entities/user.entity';
 import { UserService } from '../services/user.service';
 import { CreateUserDto } from '../dto/user.dto';
@@ -14,11 +7,17 @@ import { ContactInfo } from 'src/entities/contactInfo.entity';
 import { GetInformationDto } from 'src/dto/get-info.dto';
 import { UpdateInformationDto } from 'src/dto/update-infomation.dto';
 import * as moment from 'moment';
+import { HistoryService } from 'src/services/history.service';
+import { AuthService } from 'src/auth/auth.service';
+import * as CONSTANTS from '../constant';
 
 @UseGuards(JwtAuthGuard)
 @Controller('user')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly historyService: HistoryService,
+  ) {}
 
   @Get()
   getUsers(): Promise<User[]> {
@@ -37,20 +36,20 @@ export class UserController {
       return newUser;
     } catch (error) {
       return {
-        message: "create user fail...!"
-      } 
+        message: 'create user fail...!',
+      };
     }
   }
 
   @Post('/get-information')
   async getInformation(@Body() body: GetInformationDto): Promise<Object> {
     try {
-      const contact = await this.userService.getUserByName(body.username)
-      return contact.contactInfo
+      const contact = await this.userService.getUserByName(body.username);
+      return contact.contactInfo;
     } catch (error) {
       return {
-        message: "get information fail...!"
-      }
+        message: 'get information fail...!',
+      };
     }
   }
 
@@ -60,14 +59,19 @@ export class UserController {
   // }
 
   @Put('/update-information')
-  async updateInformation(@Body() request: UpdateInformationDto): Promise<Object> {
+  async updateInformation(
+    @Body() request: UpdateInformationDto,
+  ): Promise<Object> {
     try {
-      const contact = await this.userService.updateUserInformation(request)
-      return contact
+      await this.historyService.createHistory(
+        CONSTANTS.HISTORY_TYPE.UPDATE_PROFILE, "Update Information" , request.id,
+      );
+      const contact = await this.userService.updateUserInformation(request);
+      return contact;
     } catch (error) {
       return {
-        message: "update fail...!"
-      }
+        message: 'update fail...!',
+      };
     }
   }
 
