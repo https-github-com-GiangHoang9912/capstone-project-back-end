@@ -25,12 +25,12 @@ export class RefreshStrategy extends PassportStrategy(Strategy, 'refresh') {
  
   async validate(@Req() req: Request, payload: any) {
     const secretData = req?.cookies['token'];
-    if (!secretData || !secretData?.refreshToken) {
+    if (!secretData || !secretData?.refresh_token) {
       throw new BadRequestException();
     }
     const user = await this.authService.validateRefreshJwtToken(
-      payload.username,
-      secretData.refreshToken,
+      payload.name,
+      secretData.refresh_token,
     );
     if (!user) {
       throw new BadRequestException();

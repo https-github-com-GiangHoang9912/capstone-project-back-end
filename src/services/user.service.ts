@@ -1,3 +1,4 @@
+import { request } from 'express';
 import { ContactInfo } from './../entities/contactInfo.entity';
 import { User } from '../entities/user.entity';
 import { Injectable, Logger } from '@nestjs/common';
@@ -66,7 +67,10 @@ export class UserService {
           ),
           role: CONSTANTS.ROLE.USER,
           refreshToken: randomToken.generate(16),
-          refreshTokenExp: moment().day(1).format('YYYY/MM/DD HH:mm:ss'),
+          refreshTokenExp: moment()
+            .utc()
+            .add(30, 'minute')
+            .format('YYYY/MM/DD HH:mm:ss'),
         })
         .save();
 
@@ -89,13 +93,12 @@ export class UserService {
     }
   }
 
-  async insertUserByLoginGoogle(user: GoogleUser): Promise<User> {
+  async insertUserByLoginGoogle(user: GoogleUser): Promise<any> {
     try {
       if (await this.contactRepository.findOne({ email: user.email })) {
         throw new Error('email already exists...!');
       }
       const randomPassword = Math.random().toString(36).slice(-8);
-      console.log(randomPassword);
       const newUser = await this.userRepository
         .create({
           username: user.email,
@@ -105,7 +108,10 @@ export class UserService {
           ),
           role: CONSTANTS.ROLE.USER,
           refreshToken: randomToken.generate(16),
-          refreshTokenExp: moment().day(1).format('YYYY/MM/DD HH:mm:ss'),
+          refreshTokenExp: moment()
+            .utc()
+            .add(30, 'minute')
+            .format('YYYY/MM/DD HH:mm:ss'),
         })
         .save();
 
@@ -119,7 +125,7 @@ export class UserService {
         })
         .save();
 
-      return newUser;
+      return { newUser, randomPassword };
     } catch (error) {
       Logger.error(error);
       return error;
@@ -129,25 +135,45 @@ export class UserService {
   async updateRefreshToken(userId: number): Promise<string> {
     const user = await this.userRepository.findOne(userId);
     user.refreshToken = randomToken.generate(16);
-    user.refreshTokenExp = new Date(moment().day(1).format('YYYY/MM/DD HH:mm:ss'));
+    user.refreshTokenExp = new Date(
+      moment().utc().add(30, 'minute').format('YYYY/MM/DD HH:mm:ss'),
+    );
     await user.save();
     return user.refreshToken;
   }
 
-  async getUserWithRefreshToken(username: string, refreshToken: string, refreshTokenExp: Date): Promise<User> {
+  async getUserWithRefreshToken(
+    username: string,
+    refreshToken: string,
+    refreshTokenExp: Date,
+  ): Promise<User> {
     const user = await this.userRepository.findOne({
       username: username,
       refreshToken: refreshToken,
-      refreshTokenExp: MoreThanOrEqual(refreshTokenExp)
+      refreshTokenExp: MoreThanOrEqual(refreshTokenExp),
     });
+
     if (!user) {
-      return null
+      return null;
     }
-    return user
+    return user;
   }
 
   async getUserById(userId: number): Promise<User> {
-    const user = this.userRepository.findOne(userId)
-    return user
+    const user = this.userRepository.findOne(userId);
+    return user;
+  }
+
+  async updateUserInformation(req: any): Promise<ContactInfo> {
+    const contact = await this.contactRepository.findOne({ ownerId: req.id });
+    contact.firstName = req.firstName
+    contact.lastName = req.lastName
+    contact.email = req.email
+    contact.phone = req.phone
+    contact.dateOfBirth = new Date(moment(req.dob).format("DD/MM/YYYY"))
+    contact.address = req.address
+    contact.avatar = req.avatar
+    contact.save()
+    return contact;
   }
 }
