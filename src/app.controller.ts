@@ -16,6 +16,7 @@ import { LocalAuthGuard } from './auth/local-auth.guard';
 import { Response, Request, request } from 'express';
 import { RefreshTokenGuard } from './auth/refresh-token.guard';
 
+
 @Controller()
 export class AppController {
   constructor(
@@ -42,7 +43,7 @@ export class AppController {
       .cookie('token', secretData, {
         sameSite: 'strict',
         path: '/',
-        expires: new Date(new Date().getTime() + 1800 *1000),
+        expires: new Date(new Date().getTime() + 1800 * 1000),
         secure: true,
         httpOnly: true,
       })
@@ -61,14 +62,14 @@ export class AppController {
       .cookie('token', secretData, {
         sameSite: 'strict',
         path: '/',
-        expires: new Date(new Date().getTime()  + 1800 *1000),
+        expires: new Date(new Date().getTime() + 1800 * 1000),
         secure: true,
         httpOnly: true,
       })
       .send(info.account);
   }
 
-  // @UseGuards(RefreshTokenGuard)
+  @UseGuards(RefreshTokenGuard)
   @Post('/refresh-token')
   async refreshJwtToken(
     @Req() req: Request,
@@ -88,7 +89,7 @@ export class AppController {
         .cookie('token', secretData, {
           sameSite: 'strict',
           path: '/',
-          expires: new Date(new Date().getTime() + 30000),
+          expires: new Date(new Date().getTime() + 1800 * 1000),
           secure: true,
           httpOnly: true,
         })

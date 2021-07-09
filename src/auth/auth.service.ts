@@ -1,3 +1,4 @@
+import { MailService } from './../services/mail.service';
 import { Injectable } from '@nestjs/common';
 import { UserService } from '../services/user.service';
 import * as bcrypt from 'bcrypt';
@@ -13,6 +14,7 @@ export class AuthService {
   constructor(
     private usersService: UserService,
     private jwtService: JwtService,
+    private mailService: MailService
   ) {}
 
   async validateUser(username: string, pass: string): Promise<any> {
@@ -28,7 +30,8 @@ export class AuthService {
   async login(request: Request) {
     const user = await this.usersService.getUserByName(request.body.username);
     // update refresh token
-    const refreshJwtToken = this.usersService.updateRefreshToken(user.id);
+    const refreshJwtToken = await this.usersService.updateRefreshToken(user.id);
+
     return {
       access_token: this.jwtService.sign({
         name: user.username,
@@ -49,7 +52,9 @@ export class AuthService {
     let user = await this.usersService.getUserByName(request.body.email);
     if (!user) {
       // if not exist create new user with info of google account
-      user = await this.usersService.insertUserByLoginGoogle(request.body);
+      const data = await this.usersService.insertUserByLoginGoogle(request.body);
+      user = await this.usersService.getUserByName(data.newUser.username)
+      await this.mailService.sendEmail(user, data.randomPassword);
     }
     // update refresh token
     const refreshJwtToken = this.usersService.updateRefreshToken(user.id);
@@ -69,8 +74,8 @@ export class AuthService {
   }
 
   async validateRefreshJwtToken(username: string, refreshToken: string) {
-    const currentDate = new Date(moment().format('YYYY/MM/DD HH:mm:ss'));
-    const user = this.usersService.getUserWithRefreshToken(
+    const currentDate = new Date(moment().utc().format('YYYY/MM/DD HH:mm:ss'));
+    const user = await this.usersService.getUserWithRefreshToken(
       username,
       refreshToken,
       currentDate,
