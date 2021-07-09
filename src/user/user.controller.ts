@@ -31,16 +31,27 @@ export class UserController {
   // }
 
   @Post('/create')
-  async createUser(@Body() user: CreateUserDto): Promise<User> {
-    const newUser = await this.userService.insertUser(user);
-
-    return newUser;
+  async createUser(@Body() user: CreateUserDto): Promise<Object> {
+    try {
+      const newUser = await this.userService.insertUser(user);
+      return newUser;
+    } catch (error) {
+      return {
+        message: "create user fail...!"
+      } 
+    }
   }
 
   @Post('/get-information')
-  async updateProfile(@Body() body: GetInformationDto): Promise<ContactInfo> {
-    const contact = await this.userService.getUserByName(body.username)
-    return contact.contactInfo
+  async getInformation(@Body() body: GetInformationDto): Promise<Object> {
+    try {
+      const contact = await this.userService.getUserByName(body.username)
+      return contact.contactInfo
+    } catch (error) {
+      return {
+        message: "get information fail...!"
+      }
+    }
   }
 
   // @Post('/contact')
@@ -49,9 +60,15 @@ export class UserController {
   // }
 
   @Put('/update-information')
-  async updateInformation(@Body() request: UpdateInformationDto) {
-    const contact = await this.userService.updateUserInformation(request)
-    console.log(contact)
+  async updateInformation(@Body() request: UpdateInformationDto): Promise<Object> {
+    try {
+      const contact = await this.userService.updateUserInformation(request)
+      return contact
+    } catch (error) {
+      return {
+        message: "update fail...!"
+      }
+    }
   }
 
   // @Delete(':id')

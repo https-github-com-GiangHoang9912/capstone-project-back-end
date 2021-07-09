@@ -19,7 +19,7 @@ config();
     MailModule,
     JwtModule.register({
       secret: process.env.JWT_SIGN_SECRET,
-      signOptions: { expiresIn: '1800s' },
+      signOptions: { expiresIn: '60s' },
     }),
   ],
   providers: [AuthService, LocalStrategy, JwtStrategy, RefreshStrategy],

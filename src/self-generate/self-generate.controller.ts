@@ -21,7 +21,9 @@ export class SelfGenerateController {
     @Body() body: SelfGenerationDto[],
     @Res() res: Response,
   ): Promise<any> {
-    const data = await this.generateService.generationQuestions(body);
-    return res.status(HttpStatus.OK).send(data);
+    try {
+      const data = await this.generateService.generationQuestions(body);
+      return res.status(HttpStatus.OK).send(data);
+    } catch (error) {}
   }
 }

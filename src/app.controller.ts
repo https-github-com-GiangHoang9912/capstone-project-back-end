@@ -16,7 +16,6 @@ import { LocalAuthGuard } from './auth/local-auth.guard';
 import { Response, Request, request } from 'express';
 import { RefreshTokenGuard } from './auth/refresh-token.guard';
 
-
 @Controller()
 export class AppController {
   constructor(
@@ -24,7 +23,7 @@ export class AppController {
     private readonly authService: AuthService,
   ) {}
 
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @Get()
   async createAdmin(@Req() req: Request) {
     await this.appService.seed();
@@ -33,40 +32,44 @@ export class AppController {
   @UseGuards(LocalAuthGuard)
   @Post('auth/login')
   async login(@Req() req: Request, @Res() res: Response) {
-    const info = await this.authService.login(req);
-    const secretData = {
-      jwt_token: info.access_token,
-      refresh_token: info.refresh_token,
-    };
-    return res
-      .status(HttpStatus.ACCEPTED)
-      .cookie('token', secretData, {
-        sameSite: 'strict',
-        path: '/',
-        expires: new Date(new Date().getTime() + 1800 * 1000),
-        secure: true,
-        httpOnly: true,
-      })
-      .send(info.account);
+    try {
+      const info = await this.authService.login(req);
+      const secretData = {
+        jwt_token: info.access_token,
+        refresh_token: info.refresh_token,
+      };
+      return res
+        .status(HttpStatus.ACCEPTED)
+        .cookie('token', secretData, {
+          sameSite: 'strict',
+          path: '/',
+          expires: new Date(new Date().getTime() + 60 * 1000),
+          secure: true,
+          httpOnly: true,
+        })
+        .send(info.account);
+    } catch (error) {}
   }
 
   @Post('google-auth/login')
   async loginByGoogle(@Req() req: Request, @Res() res: Response) {
-    const info = await this.authService.loginGoogle(req);
-    const secretData = {
-      jwt_token: info.access_token,
-      refresh_token: info.refresh_token,
-    };
-    return res
-      .status(HttpStatus.ACCEPTED)
-      .cookie('token', secretData, {
-        sameSite: 'strict',
-        path: '/',
-        expires: new Date(new Date().getTime() + 1800 * 1000),
-        secure: true,
-        httpOnly: true,
-      })
-      .send(info.account);
+    try {
+      const info = await this.authService.loginGoogle(req);
+      const secretData = {
+        jwt_token: info.access_token,
+        refresh_token: info.refresh_token,
+      };
+      return res
+        .status(HttpStatus.ACCEPTED)
+        .cookie('token', secretData, {
+          sameSite: 'strict',
+          path: '/',
+          expires: new Date(new Date().getTime() + 60 * 1000),
+          secure: true,
+          httpOnly: true,
+        })
+        .send(info.account);
+    } catch (error) {}
   }
 
   @UseGuards(RefreshTokenGuard)
@@ -89,7 +92,7 @@ export class AppController {
         .cookie('token', secretData, {
           sameSite: 'strict',
           path: '/',
-          expires: new Date(new Date().getTime() + 1800 * 1000),
+          expires: new Date(new Date().getTime() + 60 * 1000),
           secure: true,
           httpOnly: true,
         })
