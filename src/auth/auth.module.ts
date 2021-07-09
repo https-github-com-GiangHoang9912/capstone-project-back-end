@@ -8,6 +8,7 @@ import { LocalStrategy } from './local.strategy';
 import { JwtModule } from '@nestjs/jwt';
 import { config } from 'dotenv';
 import { RefreshStrategy } from './refresh.strategy';
+import { MailModule } from 'src/mail/mail.module';
 
 config();
 @Module({
@@ -15,6 +16,7 @@ config();
   imports: [
     UserModule,
     PassportModule,
+    MailModule,
     JwtModule.register({
       secret: process.env.JWT_SIGN_SECRET,
       signOptions: { expiresIn: '1800s' },

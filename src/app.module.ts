@@ -13,6 +13,7 @@ import { config } from 'dotenv';
 import { CheckDuplicatedModule } from './check-duplicated/check-duplicated.module';
 import { SelfGenerateController } from './self-generate/self-generate.controller';
 import { SelfGenerateModule } from './self-generate/self-generate.module';
+import { MailModule } from './mail/mail.module';
 
 config();
 
@@ -38,6 +39,7 @@ config();
     AuthModule,
     CheckDuplicatedModule,
     SelfGenerateModule,
+    MailModule,
   ],
   controllers: [AppController, SelfGenerateController],
   providers: [AppService],
