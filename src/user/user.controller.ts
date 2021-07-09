@@ -3,6 +3,7 @@ import {
   Get,
   Post,
   Body,
+  Put,
   UseGuards,
 } from '@nestjs/common';
 import { User } from '../entities/user.entity';
@@ -11,6 +12,8 @@ import { CreateUserDto } from '../dto/user.dto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { ContactInfo } from 'src/entities/contactInfo.entity';
 import { GetInformationDto } from 'src/dto/get-info.dto';
+import { UpdateInformationDto } from 'src/dto/update-infomation.dto';
+import * as moment from 'moment';
 
 @UseGuards(JwtAuthGuard)
 @Controller('user')
@@ -45,10 +48,11 @@ export class UserController {
   //   this.contactService.createInfo(contact)
   // }
 
-  // @Put(':id')
-  // async replacePost(@Param('id') id: string, @Body() post: string) {
-  //   return this.userService.getUsers()
-  // }
+  @Put('/update-information')
+  async updateInformation(@Body() request: UpdateInformationDto) {
+    const contact = await this.userService.updateUserInformation(request)
+    console.log(contact)
+  }
 
   // @Delete(':id')
   // async deletePost(@Param('id') id: string) {
