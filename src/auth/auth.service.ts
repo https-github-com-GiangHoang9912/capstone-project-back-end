@@ -57,7 +57,7 @@ export class AuthService {
       await this.mailService.sendEmail(user, data.randomPassword);
     }
     // update refresh token
-    const refreshJwtToken = this.usersService.updateRefreshToken(user.id);
+    const refreshJwtToken = await this.usersService.updateRefreshToken(user.id);
     return {
       access_token: this.jwtService.sign({
         name: user.username,

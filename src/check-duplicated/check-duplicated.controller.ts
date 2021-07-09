@@ -7,7 +7,7 @@ import {
   Res,
   HttpStatus,
   Req,
-  UseGuards
+  UseGuards,
 } from '@nestjs/common';
 import { QuestionCheckDuplicatedDto } from 'src/dto/check-duplicated.dto';
 import { CheckDuplicatedService } from 'src/services/check-duplicated.service';
@@ -25,9 +25,11 @@ export class CheckDuplicatedController {
     @Body() questions: QuestionCheckDuplicatedDto,
     @Res() res: Response,
   ): Promise<any> {
-    const data = await this.checkDuplicatedService.checkDuplicated(
-      questions.question,
-    );
-    return res.status(HttpStatus.OK).send(data.data);
+    try {
+      const data = await this.checkDuplicatedService.checkDuplicated(
+        questions.question,
+      );
+      return res.status(HttpStatus.OK).send(data.data);
+    } catch (error) {}
   }
 }

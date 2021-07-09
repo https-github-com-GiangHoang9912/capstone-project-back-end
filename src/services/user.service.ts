@@ -136,7 +136,7 @@ export class UserService {
     const user = await this.userRepository.findOne(userId);
     user.refreshToken = randomToken.generate(16);
     user.refreshTokenExp = new Date(
-      moment().utc().add(30, 'minute').format('YYYY/MM/DD HH:mm:ss'),
+      moment().utc().add(1, 'minute').format('YYYY/MM/DD HH:mm:ss'),
     );
     await user.save();
     return user.refreshToken;
