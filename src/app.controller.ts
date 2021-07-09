@@ -38,12 +38,12 @@ export class AppController {
         jwt_token: info.access_token,
         refresh_token: info.refresh_token,
       };
-      return res
+      res
         .status(HttpStatus.ACCEPTED)
         .cookie('token', secretData, {
           sameSite: 'strict',
           path: '/',
-          expires: new Date(new Date().getTime() + 60 * 1000),
+          expires: new Date(new Date().getTime() + 1800 * 1000),
           secure: true,
           httpOnly: true,
         })
@@ -59,12 +59,12 @@ export class AppController {
         jwt_token: info.access_token,
         refresh_token: info.refresh_token,
       };
-      return res
+      res
         .status(HttpStatus.ACCEPTED)
         .cookie('token', secretData, {
           sameSite: 'strict',
           path: '/',
-          expires: new Date(new Date().getTime() + 60 * 1000),
+          expires: new Date(new Date().getTime() + 1800 * 1000),
           secure: true,
           httpOnly: true,
         })
@@ -87,12 +87,12 @@ export class AppController {
         jwt_token: token,
         refresh_token: refreshToken,
       };
-      return res
+      res
         .status(HttpStatus.ACCEPTED)
         .cookie('token', secretData, {
           sameSite: 'strict',
           path: '/',
-          expires: new Date(new Date().getTime() + 60 * 1000),
+          expires: new Date(new Date().getTime() + 1800 * 1000),
           secure: true,
           httpOnly: true,
         })

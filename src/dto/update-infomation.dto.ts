@@ -1,6 +1,9 @@
-import { IsString } from 'class-validator';
+import { IsString, IsNumber } from 'class-validator';
 
 export class UpdateInformationDto {
+  @IsNumber()
+  readonly id: number;
+  
   @IsString()
   readonly firstName?: string;
 
@@ -17,8 +20,8 @@ export class UpdateInformationDto {
   readonly address?: string;
 
   @IsString()
-  readonly dob?: string
+  readonly dob?: string;
 
   @IsString()
-  readonly avatar?: string
+  readonly avatar?: string;
 }

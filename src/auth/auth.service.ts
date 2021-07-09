@@ -96,4 +96,9 @@ export class AuthService {
     })
     return jwtToken
   }
+
+  verifyToken(token: string) {
+    return this.jwtService.verify(token)
+  }
+
 }
