@@ -15,13 +15,11 @@ import { HistoryTypeModule } from './history-type/history-type.module';
 import { HistoryModule } from './history/history.module';
 import {ExamModule} from './exam/exam.module';
 import {SubjectModule} from './subject/subject.module';
-
 config();
 
 @Module({
   imports: [
-  import { SubjectModule } from './subject/subject.module';
-  UserModule,
+    UserModule,
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: process.env.DB_HOST,
