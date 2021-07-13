@@ -13,12 +13,15 @@ import { SelfGenerateModule } from './self-generate/self-generate.module';
 import { MailModule } from './mail/mail.module';
 import { HistoryTypeModule } from './history-type/history-type.module';
 import { HistoryModule } from './history/history.module';
+import {ExamModule} from './exam/exam.module';
+import {SubjectModule} from './subject/subject.module';
 
 config();
 
 @Module({
   imports: [
-    UserModule,
+  import { SubjectModule } from './subject/subject.module';
+  UserModule,
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: process.env.DB_HOST,
@@ -41,6 +44,8 @@ config();
     MailModule,
     HistoryTypeModule,
     HistoryModule,
+    ExamModule,
+    SubjectModule,
   ],
   controllers: [AppController],
   providers: [AppService],
