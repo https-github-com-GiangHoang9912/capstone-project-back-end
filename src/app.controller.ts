@@ -79,9 +79,9 @@ export class AppController {
     @Res({ passthrough: true }) res: Response,
   ) {
     try {
-      const token = await this.authService.getJwtToken(req.body.userId);
+      const token = await this.authService.getJwtToken(req.body.id);
       const refreshToken = await this.authService.getRefreshToken(
-        req.body.userId,
+        req.body.id,
       );
       const secretData = {
         jwt_token: token,
