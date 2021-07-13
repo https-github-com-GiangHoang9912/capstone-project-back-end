@@ -13,7 +13,8 @@ import { SelfGenerateModule } from './self-generate/self-generate.module';
 import { MailModule } from './mail/mail.module';
 import { HistoryTypeModule } from './history-type/history-type.module';
 import { HistoryModule } from './history/history.module';
-
+import {ExamModule} from './exam/exam.module';
+import {SubjectModule} from './subject/subject.module';
 config();
 
 @Module({
@@ -41,6 +42,8 @@ config();
     MailModule,
     HistoryTypeModule,
     HistoryModule,
+    ExamModule,
+    SubjectModule,
   ],
   controllers: [AppController],
   providers: [AppService],
