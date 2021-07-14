@@ -35,6 +35,7 @@ export class AuthService {
     return {
       access_token: this.jwtService.sign({
         name: user.username,
+        role: user.role,
         sub: user.id,
       }),
       refresh_token: refreshJwtToken,
@@ -61,6 +62,7 @@ export class AuthService {
     return {
       access_token: this.jwtService.sign({
         name: user.username,
+        role: user.role,
         sub: user.id,
       }),
       refresh_token: refreshJwtToken,
@@ -92,6 +94,7 @@ export class AuthService {
     const user = await this.usersService.getUserById(userId)
     const jwtToken = this.jwtService.signAsync({
       name: user.username,
+      role: user.role,
       sub: user.id,
     })
     return jwtToken

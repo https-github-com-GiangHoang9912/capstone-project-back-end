@@ -53,14 +53,16 @@ export class CheckDuplicatedController {
     }
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post('/upload-dataset')
   @UseInterceptors(
     FileInterceptor('train', {
       storage: diskStorage({
         destination: './uploads/datasets',
         filename: (req, file, cb) => {
-          const filename: string =
-            path.parse(file.fieldname).name.replace(/\s/g, '');
+          const filename: string = path
+            .parse(file.fieldname)
+            .name.replace(/\s/g, '');
           const extension: string = path.parse(file.originalname).ext;
 
           cb(null, `${filename}${extension}`);
@@ -68,11 +70,18 @@ export class CheckDuplicatedController {
       }),
     }),
   )
-  async uploadDataset(@UploadedFile() file, @Res() res: Response,): Promise<any> {
+  async uploadDataset(
+    @Req() req: Request,
+    @UploadedFile() file,
+    @Res() res: Response,
+  ): Promise<any> {
     try {
-      // function to train 
-      res.status(HttpStatus.OK).send("training successful ... !")
-      return
+      const user = this.authService.verifyToken(req.cookies.token.jwt_token);
+
+      if ( user.role !== 3 ) return
+      // function to train
+      res.status(HttpStatus.OK).send('training successful ... !');
+      return;
     } catch (error) {
       console.log(error);
     }
