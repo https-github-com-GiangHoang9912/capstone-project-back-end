@@ -1,6 +1,7 @@
 import { ExamService } from './../services/exam.service';
 import {
   Body,
+  Param,
   Res,
   Controller,
   HttpStatus,
@@ -14,12 +15,26 @@ import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 @Controller('exam')
 export class ExamController {
   constructor(private readonly examService: ExamService) {}
+  @Get('/:id/')
+  async getExambyUser(
+    @Res() res: Response,
+    @Param('id') userId: number,
+  ): Promise<any> {
+    console.log(userId);
+    try {
+      const data = await this.examService.getExambyUser(
+        userId
+      );
+      return res.status(HttpStatus.OK).send(data);
 
+    } catch (error) {}
+  }
   @Get('/')
   async getExam(@Res() res: Response): Promise<any> {
     try {
       const data = await this.examService.getExam();
       return res.status(HttpStatus.OK).send(data);
-    } catch (error) {}
+    } catch (error) {} 
   }
+  
 }
