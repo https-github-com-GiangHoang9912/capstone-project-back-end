@@ -23,7 +23,10 @@ export class UserController {
   getUsers(): Promise<User[]> {
     return this.userService.getUsers();
   }
-
+  @Get('/users')
+  getAllUsers(): Promise<User[]> {
+    return this.userService.getAllUsers();
+  }
   // @Get(':id')
   // getPostById(@Param('id') id: string) {
   //   return this.userService.getUserById(id);

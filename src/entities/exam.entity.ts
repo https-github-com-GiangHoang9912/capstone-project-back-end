@@ -22,11 +22,12 @@ export class Exam extends BaseEntity {
   @ManyToOne(() => Subject, (subject) => subject.exam, {
     onDelete: 'CASCADE',
   })
+  @JoinColumn({ name: 'user_id', referencedColumnName: 'id' })
+  user: User;
   @ManyToOne(() => User, (user) => user.exam, {
     onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'subject_id', referencedColumnName: 'id' })
   subject: Subject;
-  @JoinColumn({ name: 'user_id', referencedColumnName: 'id' })
-  user: User;
+ 
 }

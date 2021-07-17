@@ -42,7 +42,12 @@ export class UserService {
   async getUsers(): Promise<User[]> {
     return this.userRepository.find();
   }
-
+  async getAllUsers(): Promise<User[]> {
+    return this.userRepository
+    .createQueryBuilder('users')
+    .leftJoinAndSelect('users.contactInfo', 'contacts')
+    .getMany();
+  }  
   async getUserByName(username: string): Promise<User> {
     const user = await this.userRepository
       .createQueryBuilder('users')
