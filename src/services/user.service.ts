@@ -57,6 +57,15 @@ export class UserService {
     return user;
   }
 
+  async searchUserByName(username: string): Promise<User[]> {
+    return this.userRepository
+      .createQueryBuilder('users')
+      .where("username like :name", {name: `%${username}%` })
+      .leftJoinAndSelect('users.contactInfo', 'contacts')
+      .getMany();
+    
+  }
+
   async insertUser(user: IUser): Promise<User> {
     try {
       if (await this.userRepository.findOne({ username: user.userName })) {

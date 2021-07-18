@@ -1,10 +1,11 @@
-import { Controller, Get, Post, Body, Put, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Put, UseGuards, Res, Param, HttpStatus } from '@nestjs/common';
 import { User } from '../entities/user.entity';
 import { UserService } from '../services/user.service';
 import { CreateUserDto } from '../dto/user.dto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { ContactInfo } from 'src/entities/contactInfo.entity';
 import { GetInformationDto } from 'src/dto/get-info.dto';
+import { Response } from 'express';
 import { UpdateInformationDto } from 'src/dto/update-infomation.dto';
 import * as moment from 'moment';
 import { HistoryService } from 'src/services/history.service';
@@ -31,7 +32,17 @@ export class UserController {
   // getPostById(@Param('id') id: string) {
   //   return this.userService.getUserById(id);
   // }
-
+  @Get('/:search/')
+  async searchUserByName(
+    @Res() res: Response,
+    @Param('search') username: string,
+  ): Promise<any> {
+    try {
+      console.log(username);
+      const data = await this.userService.searchUserByName(username);
+      return res.status(HttpStatus.OK).send(data);
+    } catch (error) {}
+  }
   @Post('/create')
   async createUser(@Body() user: CreateUserDto): Promise<Object> {
     try {
