@@ -15,6 +15,7 @@ import { HistoryTypeModule } from './history-type/history-type.module';
 import { HistoryModule } from './history/history.module';
 import {ExamModule} from './exam/exam.module';
 import {SubjectModule} from './subject/subject.module';
+import {QuestionModule} from './question/question.module';
 config();
 
 @Module({
@@ -28,7 +29,7 @@ config();
       synchronize: false,
       username: "root",
       password: process.env.PASSWORD,
-      logging: false,
+      logging: true,
       autoLoadEntities: true,
       entities: [join(__dirname, '**/**.entity{.ts,.js}')],
       cli: {
@@ -44,6 +45,7 @@ config();
     HistoryModule,
     ExamModule,
     SubjectModule,
+    QuestionModule
   ],
   controllers: [AppController],
   providers: [AppService],
