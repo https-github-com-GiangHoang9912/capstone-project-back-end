@@ -2,11 +2,12 @@ import {
   Column,
   Entity,
   OneToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   BaseEntity,
 } from 'typeorm';
 import { ContactInfo } from './contactInfo.entity';
-
+import { Exam } from './exam.entity'
 @Entity('users')
 export class User extends BaseEntity {
   @PrimaryGeneratedColumn('increment')
@@ -31,4 +32,8 @@ export class User extends BaseEntity {
     onDelete: 'CASCADE',
   })
   contactInfo: ContactInfo;
+  @OneToMany(() => Exam, (exam) => exam.user, {
+    onDelete: 'CASCADE',
+  })
+  exam: Exam;
 }

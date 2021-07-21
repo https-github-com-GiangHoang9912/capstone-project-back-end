@@ -44,7 +44,7 @@ config();
     HistoryModule,
     ExamModule,
     SubjectModule,
-  ],
+  ], 
   controllers: [AppController],
   providers: [AppService],
 })
