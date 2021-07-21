@@ -16,12 +16,10 @@ export class ExamService {
   async getExambyUser(
     user_id: number,
   ): Promise<any> {
-    console.log(user_id);
     const exams = await this.examRepository
       .createQueryBuilder('exam')
       .where('user_id = :user_id', { user_id: user_id })
       .getMany();
-      console.log(exams);
     return exams;
   }
 }

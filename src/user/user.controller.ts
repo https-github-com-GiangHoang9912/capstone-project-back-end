@@ -38,7 +38,6 @@ export class UserController {
     @Param('search') username: string,
   ): Promise<any> {
     try {
-      console.log(username);
       const data = await this.userService.searchUserByName(username);
       return res.status(HttpStatus.OK).send(data);
     } catch (error) {}
