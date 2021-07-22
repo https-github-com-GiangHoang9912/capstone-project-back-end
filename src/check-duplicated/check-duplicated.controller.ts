@@ -1,5 +1,5 @@
 import { AuthService } from './../auth/auth.service';
-import { HistoryService } from './../services/history.service';
+import { HistoryService } from '../services/histories.service';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { JwtService } from '@nestjs/jwt';
 import {
@@ -32,7 +32,7 @@ export class CheckDuplicatedController {
   ) {}
 
   @Post('/')
-  async createUser(
+  async checkDuplicated(
     @Req() req: Request,
     @Body() questions: QuestionCheckDuplicatedDto,
     @Res() res: Response,
@@ -80,7 +80,9 @@ export class CheckDuplicatedController {
 
       if ( user.role !== 3 ) return
       // function to train
-      res.status(HttpStatus.OK).send('training successful ... !');
+      const dataTraining = await this.checkDuplicatedService.trainingData()
+
+      res.status(HttpStatus.OK).send(dataTraining);
       return;
     } catch (error) {
       console.log(error);

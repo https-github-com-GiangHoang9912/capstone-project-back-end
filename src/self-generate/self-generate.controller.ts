@@ -12,7 +12,7 @@ import { SelfGenerationDto } from 'src/dto/self-generation.dto';
 import { Response, Request } from 'express';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import * as CONSTANTS from '../constant';
-import { HistoryService } from 'src/services/history.service';
+import { HistoryService } from 'src/services/histories.service';
 import { AuthService } from 'src/auth/auth.service';
 
 @UseGuards(JwtAuthGuard)

@@ -1,7 +1,7 @@
-import { Subject } from './../entities/subject.entity';
-import {Exam} from './../entities/exam.entity';
-import { SubjectService } from './../services/subject.service';
-import { SubjectController } from './subject.controller';
+import { Subject } from '../entities/subjects.entity';
+import {Exam} from '../entities/exams.entity';
+import { SubjectService } from '../services/subjects.service';
+import { SubjectController } from './subjects.controller';
 import { Module, MiddlewareConsumer } from '@nestjs/common';
 import { LoggerMiddleware } from 'src/common/middleware/logger.middleware';
 import { TypeOrmModule } from '@nestjs/typeorm';

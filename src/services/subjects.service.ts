@@ -1,4 +1,4 @@
-import { Subject } from './../entities/subject.entity';
+import { Subject } from '../entities/subjects.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';

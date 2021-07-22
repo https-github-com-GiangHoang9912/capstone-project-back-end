@@ -1,21 +1,21 @@
 import { ContactInfo } from './entities/contactInfo.entity';
-import { UserModule } from './user/user.module';
+import { UserModule } from './users/users.module';
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
-import { User } from './entities/user.entity';
+import { User } from './entities/users.entity';
 import { AuthModule } from './auth/auth.module';
 import { config } from 'dotenv';
 import { CheckDuplicatedModule } from './check-duplicated/check-duplicated.module';
 import { SelfGenerateModule } from './self-generate/self-generate.module';
 import { MailModule } from './mail/mail.module';
-import { HistoryTypeModule } from './history-type/history-type.module';
-import { HistoryModule } from './history/history.module';
-import {ExamModule} from './exam/exam.module';
-import {SubjectModule} from './subject/subject.module';
-import {QuestionModule} from './question/question.module';
+import { HistoryTypeModule } from './history-types/history-types.module';
+import { HistoryModule } from './histories/histories.module';
+import {ExamModule} from './exams/exams.module';
+import {SubjectModule} from './subjects/subjects.module';
+import { QuestionModule } from './question/question.module';
 config();
 
 @Module({

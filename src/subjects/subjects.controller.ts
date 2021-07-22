@@ -1,4 +1,4 @@
-import { SubjectService } from './../services/subject.service';
+import { SubjectService } from '../services/subjects.service';
 import {
   Body,
   Res,

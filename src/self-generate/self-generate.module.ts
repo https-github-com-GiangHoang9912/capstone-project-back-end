@@ -1,4 +1,4 @@
-import { HistoryModule } from './../history/history.module';
+import { HistoryModule } from '../histories/histories.module';
 import { AuthModule } from './../auth/auth.module';
 import { SelfGenerateController } from './self-generate.controller';
 import { Module, MiddlewareConsumer } from '@nestjs/common';

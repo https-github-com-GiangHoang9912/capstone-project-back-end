@@ -1,4 +1,4 @@
-import { ExamService } from './../services/exam.service';
+import { ExamService } from '../services/exams.service';
 import {
   Body,
   Param,

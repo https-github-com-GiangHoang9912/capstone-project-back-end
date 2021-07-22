@@ -6,7 +6,7 @@ import {
   BaseEntity,
   JoinColumn
 } from 'typeorm';
-import { HistoryType } from './history-type.entity';
+import { HistoryType } from './history-types.entity';
 
 @Entity('history')
 export class History extends BaseEntity {
