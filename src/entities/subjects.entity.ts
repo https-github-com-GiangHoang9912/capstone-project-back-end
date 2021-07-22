@@ -17,7 +17,6 @@ export class Subject extends BaseEntity {
   subjectName: string;
 
   @OneToMany(() => Exam, (exam) => exam.subject, {
-    onDelete: 'CASCADE',
   })
-  exam: Subject;
+  exam: Exam;
 }
