@@ -5,6 +5,8 @@ import { Repository } from 'typeorm';
 import { Subject } from 'src/entities/subjects.entity';
 import { Question } from 'src/entities/questions.entity';
 import { AnswerGroup } from 'src/entities/answer-groups.entity';
+import { QuestionBank } from 'src/entities/question-bank.entity';
+
 @Injectable()
 export class QuestionService {
   constructor(
@@ -20,8 +22,9 @@ export class QuestionService {
     console.log(exam_id);
     const question = await this.questionRepository
       .createQueryBuilder('questions')
-      .where('question.exam_Id = :exam_id', { exam_id: exam_id })
-      .leftJoinAndSelect('question.answerGroup', 'AnswerGroup')
+      .where('questions.exam_id = :exam_id', { exam_id: exam_id })
+      .leftJoinAndSelect('questions.questionBank', 'QuestionBank')
+      .leftJoinAndSelect('questions.answerGroup', 'AnswerGroup')
       .leftJoinAndSelect('AnswerGroup.answer', 'Answer')
       .getMany();
     console.log('Question alalalla: ', question);

@@ -10,6 +10,7 @@ import {
   UseGuards,
   Get,
   Post,
+  Delete
 } from '@nestjs/common';
 import { Response } from 'express';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
@@ -23,7 +24,7 @@ export class ExamController {
     private readonly examService: ExamService,
     private readonly questionBankService: QuestionBankService,
     private readonly questionService: QuestionService,
-  ) {}
+  ) { }
 
   @Get('/:id/')
   async getExamAndSubjectbyUser(
@@ -53,6 +54,20 @@ export class ExamController {
     }
   }
 
+  @Delete('/delete-exam/:id')
+  async deleteExamById(
+    @Res() res: Response,
+    @Param('id') id: number,
+  ): Promise<any> {
+    try {
+      console.log(id);
+      const data = await this.examService.deleteExam(id);
+      return res.status(HttpStatus.OK).send(data);
+    } catch (error) {
+      console.log('Fail delete exam: ', error);
+    }
+  }
+
   @Post('/create-exam/:id')
   async createExam(
     @Res() res: Response,
@@ -69,10 +84,8 @@ export class ExamController {
         examInfo.examName,
         userId,
       );
-
       const randomQuestion = this.getRandom(listQuestionBank, 10)
-
-      randomQuestion.forEach( async (question) => {
+      randomQuestion.forEach(async (question) => {
         const ques = await this.questionService.createQuestion(question, exam)
         console.log(ques)
       });

@@ -12,9 +12,9 @@ import { AnswerGroup } from './answer-groups.entity';
 @Entity('answers')
 export class Answer extends BaseEntity {
   @PrimaryGeneratedColumn('increment')
-  id: number;
+  answerId: number;
 
-  @Column()
+  @Column({name: "answerText"})
   answerText: string;
 
   @Column({name: "answer_group_id"})
@@ -24,6 +24,4 @@ export class Answer extends BaseEntity {
   })
   @JoinColumn({ name: 'answer_group_id', referencedColumnName: 'id' })
   answerGroup: AnswerGroup;
-
-
 }
