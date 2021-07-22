@@ -11,11 +11,11 @@ export class QuestionBankService {
     private readonly questionBankRepository: Repository<QuestionBank>,
   ) {};
 
-//   async getQuestionBankBySubjectId(subjectId: number): Promise<QuestionBank[]> {
-//     // const questions = await this.questionBankRepository
-//     //   .createQueryBuilder('question_bank')
-//     //   .where('subjectId = :subjectId', { subjectId: subjectId })
-//     //   .getMany();
-//     // return questions;
-//   };
+  async getQuestionBankBySubjectId(subjectId: number): Promise<QuestionBank[]> {
+    const questions = await this.questionBankRepository
+      .createQueryBuilder('question_bank')
+      .where('subject_id = :subjectId', { subjectId: subjectId })
+      .getMany();
+    return questions;
+  };
 }

@@ -18,7 +18,7 @@ export class QuestionBank extends BaseEntity {
   @Column({ name: 'question_text' })
   questionText: string;
 
-  @Column({ name: 'subjectId' })
+  @Column({ name: 'subject_id' })
   subjectId: number;
 
   @OneToMany(() => Question, (question) => question.questionBank, {
@@ -29,6 +29,6 @@ export class QuestionBank extends BaseEntity {
   @ManyToOne(() => Subject, (subject) => subject.questionBank, {
     onDelete: 'CASCADE',
   })
-  @JoinColumn({ name: 'subjectId', referencedColumnName: 'id' })
+  @JoinColumn({ name: 'subject_id', referencedColumnName: 'id' })
   subject: Subject
 }
