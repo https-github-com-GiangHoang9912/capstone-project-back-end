@@ -27,9 +27,9 @@ config();
       port: Number(process.env.DB_PORT),
       database: process.env.DATABASE_NAME,
       synchronize: false,
-      username: 'root',
+      username: process.env.USERNAME,
       password: process.env.PASSWORD,
-      logging: true,
+      logging: false,
       autoLoadEntities: true,
       entities: [join(__dirname, '**/**.entity{.ts,.js}')],
       cli: {
