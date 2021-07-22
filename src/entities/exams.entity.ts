@@ -8,7 +8,7 @@ import {
 } from 'typeorm';
 import { Subject } from './subjects.entity';
 import { User } from './users.entity';
-@Entity('exam')
+@Entity('exams')
 export class Exam extends BaseEntity {
   @PrimaryGeneratedColumn('increment')
   id: number;
