@@ -27,7 +27,7 @@ config();
       port: Number(process.env.DB_PORT),
       database: process.env.DATABASE_NAME,
       synchronize: false,
-      username: "root",
+      username: 'root',
       password: process.env.PASSWORD,
       logging: true,
       autoLoadEntities: true,

@@ -42,7 +42,12 @@ export class UserService {
   async getUsers(): Promise<User[]> {
     return this.userRepository.find();
   }
-
+  async getAllUsers(): Promise<User[]> {
+    return this.userRepository
+    .createQueryBuilder('users')
+    .leftJoinAndSelect('users.contactInfo', 'contacts')
+    .getMany();
+  }  
   async getUserByName(username: string): Promise<User> {
     const user = await this.userRepository
       .createQueryBuilder('users')
@@ -51,6 +56,15 @@ export class UserService {
       .getOne();
       console.log('user kkzkk: ',user);
     return user;
+  }
+
+  async searchUserByName(username: string): Promise<User[]> {
+    return this.userRepository
+      .createQueryBuilder('users')
+      .where("username like :name", {name: `%${username}%` })
+      .leftJoinAndSelect('users.contactInfo', 'contacts')
+      .getMany();
+    
   }
 
   async insertUser(user: IUser): Promise<User> {
