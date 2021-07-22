@@ -1,4 +1,4 @@
-import { QuestionService } from '../services/question.service';
+import { QuestionService } from '../services/questions.service';
 import {
   Body,
   Res,

@@ -8,7 +8,7 @@ import {
 } from 'typeorm';
 import { HistoryType } from './history-types.entity';
 
-@Entity('history')
+@Entity('histories')
 export class History extends BaseEntity {
   @PrimaryGeneratedColumn('increment')
   id: number;

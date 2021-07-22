@@ -1,3 +1,4 @@
+import { QuestionBank } from 'src/entities/question-bank.entity';
 import { Exam } from '../entities/exams.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -10,27 +11,22 @@ export class ExamService {
   constructor(
     @InjectRepository(Exam)
     private readonly examRepository: Repository<Exam>,
-
-  ) { };
+  ) {}
 
   async getExam(): Promise<Exam[]> {
     return this.examRepository.find();
-  };
+  }
 
-  async getExambyUser(
-    user_id: number,
-  ): Promise<any> {
+  async getExamByUser(user_id: number): Promise<any> {
     const exams = await this.examRepository
       .createQueryBuilder('exams')
       .where('user_id = :user_id', { user_id: user_id })
       .getMany();
     // console.log(exams);
     return exams;
-  };
+  }
 
-  async getExamAndSubjectbyUser(
-    user_id: number,
-  ): Promise<any> {
+  async getExamAndSubjectByUser(user_id: number): Promise<any> {
     console.log(user_id);
     const exams = await this.examRepository
       .createQueryBuilder('exams')
@@ -38,8 +34,8 @@ export class ExamService {
       .leftJoinAndSelect('exams.subject', 'Subjects')
       .getMany();
     // console.log('examss alalalla: ', exams);
-      return exams;
-  };
+    return exams;
+  }
 
   async searchExamByName(user_id: number, examName: string): Promise<Exam[]> {
     return this.examRepository
@@ -48,7 +44,6 @@ export class ExamService {
       .andWhere("exams.exam_name like :exam_name", {exam_name: `%${examName}%` })
       .leftJoinAndSelect('exams.subject', 'Subjects')
       .getMany();
-    
   }
 
   async deleteExam(id: number) {
@@ -56,8 +51,20 @@ export class ExamService {
       .createQueryBuilder()
       .delete()
       .from(Exam)
-      .where("id = :id", { id: id })
-      .execute()
+      .where('id = :id', { id: id })
+      .execute();
     return { deleted: result.affected };
-  };
+  }
+
+  async createExam(subjectId: number, examName: string, userId: number) {
+    const exam = await this.examRepository
+      .create({
+        examName,
+        userId,
+        subjectId,
+      })
+      .save();
+
+    return exam;
+  }
 }

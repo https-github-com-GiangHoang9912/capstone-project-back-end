@@ -1,7 +1,7 @@
 import { Subject } from '../entities/subjects.entity';
 import {Exam} from '../entities/exams.entity';
 import {Question} from '../entities/questions.entity';
-import { QuestionService } from '../services/question.service';
+import { QuestionService } from '../services/questions.service';
 import { QuestionController } from './questions.controller';
 import { Module, MiddlewareConsumer } from '@nestjs/common';
 import { LoggerMiddleware } from 'src/common/middleware/logger.middleware';
