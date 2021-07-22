@@ -1,3 +1,4 @@
+import { QuestionBankModule } from './../question-bank/question-bank.module';
 import { Subject } from '../entities/subjects.entity';
 import { Exam } from '../entities/exams.entity';
 import { ExamService } from '../services/exams.service';
@@ -7,9 +8,8 @@ import { LoggerMiddleware } from 'src/common/middleware/logger.middleware';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Exam, Subject])],
-  
-controllers: [ExamController],
+  imports: [TypeOrmModule.forFeature([Exam, Subject]), QuestionBankModule],
+  controllers: [ExamController],
   providers: [ExamService],
   exports: [ExamService],
 })

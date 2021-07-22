@@ -10,7 +10,6 @@ export class ExamService {
   constructor(
     @InjectRepository(Exam)
     private readonly examRepository: Repository<Exam>,
-
   ) { };
 
   async getExam(): Promise<Exam[]> {
@@ -58,5 +57,10 @@ export class ExamService {
       .where("id = :id", { id: id })
       .execute()
     return { deleted: result.affected };
+  };
+
+  async createExam(subjectId: number, examName: string) {
+    console.log(subjectId)
+    console.log(examName)
   };
 }
