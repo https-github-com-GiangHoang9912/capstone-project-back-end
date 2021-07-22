@@ -13,7 +13,7 @@ export class ExamService {
   async getExam(): Promise<Exam[]> {
     return this.examRepository.find();
   }
-  async getExambyUser(
+  async getExamByUser(
     user_id: number,
   ): Promise<any> {
     const exams = await this.examRepository

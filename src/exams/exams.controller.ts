@@ -16,25 +16,32 @@ import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 export class ExamController {
   constructor(private readonly examService: ExamService) {}
   @Get('/:id/')
-  async getExambyUser(
+  async getExamsByUser(
     @Res() res: Response,
     @Param('id') userId: number,
   ): Promise<any> {
     console.log(userId);
     try {
-      const data = await this.examService.getExambyUser(
+      const data = await this.examService.getExamByUser(
         userId
       );
       return res.status(HttpStatus.OK).send(data);
 
     } catch (error) {}
   }
-  @Get('/')
-  async getExam(@Res() res: Response): Promise<any> {
+
+  @Get('/create-exam')
+  async createExam(
+    @Res() res: Response,
+    @Param('id') userId: number,
+  ): Promise<any> {
+    console.log(userId);
     try {
-      const data = await this.examService.getExam();
+      const data = await this.examService.getExamByUser(
+        userId
+      );
       return res.status(HttpStatus.OK).send(data);
-    } catch (error) {} 
+
+    } catch (error) {}
   }
-  
 }
