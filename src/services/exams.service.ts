@@ -21,7 +21,7 @@ export class ExamService {
     user_id: number,
   ): Promise<any> {
     const exams = await this.examRepository
-      .createQueryBuilder('exam')
+      .createQueryBuilder('exams')
       .where('user_id = :user_id', { user_id: user_id })
       .getMany();
     // console.log(exams);
@@ -33,19 +33,20 @@ export class ExamService {
   ): Promise<any> {
     console.log(user_id);
     const exams = await this.examRepository
-      .createQueryBuilder('exam')
+      .createQueryBuilder('exams')
       .where('user_id = :user_id', { user_id: user_id })
-      .leftJoinAndSelect('exam.subject', 'Subject')
+      .leftJoinAndSelect('exams.subject', 'Subjects')
       .getMany();
     // console.log('examss alalalla: ', exams);
       return exams;
   };
 
-  async searchExamByName(examName: string): Promise<Exam[]> {
+  async searchExamByName(user_id: number, examName: string): Promise<Exam[]> {
     return this.examRepository
-      .createQueryBuilder('exam')
-      .where("exam.exam_name like :exam_name", {exam_name: `%${examName}%` })
-      .leftJoinAndSelect('exam.subject', 'Subject')
+      .createQueryBuilder('exams')
+      .where('user_id = :user_id', { user_id: user_id })
+      .andWhere("exams.exam_name like :exam_name", {exam_name: `%${examName}%` })
+      .leftJoinAndSelect('exams.subject', 'Subjects')
       .getMany();
     
   }

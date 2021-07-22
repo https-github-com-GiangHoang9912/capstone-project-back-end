@@ -1,4 +1,4 @@
-import { Exam } from './../entities/exams.entity';
+import { Exam } from '../entities/exams.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -22,7 +22,7 @@ export class QuestionService {
   ): Promise<any> {
     console.log(exam_id);
     const question = await this.questionRepository
-      .createQueryBuilder('question')
+      .createQueryBuilder('questions')
       .where('question.exam_Id = :exam_id', { exam_id: exam_id })
       .leftJoinAndSelect('question.answerGroup', 'AnswerGroup')
       .leftJoinAndSelect('AnswerGroup.answer', 'Answer')

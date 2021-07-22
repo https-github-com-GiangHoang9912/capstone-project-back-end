@@ -11,7 +11,7 @@ import {
 import { Response } from 'express';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
-@UseGuards(JwtAuthGuard)
+// @UseGuards(JwtAuthGuard)
 
 @Controller('exam')
 export class ExamController {
@@ -34,13 +34,14 @@ export class ExamController {
     }
   }
 
-  @Get('/search/:nameExam')
+  @Get('/:id/search/:nameExam/')
   async searchExamByName(
     @Res() res: Response,
+    @Param('id') id: number,
     @Param('nameExam') examName: string,
   ): Promise<any> {
     try {
-      const data = await this.examService.searchExamByName(examName);
+      const data = await this.examService.searchExamByName(id, examName);
       return res.status(HttpStatus.OK).send(data);
     } catch (error) {
       console.log('Fail search exam: ', error);

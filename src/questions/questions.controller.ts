@@ -11,7 +11,7 @@ import {
 import { Response } from 'express';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
-@UseGuards(JwtAuthGuard)
+// @UseGuards(JwtAuthGuard)
 @Controller('questions')
 export class QuestionController {
   constructor(private readonly questionService: QuestionService) { }
