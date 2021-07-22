@@ -1,14 +1,14 @@
 import { Controller, Get, Post, Body, Put, UseGuards, Res, Param, HttpStatus } from '@nestjs/common';
-import { User } from '../entities/user.entity';
-import { UserService } from '../services/user.service';
-import { CreateUserDto } from '../dto/user.dto';
+import { User } from '../entities/users.entity';
+import { UserService } from '../services/users.service';
+import { CreateUserDto } from '../dto/users.dto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { ContactInfo } from 'src/entities/contactInfo.entity';
 import { GetInformationDto } from 'src/dto/get-info.dto';
 import { Response } from 'express';
 import { UpdateInformationDto } from 'src/dto/update-infomation.dto';
 import * as moment from 'moment';
-import { HistoryService } from 'src/services/history.service';
+import { HistoryService } from 'src/services/histories.service';
 import { AuthService } from 'src/auth/auth.service';
 import * as CONSTANTS from '../constant';
 

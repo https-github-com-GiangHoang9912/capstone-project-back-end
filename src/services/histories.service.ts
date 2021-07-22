@@ -1,4 +1,4 @@
-import { History } from './../entities/history.entity';
+import { History } from '../entities/histories.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';

@@ -6,7 +6,7 @@ import {
   BaseEntity,
   JoinColumn
 } from 'typeorm';
-import { Exam } from './exam.entity';
+import { Exam } from './exams.entity';
 
 @Entity('subject')
 export class Subject extends BaseEntity {

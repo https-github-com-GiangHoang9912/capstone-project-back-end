@@ -1,6 +1,6 @@
 import { request } from 'express';
-import { ContactInfo } from './../entities/contactInfo.entity';
-import { User } from '../entities/user.entity';
+import { ContactInfo } from '../entities/contactInfo.entity';
+import { User } from '../entities/users.entity';
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { MoreThan, MoreThanOrEqual, Repository } from 'typeorm';

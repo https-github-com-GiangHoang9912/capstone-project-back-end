@@ -1,7 +1,7 @@
-import { HistoryType } from './../entities/history-type.entity';
-import { History } from './../entities/history.entity';
-import { HistoryTypeService } from './../services/history-type.service';
-import { HistoryTypeController } from './history-type.controller';
+import { HistoryType } from '../entities/history-types.entity';
+import { History } from '../entities/histories.entity';
+import { HistoryTypeService } from '../services/history-types.service';
+import { HistoryTypeController } from './history-types.controller';
 import { Module, MiddlewareConsumer } from '@nestjs/common';
 import { LoggerMiddleware } from 'src/common/middleware/logger.middleware';
 import { TypeOrmModule } from '@nestjs/typeorm';

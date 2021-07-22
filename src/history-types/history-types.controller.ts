@@ -1,4 +1,4 @@
-import { HistoryTypeService } from './../services/history-type.service';
+import { HistoryTypeService } from '../services/history-types.service';
 import {
   Body,
   Res,

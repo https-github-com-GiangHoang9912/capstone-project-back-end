@@ -1,4 +1,4 @@
-import { UserService } from 'src/services/user.service';
+import { UserService } from 'src/services/users.service';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { AuthService } from './auth/auth.service';
 import {

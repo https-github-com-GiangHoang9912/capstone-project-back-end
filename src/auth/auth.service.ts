@@ -1,6 +1,6 @@
 import { MailService } from './../services/mail.service';
 import { Injectable } from '@nestjs/common';
-import { UserService } from '../services/user.service';
+import { UserService } from '../services/users.service';
 import * as bcrypt from 'bcrypt';
 import * as randomToken from 'rand-token';
 import * as moment from 'moment';

@@ -1,4 +1,4 @@
-import { UserService } from 'src/services/user.service';
+import { UserService } from 'src/services/users.service';
 import { PassportSerializer } from '@nestjs/passport';
 
 export class SessionSerializer extends PassportSerializer {

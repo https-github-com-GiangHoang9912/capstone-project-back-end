@@ -6,8 +6,8 @@ import {
   BaseEntity,
   JoinColumn,
 } from 'typeorm';
-import { Subject } from './subject.entity';
-import { User } from './user.entity';
+import { Subject } from './subjects.entity';
+import { User } from './users.entity';
 @Entity('exam')
 export class Exam extends BaseEntity {
   @PrimaryGeneratedColumn('increment')

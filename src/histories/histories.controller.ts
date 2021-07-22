@@ -1,4 +1,4 @@
-import { HistoryService } from './../services/history.service';
+import { HistoryService } from '../services/histories.service';
 import {
   Param,
   Res,
