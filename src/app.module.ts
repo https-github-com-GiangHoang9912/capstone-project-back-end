@@ -15,6 +15,7 @@ import { HistoryTypeModule } from './history-types/history-types.module';
 import { HistoryModule } from './histories/histories.module';
 import {ExamModule} from './exams/exams.module';
 import {SubjectModule} from './subjects/subjects.module';
+import { QuestionModule } from './questions/questions.module';
 config();
 
 @Module({
@@ -44,7 +45,8 @@ config();
     HistoryModule,
     ExamModule,
     SubjectModule,
-  ], 
+    QuestionModule
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

@@ -12,36 +12,38 @@ import { Response } from 'express';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @UseGuards(JwtAuthGuard)
+
 @Controller('exam')
 export class ExamController {
-  constructor(private readonly examService: ExamService) {}
+  constructor(private readonly examService: ExamService) { }
+
   @Get('/:id/')
-  async getExamsByUser(
+  async getExamAndSubjectbyUser(
     @Res() res: Response,
     @Param('id') userId: number,
   ): Promise<any> {
     console.log(userId);
     try {
-      const data = await this.examService.getExamByUser(
+      const data = await this.examService.getExamAndSubjectByUser(
         userId
       );
       return res.status(HttpStatus.OK).send(data);
 
-    } catch (error) {}
+    } catch (error) {
+      console.log('Fail connect: ', error);
+    }
   }
 
-  @Get('/create-exam')
-  async createExam(
+  @Get('/search/:nameExam')
+  async searchExamByName(
     @Res() res: Response,
-    @Param('id') userId: number,
+    @Param('nameExam') examName: string,
   ): Promise<any> {
-    console.log(userId);
     try {
-      const data = await this.examService.getExamByUser(
-        userId
-      );
+      const data = await this.examService.searchExamByName(examName);
       return res.status(HttpStatus.OK).send(data);
-
-    } catch (error) {}
+    } catch (error) {
+      console.log('Fail search exam: ', error);
+    }
   }
 }
