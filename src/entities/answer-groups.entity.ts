@@ -6,10 +6,10 @@ import {
   BaseEntity,
   JoinColumn
 } from 'typeorm';
-import { Answer } from './answer.entity';
-import { Question } from './question.entity';
+import { Answer } from './answers.entity';
+import { Question } from './questions.entity';
 
-@Entity('answer_group')
+@Entity('answer_groups')
 export class AnswerGroup extends BaseEntity {
   @PrimaryGeneratedColumn('increment')
   id: number;

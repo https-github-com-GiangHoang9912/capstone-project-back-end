@@ -7,9 +7,9 @@ import {
   JoinColumn,
   ManyToOne
 } from 'typeorm';
-import { AnswerGroup } from './answer-group.entity';
+import { AnswerGroup } from './answer-groups.entity';
 
-@Entity('answer')
+@Entity('answers')
 export class Answer extends BaseEntity {
   @PrimaryGeneratedColumn('increment')
   id: number;

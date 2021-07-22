@@ -54,7 +54,6 @@ export class UserService {
       .where('username = :username', { username: username })
       .leftJoinAndSelect('users.contactInfo', 'contacts')
       .getOne();
-      console.log('user kkzkk: ',user);
     return user;
   }
 

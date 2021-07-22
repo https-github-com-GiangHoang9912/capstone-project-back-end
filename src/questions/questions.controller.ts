@@ -1,4 +1,4 @@
-import { QuestionService } from './../services/question.service';
+import { QuestionService } from '../services/question.service';
 import {
   Body,
   Res,
@@ -11,8 +11,8 @@ import {
 import { Response } from 'express';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
-// @UseGuards(JwtAuthGuard)
-@Controller('question')
+@UseGuards(JwtAuthGuard)
+@Controller('questions')
 export class QuestionController {
   constructor(private readonly questionService: QuestionService) { }
 

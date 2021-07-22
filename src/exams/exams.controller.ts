@@ -11,7 +11,7 @@ import {
 import { Response } from 'express';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
-// @UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard)
 
 @Controller('exam')
 export class ExamController {
@@ -54,5 +54,4 @@ export class ExamController {
       return res.status(HttpStatus.OK).send(data);
     } catch (error) { }
   }
-
 }
