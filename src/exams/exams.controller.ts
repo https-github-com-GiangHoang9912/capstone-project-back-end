@@ -17,7 +17,7 @@ import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { ExamInfoDto } from 'src/dto/create-exam.dto';
 import { QuestionBankService } from 'src/services/question-bank.service';
 
-@UseGuards(JwtAuthGuard)
+// @UseGuards(JwtAuthGuard)
 @Controller('exam')
 export class ExamController {
   constructor(

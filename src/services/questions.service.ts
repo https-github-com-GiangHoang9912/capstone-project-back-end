@@ -42,4 +42,15 @@ export class QuestionService {
 
     return ques;
   }
+
+  async deleteQuestion(id: number) {
+    const result = await this.questionRepository
+      .createQueryBuilder()
+      .delete()
+      .from(Question)
+      .where('id = :id', { id: id })
+      .execute();
+    return { deleted: result.affected };
+  }
+
 }
