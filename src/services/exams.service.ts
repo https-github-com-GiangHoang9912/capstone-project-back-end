@@ -33,9 +33,9 @@ export class ExamService {
   ): Promise<any> {
     console.log(user_id);
     const exams = await this.examRepository
-      .createQueryBuilder('exam')
+      .createQueryBuilder('exams')
       .where('user_id = :user_id', { user_id: user_id })
-      .leftJoinAndSelect('exam.subject', 'Subject')
+      .leftJoinAndSelect('exams.subject', 'Subject')
       .getMany();
     // console.log('examss alalalla: ', exams);
       return exams;
@@ -43,9 +43,9 @@ export class ExamService {
 
   async searchExamByName(examName: string): Promise<Exam[]> {
     return this.examRepository
-      .createQueryBuilder('exam')
-      .where("exam.exam_name like :exam_name", {exam_name: `%${examName}%` })
-      .leftJoinAndSelect('exam.subject', 'Subject')
+      .createQueryBuilder('exams')
+      .where("exams.exam_name like :exam_name", {exam_name: `%${examName}%` })
+      .leftJoinAndSelect('exams.subject', 'Subject')
       .getMany();
     
   }

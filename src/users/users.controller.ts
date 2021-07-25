@@ -42,6 +42,12 @@ export class UserController {
       return res.status(HttpStatus.OK).send(data);
     } catch (error) {}
   }
+
+  @Get('/role/:id/')
+  getUserById(@Param('id') id: number): Promise<User> {
+    return this.userService.getUserById(id);
+  }
+
   @Post('/create')
   async createUser(@Body() user: CreateUserDto): Promise<Object> {
     try {
@@ -81,6 +87,34 @@ export class UserController {
       );
       const contact = await this.userService.updateUserInformation(request);
       return contact;
+    } catch (error) {
+      return {
+        message: 'update fail...!',
+      };
+    }
+  }
+   
+  @Put('/update-active')
+  async updateActive(
+    @Body() request: CreateUserDto,
+  ): Promise<Object> {
+    try {
+      const user = await this.userService.updateUserActive(request);
+      return user;
+    } catch (error) {
+      return {
+        message: 'update fail...!',
+      };
+    }
+  }
+
+  @Put('/update-role')
+  async updateRole(
+    @Body() request: CreateUserDto,
+  ): Promise<Object> {
+    try {
+      const user = await this.userService.updateUserRole(request);
+      return user;
     } catch (error) {
       return {
         message: 'update fail...!',

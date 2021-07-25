@@ -22,6 +22,9 @@ export class User extends BaseEntity {
   @Column()
   role: number;
 
+  @Column()
+  active: boolean;
+
   @Column({ nullable: true, name: 'refreshtoken' })
   refreshToken: string;
 

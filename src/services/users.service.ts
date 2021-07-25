@@ -13,6 +13,7 @@ interface IUser {
   userName: string;
   password: string;
   role?: number;
+  active?: boolean;
   firstName?: string;
   lastName?: string;
   address?: string;
@@ -45,6 +46,7 @@ export class UserService {
   async getAllUsers(): Promise<User[]> {
     return this.userRepository
     .createQueryBuilder('users')
+    .where('role != 1')
     .leftJoinAndSelect('users.contactInfo', 'contacts')
     .getMany();
   }  
@@ -80,6 +82,7 @@ export class UserService {
             CONSTANTS.ROUND_HASH_PASSWORD.ROUND,
           ),
           role: CONSTANTS.ROLE.USER,
+          active: user.active,
           refreshToken: randomToken.generate(16),
           refreshTokenExp: moment()
             .utc()
@@ -177,6 +180,7 @@ export class UserService {
     const user = this.userRepository.findOne(userId);
     return user;
   }
+  
 
   async updateUserInformation(req: any): Promise<ContactInfo> {
     const contact = await this.contactRepository.findOne({ ownerId: req.id });
@@ -191,5 +195,17 @@ export class UserService {
     }
     contact.save()
     return contact;
+  }
+  async updateUserActive(req: any): Promise<User> {
+    const user = await this.userRepository.findOne({ id: req.id });
+    user.active = req.active;
+    user.save();
+    return user;
+  }
+  async updateUserRole(req: any): Promise<User> {
+    const user = await this.userRepository.findOne({ id: req.roleId });
+    user.role = req.roleValue;
+    user.save();
+    return user;
   }
 }
