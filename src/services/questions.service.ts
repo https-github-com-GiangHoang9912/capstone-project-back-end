@@ -12,6 +12,8 @@ export class QuestionService {
   constructor(
     @InjectRepository(Question)
     private readonly questionRepository: Repository<Question>,
+    @InjectRepository(AnswerGroup)
+    private readonly answerGroupRepository: Repository<AnswerGroup>,
   ) { }
 
   async getQuestion(): Promise<Question[]> {
@@ -19,7 +21,7 @@ export class QuestionService {
   }
 
   async getQuestionDetail(exam_id: number): Promise<any> {
-    console.log(exam_id);
+    // console.log(exam_id);
     const question = await this.questionRepository
       .createQueryBuilder('questions')
       .where('questions.exam_id = :exam_id', { exam_id: exam_id })
@@ -27,11 +29,11 @@ export class QuestionService {
       .leftJoinAndSelect('questions.answerGroup', 'AnswerGroup')
       .leftJoinAndSelect('AnswerGroup.answer', 'Answer')
       .getMany();
-    console.log('Question alalalla: ', question);
+    // console.log('Question alalalla: ', question);
     return question;
   }
 
-  async createQuestion(question: any, exam: any) {
+  async createQuestion(question: any, exam: any): Promise<any> {
     const ques = await this.questionRepository
       .create({
         questionBank: question,
@@ -39,11 +41,31 @@ export class QuestionService {
         answerGroupId: 1
       })
       .save();
-
     return ques;
   }
 
-  async deleteQuestion(id: number) {
+  async createNewQuestion(questionBankId: number, examId: number): Promise<any> {
+    const answerGroup = await this.answerGroupRepository
+      .create()
+      .save();
+    const ques = await this.questionRepository
+      .create({
+        questionBankId: questionBankId,
+        examId: examId,
+        answerGroupId: answerGroup.id
+      })
+      .save();
+    return ques;
+  }
+
+  async createAnswerGroup(): Promise<any> {
+    const answerGroup = await this.answerGroupRepository
+      .create()
+      .save();
+    return answerGroup;
+  }
+
+  async deleteQuestion(id: number): Promise<any> {
     const result = await this.questionRepository
       .createQueryBuilder()
       .delete()
@@ -51,6 +73,17 @@ export class QuestionService {
       .where('id = :id', { id: id })
       .execute();
     return { deleted: result.affected };
+  }
+
+
+  async updateQuestion(questionId: number, answerGroupId: number): Promise<any> {
+    const question = await this.questionRepository
+      .createQueryBuilder()
+      .update(Question)
+      .set({ answerGroupId: answerGroupId })
+      .where("id = :id", { id: questionId })
+      .execute();
+    return question;
   }
 
 }

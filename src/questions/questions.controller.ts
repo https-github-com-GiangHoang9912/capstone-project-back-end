@@ -7,7 +7,9 @@ import {
   HttpStatus,
   UseGuards,
   Get,
-  Delete
+  Delete,
+  Post,
+  Put
 } from '@nestjs/common';
 import { Response } from 'express';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
@@ -47,7 +49,43 @@ export class QuestionController {
       return res.status(HttpStatus.OK).send(data);
 
     } catch (error) {
-      console.log('Fail connect: ', error);
+      console.log('Fail get Exam And Subject by User: ', error);
+    }
+  }
+
+  @Post('/create/')
+  async createQuestion(
+    @Res() res: Response,
+    @Body() dataQuestion: any,
+  ): Promise<any> {
+    try {
+      dataQuestion.map(async (item: any) => {
+        const data = await this.questionService.createNewQuestion(
+          item.questionBankId,
+          item.examId
+        )
+        return res.status(HttpStatus.OK).send(data);
+      })
+    } catch (error) {
+      console.log('Fail create answer group: ', error);
+    }
+  }
+  @Put('/update/:id')
+  async updateQuestion(
+    @Res() res: Response,
+    @Body() dataQuestion: any,
+    @Param('id') questionId: number,
+  ): Promise<any> {
+    try {
+      const updateQuestion = await this.questionService.updateQuestion(
+        questionId,
+        dataQuestion.answerGroupId
+      )
+      return updateQuestion;
+    } catch (error) {
+      return {
+        message: 'update question fail...!',
+      };
     }
   }
 
