@@ -48,7 +48,9 @@ export class AppController {
           httpOnly: true,
         })
         .send(info.account);
-    } catch (error) {}
+    } catch (error) {
+      console.log("login:\n", error)
+    }
   }
 
   @Post('google-auth/login')
@@ -69,7 +71,9 @@ export class AppController {
           httpOnly: true,
         })
         .send(info.account);
-    } catch (error) {}
+    } catch (error) {
+      console.log("loginByGoogle\n", error)
+    }
   }
 
   @UseGuards(RefreshTokenGuard)
@@ -97,6 +101,8 @@ export class AppController {
           httpOnly: true,
         })
         .send('refresh token successful');
-    } catch (error) {}
+    } catch (error) {
+      console.log("refreshJwtToken:\n", error)
+    }
   }
 }
