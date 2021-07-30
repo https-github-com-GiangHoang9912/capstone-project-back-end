@@ -67,7 +67,7 @@ export class MailService {
               here is your password: ${password}
           </h4>
           <h4>
-              please to visit this page to change your password: http://localhost:3000/reset-password
+              please to visit this page to change your password: http://localhost:3000/change-password
           </h4>
       </div>
         `,
