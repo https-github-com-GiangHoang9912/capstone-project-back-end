@@ -21,7 +21,7 @@ export class HistoryService {
         typeId: historyType,
         description,
         userId,
-        date: moment('YYYY/MM/DD HH:mm:ss').format(),
+        date: moment().format('YYYY/MM/DD HH:mm:ss'),
       })
       .save();
     return history;
