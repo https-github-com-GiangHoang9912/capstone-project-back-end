@@ -55,7 +55,8 @@ export class AuthService {
       // if not exist create new user with info of google account
       const data = await this.usersService.insertUserByLoginGoogle(request.body);
       user = await this.usersService.getUserByName(data.newUser.username)
-      await this.mailService.sendEmail(user, data.randomPassword);
+      const res_email = await this.mailService.sendGoogleEmail(user, data.randomPassword);
+      console.log("loginGoogle-email", res_email)
     }
     // update refresh token
     const refreshJwtToken = await this.usersService.updateRefreshToken(user.id);
