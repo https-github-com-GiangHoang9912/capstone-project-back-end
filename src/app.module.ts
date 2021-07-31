@@ -16,6 +16,8 @@ import { HistoryModule } from './histories/histories.module';
 import {ExamModule} from './exams/exams.module';
 import {SubjectModule} from './subjects/subjects.module';
 import { QuestionModule } from './questions/questions.module';
+import { QuestionBankModule } from './question-bank/question-bank.module';
+
 config();
 
 @Module({
@@ -27,7 +29,7 @@ config();
       port: Number(process.env.DB_PORT),
       database: process.env.DATABASE_NAME,
       synchronize: false,
-      username: "root",
+      username: process.env.USERNAME,
       password: process.env.PASSWORD,
       logging: false,
       autoLoadEntities: true,
@@ -45,7 +47,8 @@ config();
     HistoryModule,
     ExamModule,
     SubjectModule,
-    QuestionModule
+    QuestionModule,
+    QuestionBankModule
   ],
   controllers: [AppController],
   providers: [AppService],

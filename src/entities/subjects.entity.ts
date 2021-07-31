@@ -1,3 +1,4 @@
+import { QuestionBank } from './question-bank.entity';
 import {
   Column,
   Entity,
@@ -19,4 +20,8 @@ export class Subject extends BaseEntity {
   @OneToMany(() => Exam, (exam) => exam.subject, {
   })
   exam: Exam;
+
+  @OneToMany(() => QuestionBank, (questionBank) => questionBank.subject, {
+  })
+  questionBank: QuestionBank;
 }

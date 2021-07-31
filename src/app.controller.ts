@@ -43,12 +43,14 @@ export class AppController {
         .cookie('token', secretData, {
           sameSite: 'strict',
           path: '/',
-          expires: new Date(new Date().getTime() + 1800 * 1000),
+          expires: new Date(new Date().getTime() + 5400 * 1000),
           secure: true,
           httpOnly: true,
         })
         .send(info.account);
-    } catch (error) {}
+    } catch (error) {
+      console.log("login:\n", error)
+    }
   }
 
   @Post('google-auth/login')
@@ -64,12 +66,14 @@ export class AppController {
         .cookie('token', secretData, {
           sameSite: 'strict',
           path: '/',
-          expires: new Date(new Date().getTime() + 1800 * 1000),
+          expires: new Date(new Date().getTime() + 5400 * 1000),
           secure: true,
           httpOnly: true,
         })
         .send(info.account);
-    } catch (error) {}
+    } catch (error) {
+      console.log("loginByGoogle\n", error)
+    }
   }
 
   @UseGuards(RefreshTokenGuard)
@@ -92,11 +96,13 @@ export class AppController {
         .cookie('token', secretData, {
           sameSite: 'strict',
           path: '/',
-          expires: new Date(new Date().getTime() + 1800 * 1000),
+          expires: new Date(new Date().getTime() + 5400 * 1000),
           secure: true,
           httpOnly: true,
         })
         .send('refresh token successful');
-    } catch (error) {}
+    } catch (error) {
+      console.log("refreshJwtToken:\n", error)
+    }
   }
 }
