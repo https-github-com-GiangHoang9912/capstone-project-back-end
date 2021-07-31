@@ -1,5 +1,6 @@
 import { Subject } from '../entities/subjects.entity';
 import {Exam} from '../entities/exams.entity';
+import {AnswerGroup} from '../entities/answer-groups.entity';
 import {Question} from '../entities/questions.entity';
 import { QuestionService } from '../services/questions.service';
 import { QuestionController } from './questions.controller';
@@ -8,7 +9,7 @@ import { LoggerMiddleware } from 'src/common/middleware/logger.middleware';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Exam, Question])],
+  imports: [TypeOrmModule.forFeature([Exam, Question, AnswerGroup])],
   controllers: [QuestionController],
   providers: [QuestionService],
   exports: [QuestionService],

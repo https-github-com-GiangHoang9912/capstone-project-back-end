@@ -25,20 +25,19 @@ export class Exam extends BaseEntity {
   userId: number;
 
   @ManyToOne(() => Subject, (subject) => subject.exam, {
-    onDelete: 'CASCADE',
   })
 
   @JoinColumn({ name: 'subject_id', referencedColumnName: 'id' })
   subject: Subject;
 
   @ManyToOne(() => User, (user) => user.exam, {
-    onDelete: 'CASCADE',
   })
 
   @JoinColumn({ name: 'user_id', referencedColumnName: 'id' })
   user: User;
 
   @OneToMany(() => Question, (question) => question.exam, {
+    cascade:true
   })
-  question: Question;
+  question: Question[];
 }

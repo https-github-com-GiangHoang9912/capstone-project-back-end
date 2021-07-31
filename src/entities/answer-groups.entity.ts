@@ -18,11 +18,12 @@ export class AnswerGroup extends BaseEntity {
   correctAnswer: number;
 
   @OneToMany(() => Question, (question) => question.answerGroup, {
-
+    onDelete: 'CASCADE',
   })
   question: Question;
 
   @OneToMany(() => Answer, (answer) => answer.answerGroup, {
+    onDelete: 'CASCADE',
   })
   answer: Answer
 }

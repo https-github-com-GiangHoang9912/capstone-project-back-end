@@ -11,7 +11,7 @@ export class ExamService {
   constructor(
     @InjectRepository(Exam)
     private readonly examRepository: Repository<Exam>,
-  ) {}
+  ) { }
 
   async getExam(): Promise<Exam[]> {
     return this.examRepository.find();
@@ -19,7 +19,7 @@ export class ExamService {
 
   async getExamByUser(user_id: number): Promise<any> {
     const exams = await this.examRepository
-      .createQueryBuilder('exam')
+      .createQueryBuilder('exams')
       .where('user_id = :user_id', { user_id: user_id })
       .getMany();
     // console.log(exams);
@@ -31,28 +31,27 @@ export class ExamService {
     const exams = await this.examRepository
       .createQueryBuilder('exams')
       .where('user_id = :user_id', { user_id: user_id })
-      .leftJoinAndSelect('exams.subject', 'Subject')
+      .leftJoinAndSelect('exams.subject', 'Subjects')
       .getMany();
     // console.log('examss alalalla: ', exams);
     return exams;
   }
 
-  async searchExamByName(examName: string): Promise<Exam[]> {
+  async searchExamByName(user_id: number, examName: string): Promise<Exam[]> {
     return this.examRepository
-      .createQueryBuilder('exam')
-      .where('exam.exam_name like :exam_name', { exam_name: `%${examName}%` })
-      .leftJoinAndSelect('exam.subject', 'Subject')
+      .createQueryBuilder('exams')
+      .where('user_id = :user_id', { user_id: user_id })
+      .andWhere("exams.exam_name like :exam_name", { exam_name: `%${examName}%` })
+      .leftJoinAndSelect('exams.subject', 'Subjects')
       .getMany();
   }
 
   async deleteExam(id: number) {
-    const result = await this.examRepository
-      .createQueryBuilder()
-      .delete()
-      .from(Exam)
-      .where('id = :id', { id: id })
-      .execute();
-    return { deleted: result.affected };
+    const result = await this.examRepository.findOne({ id: id });
+    const resultFinal = await result.remove();
+    console.log(resultFinal);
+    // const deleteAnswer = 
+    // return { deleted: result.affected };
   }
 
   async createExam(subjectId: number, examName: string, userId: number) {

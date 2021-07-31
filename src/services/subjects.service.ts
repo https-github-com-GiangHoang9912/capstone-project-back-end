@@ -13,4 +13,16 @@ export class SubjectService {
   async getSubject(): Promise<Subject[]> {
     return this.subjectRepository.find();
   };
+
+  async getQuestionBankBySubjectId(subject_id: number): Promise<any> {
+    console.log(subject_id);
+    const subject = await this.subjectRepository
+      .createQueryBuilder('subjects')
+      .where('subjects.id = :id', { id: subject_id })
+      .leftJoinAndSelect('subjects.questionBank', 'QuestionBank')
+      .getMany();
+    console.log('Subject detail: ', subject);
+    return subject;
+  }
+
 }
