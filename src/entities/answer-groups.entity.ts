@@ -4,7 +4,8 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
   BaseEntity,
-  JoinColumn
+  JoinColumn,
+  ManyToOne
 } from 'typeorm';
 import { Answer } from './answers.entity';
 import { Question } from './questions.entity';
@@ -14,16 +15,26 @@ export class AnswerGroup extends BaseEntity {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
-  @Column({name: "correct_answer"})
-  correctAnswer: number;
+  @Column({name: "questions_id"})
+  questionId: number;
 
-  @OneToMany(() => Question, (question) => question.answerGroup, {
+  @Column({name: "answer_id"})
+  answerId: number;
+
+  @Column({name: "correct"})
+  correct: number;
+
+  // relationship with questions
+  @ManyToOne(() => Question, (question) => question.answerGroup, {
     onDelete: 'CASCADE',
   })
+  @JoinColumn({ name: 'questions_id', referencedColumnName: 'id' })
   question: Question;
 
-  @OneToMany(() => Answer, (answer) => answer.answerGroup, {
+  // relationship with answers
+  @ManyToOne(() => Answer, (answer) => answer.answerGroup, {
     onDelete: 'CASCADE',
   })
+  @JoinColumn({ name: 'answer_id', referencedColumnName: 'id' })
   answer: Answer
 }

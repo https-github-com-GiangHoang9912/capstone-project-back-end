@@ -17,11 +17,8 @@ export class Answer extends BaseEntity {
   @Column({name: "answerText"})
   answerText: string;
 
-  @Column({name: "answer_group_id"})
-  answerGroupId: number;
-
-  @ManyToOne(() => AnswerGroup, (answerGroup) => answerGroup.answer, {
+  // relationship with answers_groups
+  @OneToMany(() => AnswerGroup, (answerGroup) => answerGroup.answer, {
   })
-  @JoinColumn({ name: 'answer_group_id', referencedColumnName: 'id' })
   answerGroup: AnswerGroup;
 }
