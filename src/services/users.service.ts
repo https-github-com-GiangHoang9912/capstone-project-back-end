@@ -45,11 +45,11 @@ export class UserService {
   }
   async getAllUsers(): Promise<User[]> {
     return this.userRepository
-    .createQueryBuilder('users')
-    .where('role != 1')
-    .leftJoinAndSelect('users.contactInfo', 'contacts')
-    .getMany();
-  }  
+      .createQueryBuilder('users')
+      .where('role != 1')
+      .leftJoinAndSelect('users.contactInfo', 'contacts')
+      .getMany();
+  }
   async getUserByName(username: string): Promise<User> {
     const user = await this.userRepository
       .createQueryBuilder('users')
@@ -62,10 +62,9 @@ export class UserService {
   async searchUserByName(username: string): Promise<User[]> {
     return this.userRepository
       .createQueryBuilder('users')
-      .where("username like :name", {name: `%${username}%` })
+      .where('username like :name', { name: `%${username}%` })
       .leftJoinAndSelect('users.contactInfo', 'contacts')
       .getMany();
-    
   }
 
   async insertUser(user: IUser): Promise<User> {
@@ -180,20 +179,19 @@ export class UserService {
     const user = this.userRepository.findOne(userId);
     return user;
   }
-  
 
   async updateUserInformation(req: any): Promise<ContactInfo> {
     const contact = await this.contactRepository.findOne({ ownerId: req.id });
-    contact.firstName = req.firstName
-    contact.lastName = req.lastName
-    contact.email = req.email
-    contact.phone = req.phone
-    contact.dateOfBirth = new Date(moment(req.dob, ["DD/MM/YYYY"]).format())
-    contact.address = req.address
+    contact.firstName = req.firstName;
+    contact.lastName = req.lastName;
+    contact.email = req.email;
+    contact.phone = req.phone;
+    contact.dateOfBirth = new Date(moment(req.dob, ['DD/MM/YYYY']).format());
+    contact.address = req.address;
     if (req.avatar) {
-      contact.avatar = req.avatar
+      contact.avatar = req.avatar;
     }
-    contact.save()
+    contact.save();
     return contact;
   }
   async updateUserActive(req: any): Promise<User> {

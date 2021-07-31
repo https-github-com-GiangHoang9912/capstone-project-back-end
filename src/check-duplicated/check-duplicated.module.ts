@@ -6,13 +6,13 @@ import { Module, MiddlewareConsumer } from '@nestjs/common';
 import { LoggerMiddleware } from 'src/common/middleware/logger.middleware';
 
 @Module({
-    imports: [HistoryModule, AuthModule],
-    controllers: [CheckDuplicatedController],
-    providers: [CheckDuplicatedService],
-    exports: [CheckDuplicatedService],
-  })
+  imports: [HistoryModule, AuthModule],
+  controllers: [CheckDuplicatedController],
+  providers: [CheckDuplicatedService],
+  exports: [CheckDuplicatedService],
+})
 export class CheckDuplicatedModule {
-    configure(consumer: MiddlewareConsumer) {
-        consumer.apply(LoggerMiddleware).forRoutes(CheckDuplicatedController);
-      }
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(LoggerMiddleware).forRoutes(CheckDuplicatedController);
+  }
 }

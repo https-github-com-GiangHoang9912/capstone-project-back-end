@@ -13,8 +13,8 @@ import { SelfGenerateModule } from './self-generate/self-generate.module';
 import { MailModule } from './mail/mail.module';
 import { HistoryTypeModule } from './history-types/history-types.module';
 import { HistoryModule } from './histories/histories.module';
-import {ExamModule} from './exams/exams.module';
-import {SubjectModule} from './subjects/subjects.module';
+import { ExamModule } from './exams/exams.module';
+import { SubjectModule } from './subjects/subjects.module';
 import { QuestionModule } from './questions/questions.module';
 import { QuestionBankModule } from './question-bank/question-bank.module';
 
@@ -48,7 +48,7 @@ config();
     ExamModule,
     SubjectModule,
     QuestionModule,
-    QuestionBankModule
+    QuestionBankModule,
   ],
   controllers: [AppController],
   providers: [AppService],

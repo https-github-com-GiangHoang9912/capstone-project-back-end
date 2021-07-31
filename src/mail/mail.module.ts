@@ -13,9 +13,9 @@ import { join } from 'path';
         host: 'smtp.ethereal.email',
         port: 587,
         auth: {
-            user: 'liza.johnson37@ethereal.email',
-            pass: 'XjrWUXrA9ZXJsGHQnw'
-        }
+          user: 'liza.johnson37@ethereal.email',
+          pass: 'XjrWUXrA9ZXJsGHQnw',
+        },
       },
       defaults: {
         from: '"No Reply" <noreply@example.com>',

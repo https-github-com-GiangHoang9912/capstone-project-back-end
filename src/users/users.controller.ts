@@ -1,4 +1,14 @@
-import { Controller, Get, Post, Body, Put, UseGuards, Res, Param, HttpStatus } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Put,
+  UseGuards,
+  Res,
+  Param,
+  HttpStatus,
+} from '@nestjs/common';
 import { User } from '../entities/users.entity';
 import { UserService } from '../services/users.service';
 import { CreateUserDto } from '../dto/users.dto';
@@ -83,7 +93,9 @@ export class UserController {
   ): Promise<Object> {
     try {
       await this.historyService.createHistory(
-        CONSTANTS.HISTORY_TYPE.UPDATE_PROFILE, "Update Information" , request.id,
+        CONSTANTS.HISTORY_TYPE.UPDATE_PROFILE,
+        'Update Information',
+        request.id,
       );
       const contact = await this.userService.updateUserInformation(request);
       return contact;
@@ -93,11 +105,9 @@ export class UserController {
       };
     }
   }
-   
+
   @Put('/update-active')
-  async updateActive(
-    @Body() request: CreateUserDto,
-  ): Promise<Object> {
+  async updateActive(@Body() request: CreateUserDto): Promise<Object> {
     try {
       const user = await this.userService.updateUserActive(request);
       return user;
@@ -109,9 +119,7 @@ export class UserController {
   }
 
   @Put('/update-role')
-  async updateRole(
-    @Body() request: CreateUserDto,
-  ): Promise<Object> {
+  async updateRole(@Body() request: CreateUserDto): Promise<Object> {
     try {
       const user = await this.userService.updateUserRole(request);
       return user;

@@ -4,7 +4,7 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
   BaseEntity,
-  JoinColumn
+  JoinColumn,
 } from 'typeorm';
 import { HistoryType } from './history-types.entity';
 

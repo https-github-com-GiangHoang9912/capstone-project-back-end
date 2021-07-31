@@ -22,7 +22,7 @@ export class RefreshStrategy extends PassportStrategy(Strategy, 'refresh') {
       secretOrKey: process.env.JWT_SIGN_SECRET,
     });
   }
- 
+
   async validate(@Req() req: Request, payload: any) {
     const secretData = req?.cookies['token'];
     if (!secretData || !secretData?.refresh_token) {

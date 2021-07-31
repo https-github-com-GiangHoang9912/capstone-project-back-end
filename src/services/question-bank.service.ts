@@ -9,7 +9,7 @@ export class QuestionBankService {
   constructor(
     @InjectRepository(QuestionBank)
     private readonly questionBankRepository: Repository<QuestionBank>,
-  ) {};
+  ) {}
 
   async getQuestionBankBySubjectId(subjectId: number): Promise<QuestionBank[]> {
     const questions = await this.questionBankRepository
@@ -17,5 +17,5 @@ export class QuestionBankService {
       .where('subject_id = :subjectId', { subjectId: subjectId })
       .getMany();
     return questions;
-  };
+  }
 }

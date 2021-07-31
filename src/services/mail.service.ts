@@ -6,7 +6,7 @@ import { config } from 'dotenv';
 import { User } from '../entities/users.entity';
 import SMTPTransport from 'nodemailer/lib/smtp-transport';
 
-config()
+config();
 
 @Injectable()
 export class MailService {
@@ -50,9 +50,11 @@ export class MailService {
           refreshToken: process.env.REFRESH_TOKEN,
           accessToken: accessToken,
         },
-    };
+      };
 
-      const transport = nodemailer.createTransport(smtpConfig as SMTPTransport.Options);
+      const transport = nodemailer.createTransport(
+        smtpConfig as SMTPTransport.Options,
+      );
 
       const mailOptions = {
         from: 'DDGSQ Team <giangnhhe130936@fpt.edu.vn>',
@@ -61,7 +63,9 @@ export class MailService {
         html: `
         <div>
           <h3>
-              Hello, ${user.contactInfo.lastName + ' ' + user.contactInfo.firstName} ...!
+              Hello, ${
+                user.contactInfo.lastName + ' ' + user.contactInfo.firstName
+              } ...!
           </h3>
           <h4>
               here is your password: ${password}
@@ -73,10 +77,10 @@ export class MailService {
         `,
       };
 
-      const result = await  transport.sendMail(mailOptions)
-      return result
+      const result = await transport.sendMail(mailOptions);
+      return result;
     } catch (error) {
-      console.log("mail.service.ts-sendGoogleEmail", error)
+      console.log('mail.service.ts-sendGoogleEmail', error);
     }
   }
 }

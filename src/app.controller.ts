@@ -49,7 +49,7 @@ export class AppController {
         })
         .send(info.account);
     } catch (error) {
-      console.log("login:\n", error)
+      console.log('login:\n', error);
     }
   }
 
@@ -72,7 +72,7 @@ export class AppController {
         })
         .send(info.account);
     } catch (error) {
-      console.log("loginByGoogle\n", error)
+      console.log('loginByGoogle\n', error);
     }
   }
 
@@ -84,9 +84,7 @@ export class AppController {
   ) {
     try {
       const token = await this.authService.getJwtToken(req.body.id);
-      const refreshToken = await this.authService.getRefreshToken(
-        req.body.id,
-      );
+      const refreshToken = await this.authService.getRefreshToken(req.body.id);
       const secretData = {
         jwt_token: token,
         refresh_token: refreshToken,
@@ -102,7 +100,7 @@ export class AppController {
         })
         .send('refresh token successful');
     } catch (error) {
-      console.log("refreshJwtToken:\n", error)
+      console.log('refreshJwtToken:\n', error);
     }
   }
 }

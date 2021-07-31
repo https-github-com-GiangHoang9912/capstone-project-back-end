@@ -24,11 +24,11 @@ export class QuestionBank extends BaseEntity {
   @OneToMany(() => Question, (question) => question.questionBank, {
     onDelete: 'CASCADE',
   })
-  question: Question
+  question: Question;
 
   @ManyToOne(() => Subject, (subject) => subject.questionBank, {
     onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'subject_id', referencedColumnName: 'id' })
-  subject: Subject
+  subject: Subject;
 }

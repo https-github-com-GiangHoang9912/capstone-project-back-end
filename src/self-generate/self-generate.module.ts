@@ -13,6 +13,6 @@ import { LoggerMiddleware } from 'src/common/middleware/logger.middleware';
 })
 export class SelfGenerateModule {
   configure(consumer: MiddlewareConsumer) {
-      consumer.apply(LoggerMiddleware).forRoutes(SelfGenerateController);
-    }
+    consumer.apply(LoggerMiddleware).forRoutes(SelfGenerateController);
+  }
 }

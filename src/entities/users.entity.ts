@@ -7,7 +7,7 @@ import {
   BaseEntity,
 } from 'typeorm';
 import { ContactInfo } from './contactInfo.entity';
-import { Exam } from './exams.entity'
+import { Exam } from './exams.entity';
 @Entity('users')
 export class User extends BaseEntity {
   @PrimaryGeneratedColumn('increment')

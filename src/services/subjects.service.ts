@@ -8,11 +8,11 @@ export class SubjectService {
   constructor(
     @InjectRepository(Subject)
     private readonly subjectRepository: Repository<Subject>,
-  ) {};
+  ) {}
 
   async getSubject(): Promise<Subject[]> {
     return this.subjectRepository.find();
-  };
+  }
 
   async getQuestionBankBySubjectId(subject_id: number): Promise<any> {
     console.log(subject_id);
@@ -24,5 +24,4 @@ export class SubjectService {
     console.log('Subject detail: ', subject);
     return subject;
   }
-
 }

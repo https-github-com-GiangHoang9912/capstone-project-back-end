@@ -14,26 +14,30 @@ export class QuestionService {
     private readonly questionRepository: Repository<Question>,
     @InjectRepository(AnswerGroup)
     private readonly answerGroupRepository: Repository<AnswerGroup>,
-  ) { }
+    @InjectRepository(Exam)
+    private readonly examRepository: Repository<Exam>,
+  ) {}
 
   async getQuestion(): Promise<Question[]> {
     return this.questionRepository.find();
   }
 
   async getQuestionsByExamId(exam_id: number): Promise<any> {
-    const question = await this.questionRepository
-      .createQueryBuilder('questions')
-      .where('questions.exam_id = :exam_id', { exam_id: exam_id })
-      .leftJoinAndSelect('questions.questionBank', 'QuestionBank')
-      .leftJoinAndSelect('questions.answerGroup', 'AnswerGroup')
-      .leftJoinAndSelect('AnswerGroup.answer', 'Answer')
+    const answerGroup = await this.examRepository
+      .createQueryBuilder('exam')
+      .leftJoinAndSelect('exam.subject', 'subject')
+      .leftJoinAndSelect('exam.question', 'question')
+      .leftJoinAndSelect('question.questionBank', 'questionBank')
+      .leftJoinAndSelect('question.answerGroup', 'answerGroup')
+      .leftJoinAndSelect('answerGroup.answer', 'answer')
+      .where('question.exam_id = :exam_id', { exam_id: exam_id })
       .getMany();
-    return question;
+    return answerGroup;
   }
 
   async getQuestionDetail(questionId: number): Promise<any> {
     console.log(questionId);
-    const question = await this.questionRepository.findOne({id: questionId});
+    const question = await this.questionRepository.findOne({ id: questionId });
     console.log('Question detail: ', question);
     return question;
   }
@@ -43,30 +47,26 @@ export class QuestionService {
       .create({
         questionBank: question,
         exam: exam,
-        answerGroupId: 1
       })
       .save();
     return ques;
   }
 
-  async createNewQuestion(questionBankId: number, examId: number): Promise<any> {
-    const answerGroup = await this.answerGroupRepository
-      .create()
-      .save();
+  async createNewQuestion(
+    questionBankId: number,
+    examId: number,
+  ): Promise<any> {
     const ques = await this.questionRepository
       .create({
         questionBankId: questionBankId,
         examId: examId,
-        answerGroupId: answerGroup.id
       })
       .save();
     return ques;
   }
 
   async createAnswerGroup(): Promise<any> {
-    const answerGroup = await this.answerGroupRepository
-      .create()
-      .save();
+    const answerGroup = await this.answerGroupRepository.create().save();
     return answerGroup;
   }
 
@@ -80,15 +80,15 @@ export class QuestionService {
     return { deleted: result.affected };
   }
 
-
-  async updateQuestion(questionId: number, answerGroupId: number): Promise<any> {
+  async updateQuestion(
+    questionId: number,
+    answerGroupId: number,
+  ): Promise<any> {
     const question = await this.questionRepository
       .createQueryBuilder()
       .update(Question)
-      .set({ answerGroupId: answerGroupId })
-      .where("id = :id", { id: questionId })
+      .where('id = :id', { id: questionId })
       .execute();
     return question;
   }
-
 }

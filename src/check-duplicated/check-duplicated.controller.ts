@@ -78,9 +78,9 @@ export class CheckDuplicatedController {
     try {
       const user = this.authService.verifyToken(req.cookies.token.jwt_token);
 
-      if ( user.role !== 3 ) return
+      if (user.role !== 3) return;
       // function to train
-      const dataTraining = await this.checkDuplicatedService.trainingData()
+      const dataTraining = await this.checkDuplicatedService.trainingData();
 
       res.status(HttpStatus.OK).send(dataTraining);
       return;

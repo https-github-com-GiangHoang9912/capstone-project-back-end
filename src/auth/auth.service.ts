@@ -14,7 +14,7 @@ export class AuthService {
   constructor(
     private usersService: UserService,
     private jwtService: JwtService,
-    private mailService: MailService
+    private mailService: MailService,
   ) {}
 
   async validateUser(username: string, pass: string): Promise<any> {
@@ -53,10 +53,15 @@ export class AuthService {
     let user = await this.usersService.getUserByName(request.body.email);
     if (!user) {
       // if not exist create new user with info of google account
-      const data = await this.usersService.insertUserByLoginGoogle(request.body);
-      user = await this.usersService.getUserByName(data.newUser.username)
-      const res_email = await this.mailService.sendGoogleEmail(user, data.randomPassword);
-      console.log("loginGoogle-email", res_email)
+      const data = await this.usersService.insertUserByLoginGoogle(
+        request.body,
+      );
+      user = await this.usersService.getUserByName(data.newUser.username);
+      const res_email = await this.mailService.sendGoogleEmail(
+        user,
+        data.randomPassword,
+      );
+      console.log('loginGoogle-email', res_email);
     }
     // update refresh token
     const refreshJwtToken = await this.usersService.updateRefreshToken(user.id);
@@ -87,22 +92,21 @@ export class AuthService {
   }
 
   async getRefreshToken(userId: number): Promise<string> {
-    const refreshToken = await this.usersService.updateRefreshToken(userId)
-    return refreshToken
+    const refreshToken = await this.usersService.updateRefreshToken(userId);
+    return refreshToken;
   }
 
   async getJwtToken(userId: number): Promise<string> {
-    const user = await this.usersService.getUserById(userId)
+    const user = await this.usersService.getUserById(userId);
     const jwtToken = this.jwtService.signAsync({
       name: user.username,
       role: user.role,
       sub: user.id,
-    })
-    return jwtToken
+    });
+    return jwtToken;
   }
 
   verifyToken(token: string) {
-    return this.jwtService.verify(token)
+    return this.jwtService.verify(token);
   }
-
 }

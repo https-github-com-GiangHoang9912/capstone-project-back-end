@@ -9,7 +9,9 @@ describe('CheckDuplicatedController', () => {
       controllers: [CheckDuplicatedController],
     }).compile();
 
-    controller = module.get<CheckDuplicatedController>(CheckDuplicatedController);
+    controller = module.get<CheckDuplicatedController>(
+      CheckDuplicatedController,
+    );
   });
 
   it('should be defined', () => {

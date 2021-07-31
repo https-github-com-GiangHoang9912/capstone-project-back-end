@@ -10,7 +10,7 @@ import {
   UseGuards,
   Get,
   Post,
-  Delete
+  Delete,
 } from '@nestjs/common';
 import { Response } from 'express';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
@@ -24,7 +24,7 @@ export class ExamController {
     private readonly examService: ExamService,
     private readonly questionBankService: QuestionBankService,
     private readonly questionService: QuestionService,
-  ) { }
+  ) {}
 
   @Get('/:id/')
   async getExamAndSubjectbyUser(
@@ -84,10 +84,10 @@ export class ExamController {
         examInfo.examName,
         userId,
       );
-      const randomQuestion = this.getRandom(listQuestionBank, 10)
+      const randomQuestion = this.getRandom(listQuestionBank, 10);
       randomQuestion.forEach(async (question) => {
-        const ques = await this.questionService.createQuestion(question, exam)
-        console.log(ques)
+        const ques = await this.questionService.createQuestion(question, exam);
+        console.log(ques);
       });
 
       return res.status(HttpStatus.OK).send(exam);

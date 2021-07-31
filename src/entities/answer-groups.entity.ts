@@ -5,24 +5,24 @@ import {
   PrimaryGeneratedColumn,
   BaseEntity,
   JoinColumn,
-  ManyToOne
+  ManyToOne,
 } from 'typeorm';
 import { Answer } from './answers.entity';
 import { Question } from './questions.entity';
 
-@Entity('answer_groups')
+@Entity('answers_groups')
 export class AnswerGroup extends BaseEntity {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
-  @Column({name: "questions_id"})
+  @Column({ name: 'questions_id' })
   questionId: number;
 
-  @Column({name: "answer_id"})
+  @Column({ name: 'answer_id' })
   answerId: number;
 
-  @Column({name: "correct"})
-  correct: number;
+  @Column({ name: 'correct' })
+  correct: boolean;
 
   // relationship with questions
   @ManyToOne(() => Question, (question) => question.answerGroup, {
@@ -36,5 +36,5 @@ export class AnswerGroup extends BaseEntity {
     onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'answer_id', referencedColumnName: 'id' })
-  answer: Answer
+  answer: Answer;
 }

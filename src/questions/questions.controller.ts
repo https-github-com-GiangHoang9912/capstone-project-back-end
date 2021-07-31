@@ -9,15 +9,15 @@ import {
   Get,
   Delete,
   Post,
-  Put
+  Put,
 } from '@nestjs/common';
 import { Response } from 'express';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
-@UseGuards(JwtAuthGuard)
+// @UseGuards(JwtAuthGuard)
 @Controller('questions')
 export class QuestionController {
-  constructor(private readonly questionService: QuestionService) { }
+  constructor(private readonly questionService: QuestionService) {}
 
   @Delete('/delete/:id/')
   async deleteQuestionById(
@@ -26,11 +26,8 @@ export class QuestionController {
   ): Promise<any> {
     console.log(questionId);
     try {
-      const data = await this.questionService.deleteQuestion(
-        questionId
-      );
+      const data = await this.questionService.deleteQuestion(questionId);
       return res.status(HttpStatus.OK).send(data);
-
     } catch (error) {
       console.log('Fail delete question: ', error);
     }
@@ -43,11 +40,8 @@ export class QuestionController {
   ): Promise<any> {
     console.log(examId);
     try {
-      const data = await this.questionService.getQuestionsByExamId(
-        examId
-      );
+      const data = await this.questionService.getQuestionsByExamId(examId);
       return res.status(HttpStatus.OK).send(data);
-
     } catch (error) {
       console.log('Fail get question by exam id: ', error);
     }
@@ -60,15 +54,12 @@ export class QuestionController {
   ): Promise<any> {
     console.log(id);
     try {
-      const data = await this.questionService.getQuestionDetail(
-        id
-      );
+      const data = await this.questionService.getQuestionDetail(id);
       return res.status(HttpStatus.OK).send(data);
     } catch (error) {
       console.log('Fail get question detail: ', error);
     }
   }
-
 
   @Post('/create/')
   async createQuestion(
@@ -79,10 +70,10 @@ export class QuestionController {
       dataQuestion.map(async (item: any) => {
         const data = await this.questionService.createNewQuestion(
           item.questionBankId,
-          item.examId
-        )
+          item.examId,
+        );
         return res.status(HttpStatus.OK).send(data);
-      })
+      });
     } catch (error) {
       console.log('Fail create answer group: ', error);
     }
@@ -96,8 +87,8 @@ export class QuestionController {
     try {
       const updateQuestion = await this.questionService.updateQuestion(
         questionId,
-        dataQuestion.answerGroupId
-      )
+        dataQuestion.answerGroupId,
+      );
       return res.status(HttpStatus.OK).send(updateQuestion);
     } catch (error) {
       return {
@@ -105,5 +96,4 @@ export class QuestionController {
       };
     }
   }
-
 }

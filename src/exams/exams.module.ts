@@ -6,10 +6,14 @@ import { ExamService } from '../services/exams.service';
 import { ExamController } from './exams.controller';
 import { Module, MiddlewareConsumer } from '@nestjs/common';
 import { LoggerMiddleware } from 'src/common/middleware/logger.middleware';
-import { TypeOrmModule } from '@nestjs/typeorm'; 
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Exam, Subject]), QuestionBankModule, QuestionModule],
+  imports: [
+    TypeOrmModule.forFeature([Exam, Subject]),
+    QuestionBankModule,
+    QuestionModule,
+  ],
   controllers: [ExamController],
   providers: [ExamService],
   exports: [ExamService],

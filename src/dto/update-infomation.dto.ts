@@ -3,7 +3,7 @@ import { IsString, IsNumber } from 'class-validator';
 export class UpdateInformationDto {
   @IsNumber()
   readonly id: number;
-  
+
   @IsString()
   readonly firstName?: string;
 

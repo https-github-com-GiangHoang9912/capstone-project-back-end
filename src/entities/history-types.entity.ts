@@ -4,7 +4,7 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
   BaseEntity,
-  JoinColumn
+  JoinColumn,
 } from 'typeorm';
 import { History } from './histories.entity';
 
@@ -13,7 +13,7 @@ export class HistoryType extends BaseEntity {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
-  @Column({name: "history_name"})
+  @Column({ name: 'history_name' })
   historyName: string;
 
   @OneToMany(() => History, (history) => history.historyType, {
