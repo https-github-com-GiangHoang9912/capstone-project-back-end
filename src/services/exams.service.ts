@@ -29,9 +29,9 @@ export class ExamService {
   async getExamAndSubjectByUser(user_id: number): Promise<any> {
     console.log(user_id);
     const exams = await this.examRepository
-      .createQueryBuilder('exam')
+      .createQueryBuilder('exams')
       .where('user_id = :user_id', { user_id: user_id })
-      .leftJoinAndSelect('exam.subject', 'Subject')
+      .leftJoinAndSelect('exams.subject', 'Subject')
       .getMany();
     // console.log('examss alalalla: ', exams);
     return exams;
