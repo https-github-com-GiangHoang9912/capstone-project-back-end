@@ -11,7 +11,7 @@ export class ExamService {
   constructor(
     @InjectRepository(Exam)
     private readonly examRepository: Repository<Exam>,
-  ) {}
+  ) { }
 
   async getExam(): Promise<Exam[]> {
     return this.examRepository.find();
@@ -41,19 +41,17 @@ export class ExamService {
     return this.examRepository
       .createQueryBuilder('exams')
       .where('user_id = :user_id', { user_id: user_id })
-      .andWhere("exams.exam_name like :exam_name", {exam_name: `%${examName}%` })
+      .andWhere("exams.exam_name like :exam_name", { exam_name: `%${examName}%` })
       .leftJoinAndSelect('exams.subject', 'Subjects')
       .getMany();
   }
 
   async deleteExam(id: number) {
-    const result = await this.examRepository
-      .createQueryBuilder()
-      .delete()
-      .from(Exam)
-      .where('id = :id', { id: id })
-      .execute();
-    return { deleted: result.affected };
+    const result = await this.examRepository.findOne({ id: id });
+    const resultFinal = await result.remove();
+    console.log(resultFinal);
+    // const deleteAnswer = 
+    // return { deleted: result.affected };
   }
 
   async createExam(subjectId: number, examName: string, userId: number) {

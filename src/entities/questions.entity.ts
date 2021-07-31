@@ -37,7 +37,6 @@ export class Question extends BaseEntity {
   answerGroup: AnswerGroup;
 
   @ManyToOne(() => QuestionBank, (questionBank) => questionBank.question, {
-    onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'question_bank_id', referencedColumnName: 'id' })
   questionBank: QuestionBank

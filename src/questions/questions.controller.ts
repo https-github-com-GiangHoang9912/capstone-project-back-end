@@ -14,7 +14,7 @@ import {
 import { Response } from 'express';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
-// @UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard)
 @Controller('questions')
 export class QuestionController {
   constructor(private readonly questionService: QuestionService) { }
@@ -36,22 +36,39 @@ export class QuestionController {
     }
   }
 
-  @Get('/:id/')
-  async getExamAndSubjectbyUser(
+  @Get('/examId/:id/')
+  async getQuestionByExamId(
     @Res() res: Response,
     @Param('id') examId: number,
   ): Promise<any> {
     console.log(examId);
     try {
-      const data = await this.questionService.getQuestionDetail(
+      const data = await this.questionService.getQuestionsByExamId(
         examId
       );
       return res.status(HttpStatus.OK).send(data);
 
     } catch (error) {
-      console.log('Fail get Exam And Subject by User: ', error);
+      console.log('Fail get question by exam id: ', error);
     }
   }
+
+  @Get('/:id/')
+  async getQuestionDetail(
+    @Res() res: Response,
+    @Param('id') id: number,
+  ): Promise<any> {
+    console.log(id);
+    try {
+      const data = await this.questionService.getQuestionDetail(
+        id
+      );
+      return res.status(HttpStatus.OK).send(data);
+    } catch (error) {
+      console.log('Fail get question detail: ', error);
+    }
+  }
+
 
   @Post('/create/')
   async createQuestion(
@@ -81,7 +98,7 @@ export class QuestionController {
         questionId,
         dataQuestion.answerGroupId
       )
-      return updateQuestion;
+      return res.status(HttpStatus.OK).send(updateQuestion);
     } catch (error) {
       return {
         message: 'update question fail...!',

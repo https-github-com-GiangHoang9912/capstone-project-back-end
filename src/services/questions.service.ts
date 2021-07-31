@@ -20,8 +20,7 @@ export class QuestionService {
     return this.questionRepository.find();
   }
 
-  async getQuestionDetail(exam_id: number): Promise<any> {
-    // console.log(exam_id);
+  async getQuestionsByExamId(exam_id: number): Promise<any> {
     const question = await this.questionRepository
       .createQueryBuilder('questions')
       .where('questions.exam_id = :exam_id', { exam_id: exam_id })
@@ -29,7 +28,13 @@ export class QuestionService {
       .leftJoinAndSelect('questions.answerGroup', 'AnswerGroup')
       .leftJoinAndSelect('AnswerGroup.answer', 'Answer')
       .getMany();
-    // console.log('Question alalalla: ', question);
+    return question;
+  }
+
+  async getQuestionDetail(questionId: number): Promise<any> {
+    console.log(questionId);
+    const question = await this.questionRepository.findOne({id: questionId});
+    console.log('Question detail: ', question);
     return question;
   }
 
