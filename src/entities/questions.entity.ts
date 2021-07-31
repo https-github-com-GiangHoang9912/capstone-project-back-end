@@ -19,23 +19,22 @@ export class Question extends BaseEntity {
   @Column({ name: "question_bank_id" })
   questionBankId: number;
 
-  @Column({ name: "answer_group_id" })
-  answerGroupId: number;
-
   @Column({ name: "exam_id" })
   examId: number;
 
+  // relationship with exam
   @ManyToOne(() => Exam, (exam) => exam.question, {
     onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'exam_id', referencedColumnName: 'id' })
   exam: Exam
 
-  @ManyToOne(() => AnswerGroup, (answerGroup) => answerGroup.question, {
+  // relationship with answers_groups
+  @OneToMany(() => AnswerGroup, (answerGroup) => answerGroup.question, {
   })  
-  @JoinColumn({ name: 'answer_group_id', referencedColumnName: 'id' })
   answerGroup: AnswerGroup;
 
+  // relationship with question_bank
   @ManyToOne(() => QuestionBank, (questionBank) => questionBank.question, {
   })
   @JoinColumn({ name: 'question_bank_id', referencedColumnName: 'id' })
