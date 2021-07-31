@@ -31,7 +31,7 @@ config();
       synchronize: false,
       username: process.env.USERNAME,
       password: process.env.PASSWORD,
-      logging: true,
+      logging: false,
       autoLoadEntities: true,
       entities: [join(__dirname, '**/**.entity{.ts,.js}')],
       cli: {
