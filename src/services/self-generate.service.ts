@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import axios from 'axios';
+import { Exception } from 'handlebars';
 import * as CONSTANTS from '../constant';
 
 interface SelfGeneration {
@@ -16,7 +17,14 @@ export class SelfGenerateService {
         .catch((err) => {
           return err;
         });
+
+      if ( response.response.status !== 200 ) return {
+        status: response.response.status,
+        message: response.response.statusText
+      }
       return response.data;
-    } catch (error) {}
+    } catch (error) {
+      return error
+    }
   }
 }

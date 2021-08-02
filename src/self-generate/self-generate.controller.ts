@@ -40,7 +40,11 @@ export class SelfGenerateController {
         );
       });
       const data = await this.generateService.generationQuestions(body);
-      return res.status(HttpStatus.OK).send(data);
+      res.status(HttpStatus.OK)
+      if (data.status && data.status != 200) {
+        res.status(data.status)
+      }
+      return res.send(data);
     } catch (error) {}
   }
 }
