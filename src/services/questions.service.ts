@@ -24,9 +24,9 @@ export class QuestionService {
 
   async getQuestionsByExamId(exam_id: number): Promise<any> {
     const answerGroup = await this.examRepository
-      .createQueryBuilder('exam')
-      .leftJoinAndSelect('exam.subject', 'subject')
-      .leftJoinAndSelect('exam.question', 'question')
+      .createQueryBuilder('exams')
+      .leftJoinAndSelect('exams.subject', 'subject')
+      .leftJoinAndSelect('exams.question', 'question')
       .leftJoinAndSelect('question.questionBank', 'questionBank')
       .leftJoinAndSelect('question.answerGroup', 'answerGroup')
       .leftJoinAndSelect('answerGroup.answer', 'answer')
@@ -38,7 +38,6 @@ export class QuestionService {
   async getQuestionDetail(questionId: number): Promise<any> {
     console.log(questionId);
     const question = await this.questionRepository.findOne({ id: questionId });
-    console.log('Question detail: ', question);
     return question;
   }
 

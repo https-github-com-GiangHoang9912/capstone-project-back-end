@@ -14,17 +14,16 @@ import {
 import { Response } from 'express';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
-// @UseGuards(JwtAuthGuard)
+// @UseGuards(JwtAuthGuard) 
 @Controller('questions')
 export class QuestionController {
-  constructor(private readonly questionService: QuestionService) {}
+  constructor(private readonly questionService: QuestionService) { }
 
   @Delete('/delete/:id/')
   async deleteQuestionById(
     @Res() res: Response,
     @Param('id') questionId: number,
   ): Promise<any> {
-    console.log(questionId);
     try {
       const data = await this.questionService.deleteQuestion(questionId);
       return res.status(HttpStatus.OK).send(data);
@@ -38,12 +37,11 @@ export class QuestionController {
     @Res() res: Response,
     @Param('id') examId: number,
   ): Promise<any> {
-    console.log(examId);
     try {
       const data = await this.questionService.getQuestionsByExamId(examId);
       return res.status(HttpStatus.OK).send(data);
     } catch (error) {
-      console.log('Fail get question by exam id: ', error);
+      console.log('getQuestionByExamId: ', error);
     }
   }
 
@@ -52,12 +50,11 @@ export class QuestionController {
     @Res() res: Response,
     @Param('id') id: number,
   ): Promise<any> {
-    console.log(id);
     try {
       const data = await this.questionService.getQuestionDetail(id);
       return res.status(HttpStatus.OK).send(data);
     } catch (error) {
-      console.log('Fail get question detail: ', error);
+      console.log('getQuestionDetail: ', error);
     }
   }
 
@@ -75,9 +72,10 @@ export class QuestionController {
         return res.status(HttpStatus.OK).send(data);
       });
     } catch (error) {
-      console.log('Fail create answer group: ', error);
+      console.log('createQuestion: ', error);
     }
   }
+
   @Put('/update/:id')
   async updateQuestion(
     @Res() res: Response,
@@ -91,9 +89,8 @@ export class QuestionController {
       );
       return res.status(HttpStatus.OK).send(updateQuestion);
     } catch (error) {
-      return {
-        message: 'update question fail...!',
-      };
+      console.log('updateQuestion', error);
+
     }
   }
 }
