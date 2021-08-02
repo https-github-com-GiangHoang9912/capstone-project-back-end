@@ -17,7 +17,7 @@ import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { ExamInfoDto } from 'src/dto/create-exam.dto';
 import { QuestionBankService } from 'src/services/question-bank.service';
 
-@UseGuards(JwtAuthGuard)
+// @UseGuards(JwtAuthGuard)
 @Controller('exam')
 export class ExamController {
   constructor(
@@ -36,7 +36,7 @@ export class ExamController {
       const data = await this.examService.getExamAndSubjectByUser(userId);
       return res.status(HttpStatus.OK).send(data);
     } catch (error) {
-      console.log('Fail connect: ', error);
+      console.log('getExamAndSubjectbyUser: ', error);
     }
   }
 
@@ -50,7 +50,7 @@ export class ExamController {
       const data = await this.examService.searchExamByName(id, examName);
       return res.status(HttpStatus.OK).send(data);
     } catch (error) {
-      console.log('Fail search exam: ', error);
+      console.log('searchExamByName: ', error);
     }
   }
 
@@ -64,7 +64,7 @@ export class ExamController {
       const data = await this.examService.deleteExam(id);
       return res.status(HttpStatus.OK).send(data);
     } catch (error) {
-      console.log('Fail delete exam: ', error);
+      console.log('Delete exam: ', error);
     }
   }
 
@@ -92,7 +92,7 @@ export class ExamController {
 
       return res.status(HttpStatus.OK).send(exam);
     } catch (error) {
-      console.log('Fail search exam: ', error);
+      console.log('createExam: ', error);
     }
   }
 
