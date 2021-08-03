@@ -1,3 +1,4 @@
+import { AnswersGroupsModule } from './answers-groups/answers-groups.module';
 import { ContactInfo } from './entities/contactInfo.entity';
 import { UserModule } from './users/users.module';
 import { Module } from '@nestjs/common';
@@ -49,6 +50,7 @@ config();
     SubjectModule,
     QuestionModule,
     QuestionBankModule,
+    AnswersGroupsModule
   ],
   controllers: [AppController],
   providers: [AppService],

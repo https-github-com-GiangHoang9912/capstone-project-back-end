@@ -103,4 +103,22 @@ export class AppController {
       console.log('refreshJwtToken:\n', error);
     }
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('/logout')
+  async logout(@Res() res: Response) {
+    try {
+      res
+        .status(HttpStatus.ACCEPTED)
+        .cookie('token', "", {
+          sameSite: 'strict',
+          path: '/',
+          secure: true,
+          httpOnly: true,
+        })
+        .send("logout");
+    } catch (error) {
+      console.log('logout\n', error);
+    }
+  }
 }

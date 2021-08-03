@@ -13,7 +13,7 @@ import {
 import { Response } from 'express';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
-// @UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard)
 @Controller('answers-groups')
 export class AnswerGroupController {
   constructor(private readonly answerGroupService: AnswerGroupService) { }
