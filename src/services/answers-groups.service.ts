@@ -38,8 +38,6 @@ export class AnswerGroupService {
     return result;
   }
 
-
-
   async updateAnswerGroupTrueFalse(
     idAnswerGroup: number,
     correct: boolean
@@ -55,7 +53,6 @@ export class AnswerGroupService {
       console.log('Fail update answerGroup', err);
     }
   }
-
 
   async createAnswerGroup(
     questionId: number,
@@ -80,7 +77,6 @@ export class AnswerGroupService {
     answerText: string,
   ): Promise<any> {
     try {
-      // console.log(questionId, '-', correct, ':', answerText);
       const answer = await this.answerRepository.create({
         answerText: answerText
       }).save();
@@ -89,7 +85,6 @@ export class AnswerGroupService {
         answerId: answer.id,
         correct: correct
       }).save();
-      console.log('answerGroup', answerGroup);
       return answerGroup;
     } catch (err) {
       console.log('Fail update answerGroup', err);

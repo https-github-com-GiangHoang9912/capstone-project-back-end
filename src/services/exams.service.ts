@@ -49,7 +49,8 @@ export class ExamService {
   async deleteExam(id: number) {
     try {
       const result = await this.examRepository.findOne({ id: id });
-      await this.examRepository.remove(result);
+      const dataDelete = await this.examRepository.remove(result);
+      return {"raw": dataDelete};
     } catch (err) {
       console.log('deleteExam...!', err);
     }

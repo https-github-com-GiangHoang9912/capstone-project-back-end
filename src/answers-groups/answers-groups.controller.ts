@@ -85,18 +85,20 @@ export class AnswerGroupController {
     @Body() dataAnswerGroup: AnswerGroupDto[],
   ): Promise<any> {
     try {
-      dataAnswerGroup.forEach(async (item: AnswerGroup) => {
+      dataAnswerGroup.map(async (item: AnswerGroup) => {
         if (item.questionId) {
           const data = await this.answerGroupService.updateAnswerGroupTrueFalse(
             item.id,
             item.correct,
           );
+          return data;
         } else {
           const data = await this.answerGroupService.createAnswerGroupMultiple(
             idQuestion,
             item.correct,
             item.answer.answerText,
           );
+          return data;
         }
       });
       return res.status(HttpStatus.OK).send(dataAnswerGroup);
