@@ -1,3 +1,5 @@
+import { AnswerGroup } from 'src/entities/answer-groups.entity';
+import { AnswerGroupDto } from './../dto/answer-group.dto';
 import { AnswerGroupService } from '../services/answers-groups.service';
 import {
   Body,
@@ -8,15 +10,20 @@ import {
   Param,
   Get,
   Put,
-  Post
+  Post,
 } from '@nestjs/common';
 import { Response } from 'express';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
+interface DataQuestion {
+  currentQuestionAnswerGroup: AnswerGroupDto[];
+  valueTypeAnswer: string;
+}
+
 @UseGuards(JwtAuthGuard)
 @Controller('answers-groups')
 export class AnswerGroupController {
-  constructor(private readonly answerGroupService: AnswerGroupService) { }
+  constructor(private readonly answerGroupService: AnswerGroupService) {}
 
   @Get('/')
   async getAnswersGroups(@Res() res: Response): Promise<any> {
@@ -31,7 +38,7 @@ export class AnswerGroupController {
   @Get('/:id')
   async getAnswersGroupsById(
     @Res() res: Response,
-    @Param('id') id: number
+    @Param('id') id: number,
   ): Promise<any> {
     try {
       const data = await this.answerGroupService.getAnswersGroupsById(id);
@@ -45,12 +52,12 @@ export class AnswerGroupController {
   async createAnswerGroup(
     @Res() res: Response,
     @Param() idQuestion: number,
-    @Body() dataQuestion: any,
+    @Body() dataQuestion: DataQuestion,
   ): Promise<any> {
     try {
       await this.answerGroupService.deleteAnswerGroup(idQuestion);
       let data = null;
-      dataQuestion.currentQuestionAnswerGroup.map(async (item: any) => {
+      dataQuestion.currentQuestionAnswerGroup.forEach(async (item: any) => {
         if (dataQuestion.valueTypeAnswer == 'tf') {
           data = await this.answerGroupService.createAnswerGroup(
             idQuestion,
@@ -61,11 +68,11 @@ export class AnswerGroupController {
           data = await this.answerGroupService.createAnswerGroupMultiple(
             idQuestion,
             item.correct,
-            item.answer.answerText
+            item.answer.answerText,
           );
         }
-        return res.status(HttpStatus.OK).send(data);
       });
+      return res.status(HttpStatus.OK).send(data);
     } catch (error) {
       console.log('createAnswerGroup: ', error);
     }
@@ -75,26 +82,23 @@ export class AnswerGroupController {
   async updateAnswerGroupMultiple(
     @Res() res: Response,
     @Param() idQuestion: number,
-    @Body() dataAnswerGroup: any,
-
+    @Body() dataAnswerGroup: AnswerGroupDto[],
   ): Promise<any> {
     try {
-      dataAnswerGroup.map(async (item: any) => {
+      dataAnswerGroup.forEach(async (item: AnswerGroup) => {
         if (item.questionId) {
           const data = await this.answerGroupService.updateAnswerGroupTrueFalse(
             item.id,
-            item.correct
+            item.correct,
           );
-          return data;
         } else {
           const data = await this.answerGroupService.createAnswerGroupMultiple(
             idQuestion,
             item.correct,
-            item.answer.answerText
+            item.answer.answerText,
           );
-          return data;
         }
-      })
+      });
       return res.status(HttpStatus.OK).send(dataAnswerGroup);
     } catch (error) {
       console.log('updateAnswerGroupMultiple', error);
@@ -104,21 +108,19 @@ export class AnswerGroupController {
   @Put('/update')
   async updateAnswerGroupTrueFalse(
     @Res() res: Response,
-    @Body() dataAnswerGroup: any,
-
+    @Body() dataAnswerGroup: AnswerGroupDto[],
   ): Promise<any> {
     try {
-      dataAnswerGroup.map(async (item: any) => {
+      dataAnswerGroup.map(async (item: AnswerGroup) => {
         const data = await this.answerGroupService.updateAnswerGroupTrueFalse(
           item.id,
-          item.correct
+          item.correct,
         );
         return data;
-      })
+      });
       return res.status(HttpStatus.OK).send(dataAnswerGroup);
     } catch (error) {
       console.log('updateAnswerGroupTrueFalse', error);
     }
   }
-
 }
