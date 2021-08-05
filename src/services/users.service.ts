@@ -192,14 +192,14 @@ export class UserService {
   async getUserWithRefreshToken(
     username: string,
     refreshToken: string,
-    refreshTokenExp: Date,
+    currentDate: Date,
   ): Promise<User> {
     const user = await this.userRepository.findOne({
       username: username,
       refreshToken: refreshToken,
-      refreshTokenExp: MoreThanOrEqual(refreshTokenExp),
+      refreshTokenExp: MoreThanOrEqual(currentDate),
     });
-
+    
     if (!user) {
       return null;
     }

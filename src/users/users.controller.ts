@@ -138,7 +138,17 @@ export class UserController {
 
   @Put('change-password')
   async changePassword(@Body() data: ChangePasswordDto, @Res() res: Response) {
-    const change = await this.userService.changePassword(data)
-    res.send(change)
+    try {
+      await this.historyService.createHistory(
+        CONSTANTS.HISTORY_TYPE.CHANGE_PASSWORD,
+        'Change Password',
+        data.userId,
+      );
+      const change = await this.userService.changePassword(data);
+      res.send(change);
+    } catch (error) {
+      console.error(error)
+      res.send(error);
+    }
   }
 }
