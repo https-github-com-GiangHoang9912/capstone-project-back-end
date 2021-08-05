@@ -21,6 +21,7 @@ import * as moment from 'moment';
 import { HistoryService } from 'src/services/histories.service';
 import { AuthService } from 'src/auth/auth.service';
 import * as CONSTANTS from '../constant';
+import { ChangePasswordDto } from 'src/dto/change-password.dto';
 
 @UseGuards(JwtAuthGuard)
 @Controller('user')
@@ -134,4 +135,10 @@ export class UserController {
   // async deletePost(@Param('id') id: string) {
   //   return this.userService.getUsers()
   // }
+
+  @Put('change-password')
+  async changePassword(@Body() data: ChangePasswordDto, @Res() res: Response) {
+    const change = await this.userService.changePassword(data)
+    res.send(change)
+  }
 }

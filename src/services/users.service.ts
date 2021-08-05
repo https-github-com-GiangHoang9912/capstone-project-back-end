@@ -1,7 +1,7 @@
 import { request } from 'express';
 import { ContactInfo } from '../entities/contactInfo.entity';
 import { User } from '../entities/users.entity';
-import { Injectable, Logger } from '@nestjs/common';
+import { HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { MoreThan, MoreThanOrEqual, Repository } from 'typeorm';
 import * as randomToken from 'rand-token';
@@ -29,6 +29,12 @@ interface GoogleUser {
   googleId: string;
   imageUrl: string;
   name: string;
+}
+
+interface ChangePassword {
+  userId: number;
+  oldPassword: string;
+  newPassword: string;
 }
 
 @Injectable()
@@ -107,6 +113,31 @@ export class UserService {
       Logger.error(error);
       return error;
     }
+  }
+
+  async changePassword(data: ChangePassword): Promise<any> {
+    const user = await this.getUserById(data.userId);
+    const isVerifyPassword = user
+      ? (await bcrypt.compare(data.oldPassword, user.password)) &&
+        (!await bcrypt.compare(data.newPassword, user.password))
+      : false;
+    if (isVerifyPassword) {
+      user.password = await bcrypt.hash(
+        data.newPassword,
+        CONSTANTS.ROUND_HASH_PASSWORD.ROUND,
+      );
+      await user.save();
+
+      return {
+        status: HttpStatus.OK,
+        message: 'Change Password Successful',
+      };
+    }
+
+    return {
+      status: HttpStatus.UNPROCESSABLE_ENTITY,
+      message: 'Password Was Duplicate Or Wrong',
+    };
   }
 
   async insertUserByLoginGoogle(user: GoogleUser): Promise<any> {
