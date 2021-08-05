@@ -184,7 +184,6 @@ export class UserService {
     const contact = await this.contactRepository.findOne({ ownerId: req.id });
     contact.firstName = req.firstName;
     contact.lastName = req.lastName;
-    contact.email = req.email;
     contact.phone = req.phone;
     contact.dateOfBirth = new Date(moment(req.dob, ['DD/MM/YYYY']).format());
     contact.address = req.address;
