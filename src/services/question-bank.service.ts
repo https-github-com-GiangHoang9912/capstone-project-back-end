@@ -18,4 +18,16 @@ export class QuestionBankService {
       .getMany();
     return questions;
   }
+
+  async addQuestionNoDuplicateToBank(
+    subjectId: number,
+    questionText: string,
+  ): Promise<QuestionBank> {
+    const questions = await this.questionBankRepository.create({
+      questionText: questionText,
+      subjectId: subjectId,
+    }).save()
+
+    return questions;
+  }
 }

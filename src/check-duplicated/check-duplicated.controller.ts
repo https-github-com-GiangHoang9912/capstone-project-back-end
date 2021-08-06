@@ -53,6 +53,30 @@ export class CheckDuplicatedController {
     }
   }
 
+  @Post('/train-sentences')
+  async checkDuplicatedWithSentence(
+    @Req() req: Request,
+    @Body() sentences: QuestionCheckDuplicatedDto,
+    @Res() res: Response,
+  ): Promise<any> {
+    try {
+      const user = this.authService.verifyToken(req.cookies.token.jwt_token);
+      await this.historyService.createHistory(
+        CONSTANTS.HISTORY_TYPE.DUPLICATE,
+        "Training data for duplicate model",
+        user.sub,
+      );
+
+      const data = await this.checkDuplicatedService.trainingDataWithSentence(
+        sentences,
+      );
+
+      return res.status(HttpStatus.OK).send(data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   @UseGuards(JwtAuthGuard)
   @Post('/upload-dataset')
   @UseInterceptors(
@@ -77,12 +101,11 @@ export class CheckDuplicatedController {
   ): Promise<any> {
     try {
       const user = this.authService.verifyToken(req.cookies.token.jwt_token);
-
-      if (user.role !== 3) return;
+      if (user.role !== 2) return;
       // function to train
-      const dataTraining = await this.checkDuplicatedService.trainingData();
+      await this.checkDuplicatedService.trainingData();
 
-      res.status(HttpStatus.OK).send(dataTraining);
+      res.status(HttpStatus.OK).send("success");
       return;
     } catch (error) {
       console.log(error);

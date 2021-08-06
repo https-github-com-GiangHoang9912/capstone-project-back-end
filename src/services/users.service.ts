@@ -119,7 +119,7 @@ export class UserService {
     const user = await this.getUserById(data.userId);
     const isVerifyPassword = user
       ? (await bcrypt.compare(data.oldPassword, user.password)) &&
-        (!await bcrypt.compare(data.newPassword, user.password))
+        !(await bcrypt.compare(data.newPassword, user.password))
       : false;
     if (isVerifyPassword) {
       user.password = await bcrypt.hash(
@@ -183,7 +183,7 @@ export class UserService {
     const user = await this.userRepository.findOne(userId);
     user.refreshToken = randomToken.generate(16);
     user.refreshTokenExp = new Date(
-      moment().utc().add(30, 'minute').format('YYYY/MM/DD HH:mm:ss'),
+      moment().utc().add(CONSTANTS.TOKEN_LIFE, 'minute').format('YYYY/MM/DD HH:mm:ss'),
     );
     await user.save();
     return user.refreshToken;
@@ -199,7 +199,7 @@ export class UserService {
       refreshToken: refreshToken,
       refreshTokenExp: MoreThanOrEqual(currentDate),
     });
-    
+
     if (!user) {
       return null;
     }

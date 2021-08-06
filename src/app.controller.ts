@@ -15,6 +15,7 @@ import { AppService } from './app.service';
 import { LocalAuthGuard } from './auth/local-auth.guard';
 import { Response, Request, request } from 'express';
 import { RefreshTokenGuard } from './auth/refresh-token.guard';
+import * as CONSTANT from './constant'
 
 @Controller()
 export class AppController {
@@ -43,7 +44,7 @@ export class AppController {
         .cookie('token', secretData, {
           sameSite: 'strict',
           path: '/',
-          expires: new Date(new Date().getTime() + 5400 * 1000),
+          expires: new Date(new Date().getTime() + CONSTANT.TOKEN_LIFE * 60000),
           secure: true,
           httpOnly: true,
         })
@@ -66,7 +67,7 @@ export class AppController {
         .cookie('token', secretData, {
           sameSite: 'strict',
           path: '/',
-          expires: new Date(new Date().getTime() + 5400 * 1000),
+          expires: new Date(new Date().getTime() + CONSTANT.TOKEN_LIFE * 60000),
           secure: true,
           httpOnly: true,
         })
@@ -94,7 +95,7 @@ export class AppController {
         .cookie('token', secretData, {
           sameSite: 'strict',
           path: '/',
-          expires: new Date(new Date().getTime() + 5400 * 1000),
+          expires: new Date(new Date().getTime() + CONSTANT.TOKEN_LIFE * 60000),
           secure: true,
           httpOnly: true,
         })
