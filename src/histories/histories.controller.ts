@@ -27,6 +27,8 @@ export class HistoryController {
         historyId,
       );
       return res.status(HttpStatus.OK).send(data);
-    } catch (error) {}
+    } catch (error) {
+      console.error(error)
+    }
   }
 }
