@@ -13,6 +13,7 @@ import {
 } from '@nestjs/common';
 import { Response } from 'express';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { QuestionDto } from 'src/dto/question.dto';
 
 // @UseGuards(JwtAuthGuard) 
 @Controller('questions')
@@ -61,10 +62,10 @@ export class QuestionController {
   @Post('/create/')
   async createQuestion(
     @Res() res: Response,
-    @Body() dataQuestion: any,
+    @Body() dataQuestion: QuestionDto[],
   ): Promise<any> {
     try {
-      dataQuestion.map(async (item: any) => {
+      dataQuestion.map(async (item: QuestionDto) => {
         const data = await this.questionService.createNewQuestion(
           item.questionBankId,
           item.examId,
@@ -79,7 +80,7 @@ export class QuestionController {
   @Put('/update/:id')
   async updateQuestion(
     @Res() res: Response,
-    @Body() dataQuestion: any,
+    @Body() dataQuestion: QuestionDto,
     @Param('id') questionId: number,
   ): Promise<any> {
     try {
