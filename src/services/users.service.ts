@@ -69,6 +69,7 @@ export class UserService {
     return this.userRepository
       .createQueryBuilder('users')
       .where('username like :name', { name: `%${username}%` })
+      .andWhere('role != 1')
       .leftJoinAndSelect('users.contactInfo', 'contacts')
       .getMany();
   }
