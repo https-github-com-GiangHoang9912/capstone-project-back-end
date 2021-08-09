@@ -8,12 +8,12 @@ import {
   UseGuards,
   Req,
 } from '@nestjs/common';
-import { SelfGenerationDto } from 'src/dto/self-generation.dto';
+import { SelfGenerationDto } from '../dto/self-generation.dto';
 import { Response, Request } from 'express';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import * as CONSTANTS from '../constant';
-import { HistoryService } from 'src/services/histories.service';
-import { AuthService } from 'src/auth/auth.service';
+import { HistoryService } from '../services/histories.service';
+import { AuthService } from '../auth/auth.service';
 
 @UseGuards(JwtAuthGuard)
 @Controller('self-generate')

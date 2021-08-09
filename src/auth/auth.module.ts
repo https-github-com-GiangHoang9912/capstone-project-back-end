@@ -1,5 +1,4 @@
 import { JwtStrategy } from './jwt.strategy';
-import { SessionSerializer } from './session.serializer';
 import { Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { UserModule } from '../users/users.module';
@@ -8,7 +7,7 @@ import { LocalStrategy } from './local.strategy';
 import { JwtModule } from '@nestjs/jwt';
 import { config } from 'dotenv';
 import { RefreshStrategy } from './refresh.strategy';
-import { MailModule } from 'src/mail/mail.module';
+import { MailModule } from '../mail/mail.module';
 
 config();
 @Module({

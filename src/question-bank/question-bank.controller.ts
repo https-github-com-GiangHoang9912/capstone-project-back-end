@@ -1,7 +1,7 @@
-import { QuestionBankService } from 'src/services/question-bank.service';
+import { QuestionBankService } from '../services/question-bank.service';
 import { Controller, Post, Res, Body, HttpStatus } from '@nestjs/common';
 import { Response } from 'express';
-import { QuestionBankDto } from 'src/dto/question-bank.dto';
+import { QuestionBankDto } from '../dto/question-bank.dto';
 
 @Controller('question-bank')
 export class QuestionBankController {

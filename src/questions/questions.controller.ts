@@ -12,8 +12,7 @@ import {
   Put,
 } from '@nestjs/common';
 import { Response } from 'express';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
-import { QuestionDto } from 'src/dto/question.dto';
+import { QuestionDto } from '../dto/question.dto';
 
 // @UseGuards(JwtAuthGuard) 
 @Controller('questions')

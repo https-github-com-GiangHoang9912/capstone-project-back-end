@@ -1,7 +1,6 @@
 import { AuthService } from './../auth/auth.service';
 import { HistoryService } from '../services/histories.service';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
-import { JwtService } from '@nestjs/jwt';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import {
   Body,
   Post,
@@ -13,10 +12,9 @@ import {
   UseInterceptors,
   UploadedFile,
 } from '@nestjs/common';
-import { QuestionCheckDuplicatedDto } from 'src/dto/check-duplicated.dto';
-import { CheckDuplicatedService } from 'src/services/check-duplicated.service';
+import { QuestionCheckDuplicatedDto } from '../dto/check-duplicated.dto';
+import { CheckDuplicatedService } from '../services/check-duplicated.service';
 import { Response, Request } from 'express';
-import { v4 as uuidv4 } from 'uuid';
 import * as CONSTANTS from '../constant';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';

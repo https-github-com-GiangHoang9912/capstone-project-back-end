@@ -1,4 +1,4 @@
-import { AnswerGroup } from 'src/entities/answer-groups.entity';
+import { AnswerGroup } from '../entities/answer-groups.entity';
 import { AnswerGroupDto } from './../dto/answer-group.dto';
 import { AnswerGroupService } from '../services/answers-groups.service';
 import {
@@ -13,7 +13,7 @@ import {
   Post,
 } from '@nestjs/common';
 import { Response } from 'express';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 interface DataQuestion {
   currentQuestionAnswerGroup: AnswerGroupDto[];

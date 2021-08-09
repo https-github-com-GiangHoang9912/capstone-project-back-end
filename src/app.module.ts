@@ -1,12 +1,10 @@
 import { AnswersGroupsModule } from './answers-groups/answers-groups.module';
-import { ContactInfo } from './entities/contactInfo.entity';
 import { UserModule } from './users/users.module';
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
-import { User } from './entities/users.entity';
 import { AuthModule } from './auth/auth.module';
 import { config } from 'dotenv';
 import { CheckDuplicatedModule } from './check-duplicated/check-duplicated.module';
@@ -39,7 +37,6 @@ config();
         entitiesDir: 'src/entities',
       },
     }),
-    TypeOrmModule.forFeature([User, ContactInfo]),
     AuthModule,
     CheckDuplicatedModule,
     SelfGenerateModule,
@@ -50,7 +47,7 @@ config();
     SubjectModule,
     QuestionModule,
     QuestionBankModule,
-    AnswersGroupsModule
+    AnswersGroupsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

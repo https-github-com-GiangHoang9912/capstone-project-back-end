@@ -12,16 +12,13 @@ import {
 import { User } from '../entities/users.entity';
 import { UserService } from '../services/users.service';
 import { CreateUserDto } from '../dto/users.dto';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
-import { ContactInfo } from 'src/entities/contactInfo.entity';
-import { GetInformationDto } from 'src/dto/get-info.dto';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { GetInformationDto } from '../dto/get-info.dto';
 import { Response } from 'express';
-import { UpdateInformationDto } from 'src/dto/update-infomation.dto';
-import * as moment from 'moment';
-import { HistoryService } from 'src/services/histories.service';
-import { AuthService } from 'src/auth/auth.service';
+import { UpdateInformationDto } from '../dto/update-infomation.dto';
+import { HistoryService } from '../services/histories.service';
 import * as CONSTANTS from '../constant';
-import { ChangePasswordDto } from 'src/dto/change-password.dto';
+import { ChangePasswordDto } from '../dto/change-password.dto';
 
 @UseGuards(JwtAuthGuard)
 @Controller('user')

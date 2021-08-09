@@ -1,4 +1,3 @@
-import { UserService } from 'src/services/users.service';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { AuthService } from './auth/auth.service';
 import {
@@ -7,28 +6,20 @@ import {
   Post,
   Req,
   UseGuards,
-  Body,
   Res,
   HttpStatus,
 } from '@nestjs/common';
 import { AppService } from './app.service';
 import { LocalAuthGuard } from './auth/local-auth.guard';
-import { Response, Request, request } from 'express';
+import { Response, Request } from 'express';
 import { RefreshTokenGuard } from './auth/refresh-token.guard';
 import * as CONSTANT from './constant'
 
 @Controller()
 export class AppController {
   constructor(
-    private readonly appService: AppService,
     private readonly authService: AuthService,
   ) {}
-
-  // @UseGuards(JwtAuthGuard)
-  @Get()
-  async createAdmin(@Req() req: Request) {
-    await this.appService.seed();
-  }
 
   @UseGuards(LocalAuthGuard)
   @Post('auth/login')
