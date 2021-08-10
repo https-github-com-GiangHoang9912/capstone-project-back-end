@@ -1,18 +1,18 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { HistoryTypeController } from './history-types.controller';
+// import { Test, TestingModule } from '@nestjs/testing';
+// import { HistoryTypeController } from './history-types.controller';
 
-describe('HistoryTypeController', () => {
-  let controller: HistoryTypeController;
+// describe('HistoryTypeController', () => {
+//   let controller: HistoryTypeController;
 
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      controllers: [HistoryTypeController],
-    }).compile();
+//   beforeEach(async () => {
+//     const module: TestingModule = await Test.createTestingModule({
+//       controllers: [HistoryTypeController],
+//     }).compile();
 
-    controller = module.get<HistoryTypeController>(HistoryTypeController);
-  });
+//     controller = module.get<HistoryTypeController>(HistoryTypeController);
+//   });
 
-  it('should be defined', () => {
-    expect(controller).toBeDefined();
-  });
-});
+//   it('should be defined', () => {
+//     expect(controller).toBeDefined();
+//   });
+// });

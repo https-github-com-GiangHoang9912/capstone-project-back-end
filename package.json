@@ -38,6 +38,7 @@
     "handlebars": "^4.7.7",
     "moment": "^2.29.1",
     "mysql2": "^2.2.5",
+    "node-mocks-http": "^1.10.1",
     "passport": "^0.4.1",
     "passport-google-oauth20": "^2.0.0",
     "passport-jwt": "^4.0.0",
@@ -87,7 +88,7 @@
       "^.+\\.(t|j)s$": "ts-jest"
     },
     "collectCoverageFrom": [
-      "**/*.(t|j)s"
+      "**/*.controller.(t|j)s"
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"

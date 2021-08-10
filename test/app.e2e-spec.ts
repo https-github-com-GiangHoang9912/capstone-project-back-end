@@ -1,24 +1,28 @@
+import { AuthService } from './../src/auth/auth.service';
 import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication } from '@nestjs/common';
-import * as request from 'supertest';
-import { AppModule } from './../src/app.module';
+import * as httpMocks from 'node-mocks-http';
 
-describe('AppController (e2e)', () => {
-  let app: INestApplication;
+const app = 'http://localhost:3001';
+
+describe('Auth', () => {
+  let authService: AuthService;
+
+  const req = httpMocks.createRequest();
+  req.res = httpMocks.createResponse();
+
+  const mockAuth = {};
 
   beforeEach(async () => {
-    const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
-    }).compile();
+    const module: TestingModule = await Test.createTestingModule({
+      providers: [AuthService],
+    })
+      .overrideProvider(AuthService)
+      .useValue(mockAuth)
+      .compile();
 
-    app = moduleFixture.createNestApplication();
-    await app.init();
+      authService = module.get<AuthService>(AuthService);
   });
 
-  it('/ (GET)', () => {
-    return request(app.getHttpServer())
-      .get('/')
-      .expect(200)
-      .expect('Hello World!');
+  it('should be login', () => {
   });
 });
