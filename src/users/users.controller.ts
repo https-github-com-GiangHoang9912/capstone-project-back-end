@@ -19,6 +19,8 @@ import { UpdateInformationDto } from '../dto/update-infomation.dto';
 import { HistoryService } from '../services/histories.service';
 import * as CONSTANTS from '../constant';
 import { ChangePasswordDto } from '../dto/change-password.dto';
+import { ActiveUser } from '../dto/active-user.dto';
+import { RoleUser } from '../dto/role-user.dto';
 
 @UseGuards(JwtAuthGuard)
 @Controller('user')
@@ -28,18 +30,11 @@ export class UserController {
     private readonly historyService: HistoryService,
   ) {}
 
-  @Get()
-  getUsers(): Promise<User[]> {
-    return this.userService.getUsers();
-  }
   @Get('/users')
   getAllUsers(): Promise<User[]> {
     return this.userService.getAllUsers();
   }
-  // @Get(':id')
-  // getPostById(@Param('id') id: string) {
-  //   return this.userService.getUserById(id);
-  // }
+
   @Get('/:search/')
   async searchUserByName(
     @Res() res: Response,
@@ -80,11 +75,6 @@ export class UserController {
     }
   }
 
-  // @Post('/contact')
-  // async createContact(@Body() contact: CreateContactInfoDto): Promise<any> {
-  //   this.contactService.createInfo(contact)
-  // }
-
   @Put('/update-information')
   async updateInformation(
     @Body() request: UpdateInformationDto,
@@ -105,7 +95,7 @@ export class UserController {
   }
 
   @Put('/update-active')
-  async updateActive(@Body() request: CreateUserDto): Promise<Object> {
+  async updateActive(@Body() request: ActiveUser): Promise<Object> {
     try {
       const user = await this.userService.updateUserActive(request);
       return user;
@@ -117,7 +107,7 @@ export class UserController {
   }
 
   @Put('/update-role')
-  async updateRole(@Body() request: CreateUserDto): Promise<Object> {
+  async updateRole(@Body() request: RoleUser): Promise<Object> {
     try {
       const user = await this.userService.updateUserRole(request);
       return user;
@@ -128,11 +118,6 @@ export class UserController {
     }
   }
 
-  // @Delete(':id')
-  // async deletePost(@Param('id') id: string) {
-  //   return this.userService.getUsers()
-  // }
-
   @Put('change-password')
   async changePassword(@Body() data: ChangePasswordDto, @Res() res: Response) {
     try {
@@ -142,9 +127,8 @@ export class UserController {
         data.userId,
       );
       const change = await this.userService.changePassword(data);
-      res.send(change);
+      return res.send(change);
     } catch (error) {
-      console.error(error)
       res.send(error);
     }
   }
