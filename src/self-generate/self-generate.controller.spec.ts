@@ -1,18 +1,18 @@
-// import { Test, TestingModule } from '@nestjs/testing';
-// import { SelfGenerateController } from './self-generate.controller';
+import { Test, TestingModule } from '@nestjs/testing';
+import { SelfGenerateController } from './self-generate.controller';
 
-// describe('SelfGenerateController', () => {
-//   let controller: SelfGenerateController;
+describe('SelfGenerateController', () => {
+  let controller: SelfGenerateController;
 
-//   beforeEach(async () => {
-//     const module: TestingModule = await Test.createTestingModule({
-//       controllers: [SelfGenerateController],
-//     }).compile();
+  beforeEach(async () => {
+    const module: TestingModule = await Test.createTestingModule({
+      controllers: [SelfGenerateController],
+    }).compile();
 
-//     controller = module.get<SelfGenerateController>(SelfGenerateController);
-//   });
+    controller = module.get<SelfGenerateController>(SelfGenerateController);
+  });
 
-//   it('should be defined', () => {
-//     expect(controller).toBeDefined();
-//   });
-// });
+  it('should be defined', () => {
+    expect(controller).toBeDefined();
+  });
+});

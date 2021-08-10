@@ -1,5 +1,5 @@
 import { MailService } from './../services/mail.service';
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { UserService } from '../services/users.service';
 import * as bcrypt from 'bcrypt';
 import * as randomToken from 'rand-token';
@@ -31,7 +31,7 @@ export class AuthService {
     const user = await this.usersService.getUserByName(request.body.username);
     // update refresh token
     const refreshJwtToken = await this.usersService.updateRefreshToken(user.id);
-
+    if (!user.active) throw new UnauthorizedException();
     return {
       access_token: this.jwtService.sign({
         name: user.username,
@@ -64,6 +64,9 @@ export class AuthService {
       console.log('loginGoogle-email', res_email);
     }
     // update refresh token
+
+    if (!user.active) throw new UnauthorizedException();
+
     const refreshJwtToken = await this.usersService.updateRefreshToken(user.id);
     return {
       access_token: this.jwtService.sign({
