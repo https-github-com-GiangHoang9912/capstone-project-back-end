@@ -19,7 +19,7 @@ export class QuestionBankController {
       );
       return res.status(HttpStatus.OK).send(data);
     } catch (error) {
-      console.log('createQuestionBank: ', error);
+      
     }
   }
 }

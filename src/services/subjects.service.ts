@@ -15,7 +15,6 @@ export class SubjectService {
   }
 
   async getQuestionBankBySubjectId(subject_id: number): Promise<any> {
-    console.log(subject_id);
     const subject = await this.subjectRepository
       .createQueryBuilder('subjects')
       .where('subjects.id = :id', { id: subject_id })
