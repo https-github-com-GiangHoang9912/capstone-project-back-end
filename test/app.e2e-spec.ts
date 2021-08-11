@@ -1,3 +1,4 @@
+import { UserService } from './../src/services/users.service';
 import { AppController } from './../src/app.controller';
 import { AuthService } from './../src/auth/auth.service';
 import { Test, TestingModule } from '@nestjs/testing';
@@ -12,15 +13,18 @@ describe('Auth', () => {
   const req = httpMocks.createRequest();
   req.res = httpMocks.createResponse();
 
-  const mockAuth = {};
+  const mockAuthService = {};
+  const userService = {};
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [AppController],
-      providers: [AuthService],
+      providers: [AuthService, UserService],
     })
       .overrideProvider(AuthService)
-      .useValue(mockAuth)
+      .useValue(mockAuthService)
+      .overrideProvider(UserService)
+      .useValue(userService)
       .compile();
 
       authService = module.get<AuthService>(AuthService);

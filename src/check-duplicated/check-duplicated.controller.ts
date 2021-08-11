@@ -46,9 +46,7 @@ export class CheckDuplicatedController {
         questions.question,
       );
       return res.status(HttpStatus.OK).send(data.data);
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   }
 
   @Post('/train-sentences')
@@ -61,7 +59,7 @@ export class CheckDuplicatedController {
       const user = this.authService.verifyToken(req.cookies.token.jwt_token);
       await this.historyService.createHistory(
         CONSTANTS.HISTORY_TYPE.DUPLICATE,
-        "Training data for duplicate model",
+        'Training data for duplicate model',
         user.sub,
       );
 
@@ -70,9 +68,7 @@ export class CheckDuplicatedController {
       );
 
       return res.status(HttpStatus.OK).send(data.data);
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   }
 
   @UseGuards(JwtAuthGuard)
@@ -94,7 +90,7 @@ export class CheckDuplicatedController {
   )
   async uploadDataset(
     @Req() req: Request,
-    @UploadedFile() file,
+    // @UploadedFile() file,
     @Res() res: Response,
   ): Promise<any> {
     try {
@@ -103,10 +99,7 @@ export class CheckDuplicatedController {
       // function to train
       await this.checkDuplicatedService.trainingData();
 
-      res.status(HttpStatus.OK).send("success");
-      return;
-    } catch (error) {
-      console.log(error);
-    }
+      return res.status(HttpStatus.OK).send('success');
+    } catch (error) {}
   }
 }
