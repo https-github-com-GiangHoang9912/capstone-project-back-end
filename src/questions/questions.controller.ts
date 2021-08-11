@@ -28,7 +28,7 @@ export class QuestionController {
       const data = await this.questionService.deleteQuestion(questionId);
       return res.status(HttpStatus.OK).send(data);
     } catch (error) {
-      console.log('Fail delete question: ', error);
+    
     }
   }
 
@@ -41,7 +41,7 @@ export class QuestionController {
       const data = await this.questionService.getQuestionsByExamId(examId);
       return res.status(HttpStatus.OK).send(data);
     } catch (error) {
-      console.log('getQuestionByExamId: ', error);
+      
     }
   }
 
@@ -54,7 +54,7 @@ export class QuestionController {
       const data = await this.questionService.getQuestionDetail(id);
       return res.status(HttpStatus.OK).send(data);
     } catch (error) {
-      console.log('getQuestionDetail: ', error);
+      
     }
   }
 
@@ -72,7 +72,7 @@ export class QuestionController {
         return res.status(HttpStatus.OK).send(data);
       });
     } catch (error) {
-      console.log('createQuestion: ', error);
+      
     }
   }
 
@@ -89,8 +89,7 @@ export class QuestionController {
       );
       return res.status(HttpStatus.OK).send(updateQuestion);
     } catch (error) {
-      console.log('updateQuestion', error);
-
+      
     }
   }
 }
