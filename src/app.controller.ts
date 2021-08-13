@@ -36,7 +36,6 @@ export class AppController {
           sameSite: 'strict',
           path: '/',
           expires: new Date(new Date().getTime() + CONSTANT.TOKEN_LIFE * 60000),
-          secure: true,
           httpOnly: true,
         })
         .send(info.account);
@@ -59,7 +58,6 @@ export class AppController {
           sameSite: 'strict',
           path: '/',
           expires: new Date(new Date().getTime() + CONSTANT.TOKEN_LIFE * 60000),
-          secure: true,
           httpOnly: true,
         })
         .send(info.account);
@@ -88,7 +86,6 @@ export class AppController {
           sameSite: 'strict',
           path: '/',
           expires: new Date(new Date().getTime() + CONSTANT.TOKEN_LIFE * 60000),
-          secure: true,
           httpOnly: true,
         })
         .send('refresh token successful');
@@ -106,7 +103,6 @@ export class AppController {
         .cookie('token', "", {
           sameSite: 'strict',
           path: '/',
-          secure: true,
           httpOnly: true,
         })
         .send("logout");
