@@ -184,7 +184,10 @@ export class UserService {
     const user = await this.userRepository.findOne(userId);
     user.refreshToken = randomToken.generate(16);
     user.refreshTokenExp = new Date(
-      moment().utc().add(CONSTANTS.TOKEN_LIFE, 'minute').format('YYYY/MM/DD HH:mm:ss'),
+      moment()
+        .utc()
+        .add(CONSTANTS.TOKEN_LIFE, 'minute')
+        .format('YYYY/MM/DD HH:mm:ss'),
     );
     await user.save();
     return user.refreshToken;
@@ -236,5 +239,32 @@ export class UserService {
     user.role = req.roleValue;
     user.save();
     return user;
+  }
+
+  async getUserByEmail(email: string) {
+    const user = await this.userRepository
+      .createQueryBuilder('users')
+      .leftJoinAndSelect('users.contactInfo', 'contacts')
+      .where('contacts.email = :email', { email: email })
+      .getOne();
+
+    return user;
+  }
+
+  async forgotPassword(email: string): Promise<any> {
+    const user = await this.getUserByEmail(email);
+    const randomPassword = Math.random().toString(36).slice(-8);
+    if (user) {
+      user.password = await bcrypt.hash(
+        randomPassword,
+        CONSTANTS.ROUND_HASH_PASSWORD.ROUND,
+      );
+      await user.save();
+
+      return {
+        password: randomPassword,
+        user: user,
+      };
+    }
   }
 }

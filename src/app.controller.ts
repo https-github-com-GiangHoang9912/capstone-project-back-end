@@ -1,3 +1,5 @@
+import { UserService } from './services/users.service';
+import { MailService } from './services/mail.service';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { AuthService } from './auth/auth.service';
 import {
@@ -13,12 +15,14 @@ import { AppService } from './app.service';
 import { LocalAuthGuard } from './auth/local-auth.guard';
 import { Response, Request } from 'express';
 import { RefreshTokenGuard } from './auth/refresh-token.guard';
-import * as CONSTANT from './constant'
-
+import * as CONSTANT from './constant';
+import * as bcrypt from 'bcrypt';
 @Controller()
 export class AppController {
   constructor(
     private readonly authService: AuthService,
+    private readonly mailService: MailService,
+    private readonly userService: UserService,
   ) {}
 
   @UseGuards(LocalAuthGuard)
@@ -35,7 +39,9 @@ export class AppController {
         .cookie('token', secretData, {
           sameSite: 'strict',
           path: '/',
+          maxAge: 1.5 * 60 * 60 * 1000,
           expires: new Date(new Date().getTime() + CONSTANT.TOKEN_LIFE * 60000),
+          secure: true,
           httpOnly: true,
         })
         .send(info.account);
@@ -57,12 +63,14 @@ export class AppController {
         .cookie('token', secretData, {
           sameSite: 'strict',
           path: '/',
+          maxAge: 1.5 * 60 * 60 * 1000,
           expires: new Date(new Date().getTime() + CONSTANT.TOKEN_LIFE * 60000),
+          secure: true,
           httpOnly: true,
         })
         .send(info.account);
     } catch (error) {
-      res.send(error.response)
+      res.send(error.response);
       console.log('loginByGoogle\n', error);
     }
   }
@@ -85,7 +93,9 @@ export class AppController {
         .cookie('token', secretData, {
           sameSite: 'strict',
           path: '/',
+          maxAge: 1.5 * 60 * 60 * 1000,
           expires: new Date(new Date().getTime() + CONSTANT.TOKEN_LIFE * 60000),
+          secure: true,
           httpOnly: true,
         })
         .send('refresh token successful');
@@ -100,14 +110,27 @@ export class AppController {
     try {
       res
         .status(HttpStatus.ACCEPTED)
-        .cookie('token', "", {
+        .cookie('token', '', {
           sameSite: 'strict',
           path: '/',
           httpOnly: true,
         })
-        .send("logout");
+        .send('logout');
     } catch (error) {
       console.log('logout\n', error);
+    }
+  }
+
+  @Post('/forgot-password')
+  async forgotPassword(@Req() req: Request, @Res() res: Response) {
+    try {
+      const dataResponse = await this.userService.forgotPassword(req.body.email)
+      if (dataResponse) {
+        await this.mailService.sendGoogleEmail(dataResponse.user, dataResponse.password)
+      }
+      return res.status(HttpStatus.OK).send('send password to ' + req.body.email);
+    } catch (error) {
+      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(error);
     }
   }
 }
