@@ -44,9 +44,7 @@ export class AnswerGroupService {
   ): Promise<AnswerGroup> {
     try {
       const answerGroup = await this.answerGroupRepository.findOne({ id: idAnswerGroup });
-      console.log('kaakkaakaka', correct);
       answerGroup.correct = correct;
-      console.log('answerGroup', answerGroup);
       answerGroup.save();
       return answerGroup;
     } catch (err) {

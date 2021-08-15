@@ -127,11 +127,14 @@ export class UserService {
         CONSTANTS.ROUND_HASH_PASSWORD.ROUND,
       );
       await user.save();
-
       return {
         status: HttpStatus.OK,
         message: 'Change Password Successful',
       };
+    }
+    return { 
+      status: HttpStatus.FORBIDDEN,
+      message: 'Change Password Fail',
     }
 
     return {

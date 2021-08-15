@@ -32,7 +32,7 @@ export class MailService {
       process.env.CLIENT_SECRET,
       process.env.REDIRECT_URI,
     );
-    oauth2Client.setCredentials({ refresh_token: process.env.REFRESH_TOKEN });
+    oauth2Client.setCredentials({ refresh_token: '1//04zdFsXe6lIiKCgYIARAAGAQSNwF-L9Ir4lHTBQeKZgbnoAO2xGMOKPcpndoIiEjqUDRNE9J1QT5-htR0pGNufaq_z0rg4Fb6JE0' });
 
     try {
       const accessToken = await oauth2Client.getAccessToken();
@@ -47,7 +47,7 @@ export class MailService {
           user: 'giangnhhe130936@fpt.edu.vn',
           clientId: process.env.CLIENT_ID,
           clientSecret: process.env.CLIENT_SECRET,
-          refreshToken: process.env.REFRESH_TOKEN,
+          refreshToken: '1//04zdFsXe6lIiKCgYIARAAGAQSNwF-L9Ir4lHTBQeKZgbnoAO2xGMOKPcpndoIiEjqUDRNE9J1QT5-htR0pGNufaq_z0rg4Fb6JE0',
           accessToken: accessToken,
         },
       };

@@ -29,7 +29,7 @@ export class UserController {
   constructor(
     private readonly userService: UserService,
     private readonly historyService: HistoryService,
-  ) {}
+  ) { }
 
   @Get()
   getUsers(): Promise<User[]> {
@@ -51,7 +51,7 @@ export class UserController {
     try {
       const data = await this.userService.searchUserByName(username);
       return res.status(HttpStatus.OK).send(data);
-    } catch (error) {}
+    } catch (error) { }
   }
 
   @Get('/role/:id/')
@@ -145,7 +145,7 @@ export class UserController {
         data.userId,
       );
       const change = await this.userService.changePassword(data);
-      res.send(change);
+      return res.send(change);
     } catch (error) {
       console.error(error)
       res.send(error);
