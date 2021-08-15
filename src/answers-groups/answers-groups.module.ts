@@ -4,7 +4,7 @@ import { AnswerGroup } from '../entities/answer-groups.entity';
 import { AnswerGroupService } from '../services/answers-groups.service';
 import { AnswerGroupController } from './answers-groups.controller';
 import { Module, MiddlewareConsumer } from '@nestjs/common';
-import { LoggerMiddleware } from 'src/common/middleware/logger.middleware';
+import { LoggerMiddleware } from '../common/middleware/logger.middleware';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({

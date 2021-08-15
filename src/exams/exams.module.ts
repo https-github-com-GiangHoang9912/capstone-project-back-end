@@ -5,7 +5,7 @@ import { Exam } from '../entities/exams.entity';
 import { ExamService } from '../services/exams.service';
 import { ExamController } from './exams.controller';
 import { Module, MiddlewareConsumer } from '@nestjs/common';
-import { LoggerMiddleware } from 'src/common/middleware/logger.middleware';
+import { LoggerMiddleware } from '../common/middleware/logger.middleware';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({

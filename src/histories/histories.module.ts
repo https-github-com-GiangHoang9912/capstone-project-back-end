@@ -3,7 +3,7 @@ import { HistoryType } from '../entities/history-types.entity';
 import { HistoryService } from '../services/histories.service';
 import { HistoryController } from './histories.controller';
 import { Module, MiddlewareConsumer } from '@nestjs/common';
-import { LoggerMiddleware } from 'src/common/middleware/logger.middleware';
+import { LoggerMiddleware } from '../common/middleware/logger.middleware';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({

@@ -9,7 +9,7 @@ import {
   Get,
 } from '@nestjs/common';
 import { Response } from 'express';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @UseGuards(JwtAuthGuard)
 @Controller('subject')
@@ -29,14 +29,14 @@ export class SubjectController {
     @Res() res: Response,
     @Param('id') subjectId: number,
   ): Promise<any> {
-    console.log(subjectId);
+
     try {
       const data = await this.subjectService.getQuestionBankBySubjectId(
         subjectId,
       );
       return res.status(HttpStatus.OK).send(data);
     } catch (error) {
-      console.log('Fail get Subject by id: ', error);
+      
     }
   }
 }

@@ -7,9 +7,8 @@ import {
   UseGuards,
   Get,
 } from '@nestjs/common';
-import { SelfGenerationDto } from 'src/dto/self-generation.dto';
 import { Response } from 'express';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @UseGuards(JwtAuthGuard)
 @Controller('history-type')

@@ -12,7 +12,7 @@ import {
   Put,
 } from '@nestjs/common';
 import { Response } from 'express';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { QuestionDto } from '../dto/question.dto';
 
 // @UseGuards(JwtAuthGuard) 
 @Controller('questions')
@@ -28,7 +28,7 @@ export class QuestionController {
       const data = await this.questionService.deleteQuestion(questionId);
       return res.status(HttpStatus.OK).send(data);
     } catch (error) {
-      console.log('Fail delete question: ', error);
+    
     }
   }
 
@@ -41,7 +41,7 @@ export class QuestionController {
       const data = await this.questionService.getQuestionsByExamId(examId);
       return res.status(HttpStatus.OK).send(data);
     } catch (error) {
-      console.log('getQuestionByExamId: ', error);
+      
     }
   }
 
@@ -54,17 +54,17 @@ export class QuestionController {
       const data = await this.questionService.getQuestionDetail(id);
       return res.status(HttpStatus.OK).send(data);
     } catch (error) {
-      console.log('getQuestionDetail: ', error);
+      
     }
   }
 
   @Post('/create/')
   async createQuestion(
     @Res() res: Response,
-    @Body() dataQuestion: any,
+    @Body() dataQuestion: QuestionDto[],
   ): Promise<any> {
     try {
-      dataQuestion.map(async (item: any) => {
+      dataQuestion.map(async (item: QuestionDto) => {
         const data = await this.questionService.createNewQuestion(
           item.questionBankId,
           item.examId,
@@ -72,14 +72,14 @@ export class QuestionController {
         return res.status(HttpStatus.OK).send(data);
       });
     } catch (error) {
-      console.log('createQuestion: ', error);
+      
     }
   }
 
   @Put('/update/:id')
   async updateQuestion(
     @Res() res: Response,
-    @Body() dataQuestion: any,
+    @Body() dataQuestion: QuestionDto,
     @Param('id') questionId: number,
   ): Promise<any> {
     try {
@@ -89,8 +89,7 @@ export class QuestionController {
       );
       return res.status(HttpStatus.OK).send(updateQuestion);
     } catch (error) {
-      console.log('updateQuestion', error);
-
+      
     }
   }
 }

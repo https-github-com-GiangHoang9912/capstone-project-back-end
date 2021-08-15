@@ -2,7 +2,7 @@ import { Subject } from '../entities/subjects.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { QuestionBank } from 'src/entities/question-bank.entity';
+import { QuestionBank } from '../entities/question-bank.entity';
 
 @Injectable()
 export class QuestionBankService {

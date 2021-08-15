@@ -1,9 +1,9 @@
 import { AuthModule } from './../auth/auth.module';
 import { HistoryModule } from '../histories/histories.module';
-import { CheckDuplicatedService } from 'src/services/check-duplicated.service';
+import { CheckDuplicatedService } from '../services/check-duplicated.service';
 import { CheckDuplicatedController } from './check-duplicated.controller';
 import { Module, MiddlewareConsumer } from '@nestjs/common';
-import { LoggerMiddleware } from 'src/common/middleware/logger.middleware';
+import { LoggerMiddleware } from '../common/middleware/logger.middleware';
 
 @Module({
   imports: [HistoryModule, AuthModule],

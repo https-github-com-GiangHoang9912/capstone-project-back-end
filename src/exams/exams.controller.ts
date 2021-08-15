@@ -1,4 +1,4 @@
-import { QuestionBank } from 'src/entities/question-bank.entity';
+import { QuestionBank } from '../entities/question-bank.entity';
 import { QuestionService } from './../services/questions.service';
 import { ExamService } from '../services/exams.service';
 import {
@@ -13,9 +13,8 @@ import {
   Delete,
 } from '@nestjs/common';
 import { Response } from 'express';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
-import { ExamInfoDto } from 'src/dto/create-exam.dto';
-import { QuestionBankService } from 'src/services/question-bank.service';
+import { ExamInfoDto } from '../dto/create-exam.dto';
+import { QuestionBankService } from '../services/question-bank.service';
 
 // @UseGuards(JwtAuthGuard)
 @Controller('exam')

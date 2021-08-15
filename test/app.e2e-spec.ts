@@ -1,24 +1,37 @@
+import { UserService } from './../src/services/users.service';
+import { AppController } from './../src/app.controller';
+import { AuthService } from './../src/auth/auth.service';
 import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication } from '@nestjs/common';
-import * as request from 'supertest';
-import { AppModule } from './../src/app.module';
+import * as httpMocks from 'node-mocks-http';
 
-describe('AppController (e2e)', () => {
-  let app: INestApplication;
+const app = 'http://localhost:3001';
+
+describe('Auth', () => {
+  let authService: AuthService;
+  let appController : AppController;
+
+  const req = httpMocks.createRequest();
+  req.res = httpMocks.createResponse();
+
+  const mockAuthService = {};
+  const userService = {};
 
   beforeEach(async () => {
-    const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
-    }).compile();
+    const module: TestingModule = await Test.createTestingModule({
+      imports: [AppController],
+      providers: [AuthService, UserService],
+    })
+      .overrideProvider(AuthService)
+      .useValue(mockAuthService)
+      .overrideProvider(UserService)
+      .useValue(userService)
+      .compile();
 
-    app = moduleFixture.createNestApplication();
-    await app.init();
+      authService = module.get<AuthService>(AuthService);
+      appController = module.get<AppController>(AppController);
   });
 
-  it('/ (GET)', () => {
-    return request(app.getHttpServer())
-      .get('/')
-      .expect(200)
-      .expect('Hello World!');
+  it('should be login', () => {
+    expect(appController.login(req, req.res)).toHaveBeenCalled()
   });
 });

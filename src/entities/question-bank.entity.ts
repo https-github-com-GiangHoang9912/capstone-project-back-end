@@ -1,5 +1,5 @@
-import { Subject } from 'src/entities/subjects.entity';
-import { Question } from 'src/entities/questions.entity';
+import { Subject } from '../entities/subjects.entity';
+import { Question } from '../entities/questions.entity';
 import {
   Column,
   Entity,

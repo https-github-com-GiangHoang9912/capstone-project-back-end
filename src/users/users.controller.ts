@@ -12,16 +12,15 @@ import {
 import { User } from '../entities/users.entity';
 import { UserService } from '../services/users.service';
 import { CreateUserDto } from '../dto/users.dto';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
-import { ContactInfo } from 'src/entities/contactInfo.entity';
-import { GetInformationDto } from 'src/dto/get-info.dto';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { GetInformationDto } from '../dto/get-info.dto';
 import { Response } from 'express';
-import { UpdateInformationDto } from 'src/dto/update-infomation.dto';
-import * as moment from 'moment';
-import { HistoryService } from 'src/services/histories.service';
-import { AuthService } from 'src/auth/auth.service';
+import { UpdateInformationDto } from '../dto/update-infomation.dto';
+import { HistoryService } from '../services/histories.service';
 import * as CONSTANTS from '../constant';
-import { ChangePasswordDto } from 'src/dto/change-password.dto';
+import { ChangePasswordDto } from '../dto/change-password.dto';
+import { ActiveUser } from '../dto/active-user.dto';
+import { RoleUser } from '../dto/role-user.dto';
 
 @UseGuards(JwtAuthGuard)
 @Controller('user')
@@ -31,18 +30,11 @@ export class UserController {
     private readonly historyService: HistoryService,
   ) { }
 
-  @Get()
-  getUsers(): Promise<User[]> {
-    return this.userService.getUsers();
-  }
   @Get('/users')
   getAllUsers(): Promise<User[]> {
     return this.userService.getAllUsers();
   }
-  // @Get(':id')
-  // getPostById(@Param('id') id: string) {
-  //   return this.userService.getUserById(id);
-  // }
+
   @Get('/:search/')
   async searchUserByName(
     @Res() res: Response,
@@ -83,11 +75,6 @@ export class UserController {
     }
   }
 
-  // @Post('/contact')
-  // async createContact(@Body() contact: CreateContactInfoDto): Promise<any> {
-  //   this.contactService.createInfo(contact)
-  // }
-
   @Put('/update-information')
   async updateInformation(
     @Body() request: UpdateInformationDto,
@@ -108,7 +95,7 @@ export class UserController {
   }
 
   @Put('/update-active')
-  async updateActive(@Body() request: CreateUserDto): Promise<Object> {
+  async updateActive(@Body() request: ActiveUser): Promise<Object> {
     try {
       const user = await this.userService.updateUserActive(request);
       return user;
@@ -120,7 +107,7 @@ export class UserController {
   }
 
   @Put('/update-role')
-  async updateRole(@Body() request: CreateUserDto): Promise<Object> {
+  async updateRole(@Body() request: RoleUser): Promise<Object> {
     try {
       const user = await this.userService.updateUserRole(request);
       return user;
@@ -130,11 +117,6 @@ export class UserController {
       };
     }
   }
-
-  // @Delete(':id')
-  // async deletePost(@Param('id') id: string) {
-  //   return this.userService.getUsers()
-  // }
 
   @Put('change-password')
   async changePassword(@Body() data: ChangePasswordDto, @Res() res: Response) {
@@ -147,7 +129,6 @@ export class UserController {
       const change = await this.userService.changePassword(data);
       return res.send(change);
     } catch (error) {
-      console.error(error)
       res.send(error);
     }
   }

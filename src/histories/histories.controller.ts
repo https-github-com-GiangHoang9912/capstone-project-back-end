@@ -8,7 +8,7 @@ import {
   Get,
 } from '@nestjs/common';
 import { Response } from 'express';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @UseGuards(JwtAuthGuard)
 @Controller('history')
@@ -28,7 +28,7 @@ export class HistoryController {
       );
       return res.status(HttpStatus.OK).send(data);
     } catch (error) {
-      console.error(error)
+      
     }
   }
 }

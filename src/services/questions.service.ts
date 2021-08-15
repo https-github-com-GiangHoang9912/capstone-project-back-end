@@ -2,10 +2,8 @@ import { Exam } from '../entities/exams.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Subject } from 'src/entities/subjects.entity';
-import { Question } from 'src/entities/questions.entity';
-import { AnswerGroup } from 'src/entities/answer-groups.entity';
-import { QuestionBank } from 'src/entities/question-bank.entity';
+import { Question } from '../entities/questions.entity';
+import { AnswerGroup } from '../entities/answer-groups.entity';
 
 @Injectable()
 export class QuestionService {
