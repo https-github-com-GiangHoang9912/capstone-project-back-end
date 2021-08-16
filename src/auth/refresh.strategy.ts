@@ -14,6 +14,9 @@ export class RefreshStrategy extends PassportStrategy(Strategy, 'refresh') {
       jwtFromRequest: ExtractJwt.fromExtractors([
         (request: Request) => {
           const secretData = request?.cookies['token'];
+          if (secretData === "") {
+            request.res.redirect("https://ddsgq.xyz/login")
+          }
           return secretData?.jwt_token;
         },
       ]),
