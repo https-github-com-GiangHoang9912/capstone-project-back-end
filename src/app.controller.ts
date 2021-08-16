@@ -121,14 +121,35 @@ export class AppController {
     }
   }
 
+  @Post('/verify-user')
+  async verifyUser(@Req() req: Request, @Res() res: Response) {
+    try {
+      const dataResponse = await this.userService.getUserByEmail(
+        req.body.email,
+      );
+      if (!dataResponse) {
+        return res
+          .status(HttpStatus.INTERNAL_SERVER_ERROR)
+          .send('email is not correct');
+      }
+      await this.mailService.sendGoogleEmailForgot(dataResponse);
+      return res.status(HttpStatus.OK).send('send verify to ' + req.body.email);
+    } catch (error) {
+      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(error);
+    }
+  }
+
   @Post('/forgot-password')
   async forgotPassword(@Req() req: Request, @Res() res: Response) {
     try {
-      const dataResponse = await this.userService.forgotPassword(req.body.email)
-      if (dataResponse) {
-        await this.mailService.sendGoogleEmail(dataResponse.user, dataResponse.password)
-      }
-      return res.status(HttpStatus.OK).send('send password to ' + req.body.email);
+      const dataResponse = await this.userService.forgotPassword(
+        req.body.email,
+      );
+      await this.mailService.sendGoogleEmail(
+        dataResponse.user,
+        dataResponse.password,
+      );
+      return res.redirect("https://ddsgq.xyz/login")
     } catch (error) {
       return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(error);
     }
