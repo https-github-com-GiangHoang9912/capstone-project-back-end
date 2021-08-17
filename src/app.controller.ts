@@ -10,6 +10,7 @@ import {
   UseGuards,
   Res,
   HttpStatus,
+  Query,
 } from '@nestjs/common';
 import { AppService } from './app.service';
 import { LocalAuthGuard } from './auth/local-auth.guard';
@@ -17,6 +18,10 @@ import { Response, Request } from 'express';
 import { RefreshTokenGuard } from './auth/refresh-token.guard';
 import * as CONSTANT from './constant';
 import * as bcrypt from 'bcrypt';
+
+interface IEmail {
+  email: string;
+}
 @Controller()
 export class AppController {
   constructor(
@@ -24,6 +29,24 @@ export class AppController {
     private readonly mailService: MailService,
     private readonly userService: UserService,
   ) {}
+
+  @Get('/forgot-password')
+  async forgotPassword(
+    @Res() req: Request,
+    @Res() res: Response,
+    @Query() query: IEmail,
+  ) {
+    try {
+      const dataResponse = await this.userService.forgotPassword(query.email);
+      await this.mailService.sendGoogleEmail(
+        dataResponse.user,
+        dataResponse.password,
+      );
+      return res.redirect('https://ddsgq.xyz/login');
+    } catch (error) {
+      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(error);
+    }
+  }
 
   @UseGuards(LocalAuthGuard)
   @Post('auth/login')
@@ -134,22 +157,6 @@ export class AppController {
       }
       await this.mailService.sendGoogleEmailForgot(dataResponse);
       return res.status(HttpStatus.OK).send('send verify to ' + req.body.email);
-    } catch (error) {
-      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(error);
-    }
-  }
-
-  @Post('/forgot-password')
-  async forgotPassword(@Req() req: Request, @Res() res: Response) {
-    try {
-      const dataResponse = await this.userService.forgotPassword(
-        req.body.email,
-      );
-      await this.mailService.sendGoogleEmail(
-        dataResponse.user,
-        dataResponse.password,
-      );
-      return res.redirect("https://ddsgq.xyz/login")
     } catch (error) {
       return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(error);
     }
