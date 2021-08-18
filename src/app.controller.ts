@@ -17,13 +17,15 @@ import { Response, Request } from 'express';
 import { RefreshTokenGuard } from './auth/refresh-token.guard';
 import * as CONSTANT from './constant';
 import * as bcrypt from 'bcrypt';
+import { HistoryService } from './services/histories.service';
 @Controller()
 export class AppController {
   constructor(
     private readonly authService: AuthService,
     private readonly mailService: MailService,
     private readonly userService: UserService,
-  ) {}
+    private readonly historyService: HistoryService,
+  ) { }
 
   @UseGuards(LocalAuthGuard)
   @Post('auth/login')
@@ -124,10 +126,18 @@ export class AppController {
   @Post('/forgot-password')
   async forgotPassword(@Req() req: Request, @Res() res: Response) {
     try {
+      console.log('kiki', req.body.email)
       const dataResponse = await this.userService.forgotPassword(req.body.email)
+      const user = await this.  userService.getUserByEmail(req.body.emailail.trim());
+      console.log('user', user)
       if (dataResponse) {
         await this.mailService.sendGoogleEmail(dataResponse.user, dataResponse.password)
       }
+      await this.historyService.createHistory(
+        CONSTANT.HISTORY_TYPE.FORGOT_PASSWORD,
+        'Forgot Password',
+        user.id,
+      );
       return res.status(HttpStatus.OK).send('send password to ' + req.body.email);
     } catch (error) {
       return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(error);

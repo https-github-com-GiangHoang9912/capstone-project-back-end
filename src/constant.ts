@@ -13,6 +13,10 @@ export const HISTORY_TYPE = {
   DUPLICATE: 2,
   UPDATE_PROFILE: 3,
   CHANGE_PASSWORD: 4,
+  FORGOT_PASSWORD: 5,
+  EDIT_EXAM: 6,
+  CREATE_EXAM: 7,
+  DELETE_EXAM: 8
 };
 
 export const API_MODEL_DUPLICATED = 'https://ddsgq.xyz/api/duplicate';
