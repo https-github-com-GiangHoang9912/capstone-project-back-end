@@ -25,7 +25,7 @@ export class SelfGenerateController {
   ) {}
 
   @Post('/')
-  async createUser(
+  async selfGenerate(
     @Req() req: Request,
     @Body() body: SelfGenerationDto[],
     @Res() res: Response,
@@ -42,7 +42,6 @@ export class SelfGenerateController {
       const data = await this.generateService.generationQuestions(body);
       return res.status(HttpStatus.OK).send(data);
     } catch (error) {
-      console.log(error)
       res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(error);
     }
   }

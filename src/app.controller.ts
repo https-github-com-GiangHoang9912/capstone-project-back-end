@@ -31,11 +31,7 @@ export class AppController {
   ) {}
 
   @Get('/forgot-password')
-  async forgotPassword(
-    @Res() req: Request,
-    @Res() res: Response,
-    @Query() query: IEmail,
-  ) {
+  async forgotPassword(@Res() res: Response, @Query() query: IEmail) {
     try {
       const dataResponse = await this.userService.forgotPassword(query.email);
       await this.mailService.sendGoogleEmail(
@@ -57,7 +53,7 @@ export class AppController {
         jwt_token: info.access_token,
         refresh_token: info.refresh_token,
       };
-      res
+      return res
         .status(HttpStatus.ACCEPTED)
         .cookie('token', secretData, {
           sameSite: 'strict',
@@ -81,7 +77,7 @@ export class AppController {
         jwt_token: info.access_token,
         refresh_token: info.refresh_token,
       };
-      res
+      return res
         .status(HttpStatus.ACCEPTED)
         .cookie('token', secretData, {
           sameSite: 'strict',
@@ -111,7 +107,7 @@ export class AppController {
         jwt_token: token,
         refresh_token: refreshToken,
       };
-      res
+      return res
         .status(HttpStatus.ACCEPTED)
         .cookie('token', secretData, {
           sameSite: 'strict',
@@ -131,7 +127,7 @@ export class AppController {
   @Get('/logout')
   async logout(@Res() res: Response) {
     try {
-      res
+      return res
         .status(HttpStatus.ACCEPTED)
         .cookie('token', '', {
           sameSite: 'strict',

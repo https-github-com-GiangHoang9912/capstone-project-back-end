@@ -23,10 +23,12 @@ export class QuestionBankService {
     subjectId: number,
     questionText: string,
   ): Promise<QuestionBank> {
-    const questions = await this.questionBankRepository.create({
-      questionText: questionText,
-      subjectId: subjectId,
-    }).save()
+    const questions = await this.questionBankRepository
+      .create({
+        questionText: questionText,
+        subjectId: subjectId,
+      })
+      .save();
 
     return questions;
   }

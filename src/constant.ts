@@ -18,7 +18,6 @@ export const HISTORY_TYPE = {
 export const API_MODEL_DUPLICATED = 'http://localhost:8000/duplicate';
 export const API_MODEL_GENERATION = 'http://0.0.0.0:8080/generate';
 
-
 export const TOKEN_LIFE = 90;
 
-export const BASE_URL = 'https://ddsgq.xyz/api'
+export const BASE_URL = 'https://ddsgq.xyz/api';

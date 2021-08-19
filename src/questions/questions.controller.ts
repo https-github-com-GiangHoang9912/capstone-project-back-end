@@ -14,10 +14,10 @@ import {
 import { Response } from 'express';
 import { QuestionDto } from '../dto/question.dto';
 
-// @UseGuards(JwtAuthGuard) 
+// @UseGuards(JwtAuthGuard)
 @Controller('questions')
 export class QuestionController {
-  constructor(private readonly questionService: QuestionService) { }
+  constructor(private readonly questionService: QuestionService) {}
 
   @Delete('/delete/:id/')
   async deleteQuestionById(
@@ -27,9 +27,7 @@ export class QuestionController {
     try {
       const data = await this.questionService.deleteQuestion(questionId);
       return res.status(HttpStatus.OK).send(data);
-    } catch (error) {
-    
-    }
+    } catch (error) {}
   }
 
   @Get('/examId/:id/')
@@ -40,9 +38,7 @@ export class QuestionController {
     try {
       const data = await this.questionService.getQuestionsByExamId(examId);
       return res.status(HttpStatus.OK).send(data);
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   }
 
   @Get('/:id/')
@@ -53,9 +49,7 @@ export class QuestionController {
     try {
       const data = await this.questionService.getQuestionDetail(id);
       return res.status(HttpStatus.OK).send(data);
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   }
 
   @Post('/create/')
@@ -64,16 +58,15 @@ export class QuestionController {
     @Body() dataQuestion: QuestionDto[],
   ): Promise<any> {
     try {
-      dataQuestion.map(async (item: QuestionDto) => {
+      const newData = dataQuestion.map(async (item: QuestionDto) => {
         const data = await this.questionService.createNewQuestion(
           item.questionBankId,
           item.examId,
         );
-        return res.status(HttpStatus.OK).send(data);
+        return data;
       });
-    } catch (error) {
-      
-    }
+      return res.status(HttpStatus.OK).send(newData);
+    } catch (error) {}
   }
 
   @Put('/update/:id')
@@ -88,8 +81,6 @@ export class QuestionController {
         dataQuestion.answerGroupId,
       );
       return res.status(HttpStatus.OK).send(updateQuestion);
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   }
 }

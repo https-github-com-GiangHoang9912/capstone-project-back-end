@@ -29,14 +29,11 @@ export class SubjectController {
     @Res() res: Response,
     @Param('id') subjectId: number,
   ): Promise<any> {
-
     try {
       const data = await this.subjectService.getQuestionBankBySubjectId(
         subjectId,
       );
       return res.status(HttpStatus.OK).send(data);
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   }
 }

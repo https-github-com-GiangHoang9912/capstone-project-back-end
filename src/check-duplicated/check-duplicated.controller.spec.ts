@@ -5,23 +5,22 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { CheckDuplicatedController } from './check-duplicated.controller';
 import * as httpMocks from 'node-mocks-http';
 import { QuestionCheckDuplicatedDto } from 'src/dto/check-duplicated.dto';
+import * as fs from 'fs';
 
 describe('CheckDuplicatedController', () => {
   let controller: CheckDuplicatedController;
   const mockCheckDuplicatedService = {
     checkDuplicated: jest.fn(() => {
-      return {
-
-      }
+      return {};
     }),
     trainingDataWithSentence: jest.fn(() => {
       return {
-        data: {}
-      }
+        data: {},
+      };
     }),
     trainingData: jest.fn(() => {
-      return
-    })
+      return;
+    }),
   };
   const mockHistoryService = {
     createHistory: jest.fn(() => {}),
@@ -66,11 +65,13 @@ describe('CheckDuplicatedController', () => {
       question: 'what is database',
     };
 
-    expect(await controller.checkDuplicated(req, question, req.res)).toEqual(req.res);
+    expect(await controller.checkDuplicated(req, question, req.res)).toEqual(
+      req.res,
+    );
 
-    expect(mockCheckDuplicatedService.checkDuplicated).toHaveBeenCalled()
-    expect(mockAuthService.verifyToken).toHaveBeenCalled()
-    expect(mockHistoryService.createHistory).toHaveBeenCalled()
+    expect(mockCheckDuplicatedService.checkDuplicated).toHaveBeenCalled();
+    expect(mockAuthService.verifyToken).toHaveBeenCalled();
+    expect(mockHistoryService.createHistory).toHaveBeenCalled();
   });
 
   it('Train Duplicated Model With Sentence', async () => {
@@ -78,17 +79,30 @@ describe('CheckDuplicatedController', () => {
       question: 'what is database',
     };
 
-    expect(await controller.checkDuplicatedWithSentence(req, question, req.res)).toEqual(req.res);
+    expect(
+      await controller.checkDuplicatedWithSentence(req, question, req.res),
+    ).toEqual(req.res);
 
-    expect(mockCheckDuplicatedService.trainingDataWithSentence).toHaveBeenCalled()
-    expect(mockAuthService.verifyToken).toHaveBeenCalled()
-    expect(mockHistoryService.createHistory).toHaveBeenCalled()
+    expect(
+      mockCheckDuplicatedService.trainingDataWithSentence,
+    ).toHaveBeenCalled();
+    expect(mockAuthService.verifyToken).toHaveBeenCalled();
+    expect(mockHistoryService.createHistory).toHaveBeenCalled();
   });
 
-  it('Train Duplicated Model With file dataset', async () => {
-    expect(await controller.uploadDataset(req, req.res)).toEqual({});
+  it('Train Duplicated Model With file dataset role = 2', async () => {
+    mockAuthService.verifyToken.mockReturnValue({ role: 2 });
+    expect(await controller.uploadDataset(req, req.res)).toEqual(req.res);
 
-    expect(mockCheckDuplicatedService.trainingData).toHaveBeenCalled()
-    expect(mockAuthService.verifyToken).toHaveBeenCalled()
+    expect(mockAuthService.verifyToken).toHaveBeenCalled();
+    expect(mockCheckDuplicatedService.trainingData).toHaveBeenCalled();
+  });
+
+  it('Train Duplicated Model With file dataset role != 2', async () => {
+    mockAuthService.verifyToken.mockReturnValue({ role: 3 });
+    expect(await controller.uploadDataset(req, req.res)).toEqual(undefined);
+
+    expect(mockAuthService.verifyToken).toHaveBeenCalled();
+    expect(mockCheckDuplicatedService.trainingData).toHaveBeenCalled();
   });
 });

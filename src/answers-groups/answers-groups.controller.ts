@@ -30,9 +30,7 @@ export class AnswerGroupController {
     try {
       const data = await this.answerGroupService.getAnswersGroups();
       return res.status(HttpStatus.OK).send(data);
-    } catch (error) {
-      console.log('getAnswersGroups', error);
-    }
+    } catch (error) {}
   }
 
   @Get('/:id')
@@ -43,9 +41,7 @@ export class AnswerGroupController {
     try {
       const data = await this.answerGroupService.getAnswersGroupsById(id);
       return res.status(HttpStatus.OK).send(data);
-    } catch (error) {
-      console.log('getAnswersGroupsById', error);
-    }
+    } catch (error) {}
   }
 
   @Post('/create/:id')
@@ -73,9 +69,7 @@ export class AnswerGroupController {
         }
       });
       return res.status(HttpStatus.OK).send(data);
-    } catch (error) {
-      console.log('createAnswerGroup: ', error);
-    }
+    } catch (error) {}
   }
 
   @Put('/update/multiple/:id')
@@ -100,9 +94,7 @@ export class AnswerGroupController {
         }
       });
       return res.status(HttpStatus.OK).send(dataAnswerGroup);
-    } catch (error) {
-      console.log('updateAnswerGroupMultiple', error);
-    }
+    } catch (error) {}
   }
 
   @Put('/update')
@@ -119,8 +111,6 @@ export class AnswerGroupController {
         return data;
       });
       return res.status(HttpStatus.OK).send(dataAnswerGroup);
-    } catch (error) {
-      console.log('updateAnswerGroupTrueFalse', error);
-    }
+    } catch (error) {}
   }
 }

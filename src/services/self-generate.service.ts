@@ -15,9 +15,8 @@ export class SelfGenerateService {
       .catch((err) => {
         return err;
       });
-      
-    if (!response.data)
-      throw new Exception('generate fail...!');
+
+    if (!response.data) throw new Exception('generate fail...!');
 
     return response.data;
   }

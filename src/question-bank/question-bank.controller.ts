@@ -18,8 +18,6 @@ export class QuestionBankController {
         dataQuestion.question,
       );
       return res.status(HttpStatus.OK).send(data);
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   }
 }
