@@ -1,3 +1,4 @@
+import { QuestionBankService } from './../services/question-bank.service';
 import { AuthService } from './../auth/auth.service';
 import { HistoryService } from '../services/histories.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
@@ -19,6 +20,8 @@ import * as CONSTANTS from '../constant';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import * as path from 'path';
+import * as fs from 'fs';
+import * as readline from 'readline';
 
 @UseGuards(JwtAuthGuard)
 @Controller('check-duplicated')
@@ -27,6 +30,7 @@ export class CheckDuplicatedController {
     private readonly checkDuplicatedService: CheckDuplicatedService,
     private readonly historyService: HistoryService,
     private readonly authService: AuthService,
+    private readonly questionBankService: QuestionBankService,
   ) {}
 
   @Post('/')
@@ -90,16 +94,40 @@ export class CheckDuplicatedController {
   )
   async uploadDataset(
     @Req() req: Request,
-    // @UploadedFile() file,
+    @UploadedFile() file,
     @Res() res: Response,
   ): Promise<any> {
     try {
       const user = this.authService.verifyToken(req.cookies.token.jwt_token);
       if (user.role !== 2) return;
-      // function to train
-      await this.checkDuplicatedService.trainingData();
 
+      const fileStream = fs.createReadStream(file.path);
+      const lines = readline.createInterface({
+        input: fileStream,
+        crlfDelay: Infinity,
+      });
+      let indexLine = 0;
+      for await (const line of lines) {
+        if (indexLine != 0) {
+          const dataLine = line.split(',');
+          const data = await this.checkDuplicatedService.checkDuplicated(
+            dataLine[0],
+          );
+          if (data.data[0].point >= 0.6) continue;
+
+          await this.questionBankService.addQuestionNoDuplicateToBank(
+            1,
+            dataLine[0],
+          );
+        }
+        indexLine++;
+      }
+
+      await this.checkDuplicatedService.trainingData();
       return res.status(HttpStatus.OK).send('success');
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+      return res.status(HttpStatus.OK).send('success');
+    }
   }
 }
