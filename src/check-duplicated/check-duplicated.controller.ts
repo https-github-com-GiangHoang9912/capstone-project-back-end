@@ -21,7 +21,12 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import * as path from 'path';
 import * as fs from 'fs';
-import * as readline from 'readline';
+import * as fastCsv from 'fast-csv';
+
+interface DataTrain {
+  sentence: string;
+  tag: number;
+}
 
 @UseGuards(JwtAuthGuard)
 @Controller('check-duplicated')
@@ -94,40 +99,35 @@ export class CheckDuplicatedController {
   )
   async uploadDataset(
     @Req() req: Request,
-    @UploadedFile() file,
+    @UploadedFile() file: any,
     @Res() res: Response,
   ): Promise<any> {
     try {
       const user = this.authService.verifyToken(req.cookies.token.jwt_token);
-      if (user.role !== 2) return;
+      if (user.role === 3) return;
 
-      const fileStream = fs.createReadStream(file.path);
-      const lines = readline.createInterface({
-        input: fileStream,
-        crlfDelay: Infinity,
-      });
-      let indexLine = 0;
-      for await (const line of lines) {
-        if (indexLine != 0) {
-          const dataLine = line.split(',');
+      fs.createReadStream(file.path)
+        .pipe(fastCsv.parse({ headers: true }))
+        .on('error', (error) => console.error(error))
+        .on('data', async (row: DataTrain) => {
           const data = await this.checkDuplicatedService.checkDuplicated(
-            dataLine[0],
+            row.sentence,
           );
-          if (data.data[0].point >= 0.6) continue;
 
-          await this.questionBankService.addQuestionNoDuplicateToBank(
-            1,
-            dataLine[0],
-          );
-        }
-        indexLine++;
-      }
+          if (data.data[0].point < 0.6) {
+            console.log(`${row.sentence} : ${data.data[0].point}`);
+            await this.questionBankService.addQuestionNoDuplicateToBank(
+              1,
+              row.sentence,
+            );
+          }
+        })
+        .on('end', async (rowCount: any) => {
+          await this.checkDuplicatedService.trainingData();
+          console.warn(`Training ${rowCount} rows`);
+        });
 
-      await this.checkDuplicatedService.trainingData();
       return res.status(HttpStatus.OK).send('success');
-    } catch (error) {
-      console.log(error);
-      return res.status(HttpStatus.OK).send('success');
-    }
+    } catch (error) {}
   }
 }

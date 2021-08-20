@@ -34,6 +34,7 @@
     "cookie-parser": "^1.4.5",
     "dotenv": "^8.6.0",
     "express-session": "^1.17.2",
+    "fast-csv": "^4.3.6",
     "googleapis": "^82.0.0",
     "handlebars": "^4.7.7",
     "moment": "^2.29.1",
@@ -49,6 +50,7 @@
     "rimraf": "^3.0.2",
     "rxjs": "^6.6.6",
     "typeorm": "^0.2.34",
+    "typeorm-encrypted": "^0.5.6",
     "uuid": "^8.3.2"
   },
   "devDependencies": {

@@ -1,11 +1,11 @@
+import { QuestionBankService } from './../services/question-bank.service';
 import { AuthService } from './../auth/auth.service';
 import { HistoryService } from '../services/histories.service';
 import { CheckDuplicatedService } from './../services/check-duplicated.service';
 import { Test, TestingModule } from '@nestjs/testing';
 import { CheckDuplicatedController } from './check-duplicated.controller';
 import * as httpMocks from 'node-mocks-http';
-import { QuestionCheckDuplicatedDto } from 'src/dto/check-duplicated.dto';
-import * as fs from 'fs';
+import { QuestionCheckDuplicatedDto } from '../dto/check-duplicated.dto';
 
 describe('CheckDuplicatedController', () => {
   let controller: CheckDuplicatedController;
@@ -31,6 +31,12 @@ describe('CheckDuplicatedController', () => {
     }),
   };
 
+  const mockQuestionBankService = {
+    verifyToken: jest.fn(() => {
+      return {};
+    }),
+  };
+
   const req = httpMocks.createRequest();
   req.res = httpMocks.createResponse();
 
@@ -41,7 +47,12 @@ describe('CheckDuplicatedController', () => {
 
     const module: TestingModule = await Test.createTestingModule({
       controllers: [CheckDuplicatedController],
-      providers: [CheckDuplicatedService, HistoryService, AuthService],
+      providers: [
+        CheckDuplicatedService,
+        HistoryService,
+        AuthService,
+        QuestionBankService,
+      ],
     })
       .overrideProvider(CheckDuplicatedService)
       .useValue(mockCheckDuplicatedService)
@@ -49,6 +60,8 @@ describe('CheckDuplicatedController', () => {
       .useValue(mockHistoryService)
       .overrideProvider(AuthService)
       .useValue(mockAuthService)
+      .overrideProvider(QuestionBankService)
+      .useValue(mockQuestionBankService)
       .compile();
 
     controller = module.get<CheckDuplicatedController>(
@@ -92,7 +105,21 @@ describe('CheckDuplicatedController', () => {
 
   it('Train Duplicated Model With file dataset role = 2', async () => {
     mockAuthService.verifyToken.mockReturnValue({ role: 2 });
-    expect(await controller.uploadDataset(req, req.res)).toEqual(req.res);
+
+    const mockDataFile = {
+      fieldname: 'train',
+      originalname: 'train.csv',
+      encoding: '7bit',
+      mimetype: 'text/csv',
+      destination: './uploads/datasets',
+      filename: 'train.csv',
+      path: 'uploads/datasets/train.csv',
+      size: 44,
+    };
+
+    expect(await controller.uploadDataset(req, mockDataFile, req.res)).toEqual(
+      req.res,
+    );
 
     expect(mockAuthService.verifyToken).toHaveBeenCalled();
     expect(mockCheckDuplicatedService.trainingData).toHaveBeenCalled();
@@ -100,7 +127,21 @@ describe('CheckDuplicatedController', () => {
 
   it('Train Duplicated Model With file dataset role != 2', async () => {
     mockAuthService.verifyToken.mockReturnValue({ role: 3 });
-    expect(await controller.uploadDataset(req, req.res)).toEqual(undefined);
+
+    const mockDataFile = {
+      fieldname: 'train',
+      originalname: 'train.csv',
+      encoding: '7bit',
+      mimetype: 'text/csv',
+      destination: './uploads/datasets',
+      filename: 'train.csv',
+      path: 'uploads/datasets/train.csv',
+      size: 44,
+    };
+
+    expect(await controller.uploadDataset(req, mockDataFile, req.res)).toEqual(
+      undefined,
+    );
 
     expect(mockAuthService.verifyToken).toHaveBeenCalled();
     expect(mockCheckDuplicatedService.trainingData).toHaveBeenCalled();
