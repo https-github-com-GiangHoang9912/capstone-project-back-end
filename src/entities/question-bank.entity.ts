@@ -9,10 +9,7 @@ import {
   JoinColumn,
   ManyToOne,
 } from 'typeorm';
-import {
-  ExtendedColumnOptions,
-  AutoEncryptSubscriber,
-} from 'typeorm-encrypted';
+import { ExtendedColumnOptions } from 'typeorm-encrypted';
 
 @Entity('question_bank')
 export class QuestionBank extends BaseEntity {
