@@ -7,6 +7,7 @@ import {
   UseGuards,
   Param,
   Get,
+  Post,
 } from '@nestjs/common';
 import { Response } from 'express';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
@@ -20,6 +21,13 @@ export class SubjectController {
   async getSubject(@Res() res: Response): Promise<any> {
     try {
       const data = await this.subjectService.getSubject();
+      return res.status(HttpStatus.OK).send(data);
+    } catch (error) {}
+  }
+  @Post('/create/:name')
+  async createSubject(@Res() res: Response, @Param('name') subjectName: any, ): Promise<any> {
+    try {
+      const data = await this.subjectService.createSubject(subjectName);
       return res.status(HttpStatus.OK).send(data);
     } catch (error) {}
   }
