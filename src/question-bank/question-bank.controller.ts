@@ -1,11 +1,28 @@
 import { QuestionBankService } from '../services/question-bank.service';
-import { Controller, Post, Res, Body, HttpStatus } from '@nestjs/common';
+import { Controller, Post, Res, Body, HttpStatus, Get, Param } from '@nestjs/common';
 import { Response } from 'express';
 import { QuestionBankDto } from '../dto/question-bank.dto';
 
 @Controller('question-bank')
 export class QuestionBankController {
   constructor(private readonly questionBankService: QuestionBankService) {}
+
+
+  @Post('/')
+  async getQuestionsBank(
+    @Res() res: Response,
+    @Body() dataQuestion: QuestionBankDto,
+  ): Promise<any> {
+    try {
+      const data = await this.questionBankService.addQuestionNoDuplicateToBank(
+        dataQuestion.subjectId,
+        dataQuestion.question,
+      );
+      return res.status(HttpStatus.OK).send(data);
+    } catch (error) {
+      
+    }
+  }
 
   @Post('/create')
   async createQuestion(
@@ -22,4 +39,5 @@ export class QuestionBankController {
       
     }
   }
+  
 }

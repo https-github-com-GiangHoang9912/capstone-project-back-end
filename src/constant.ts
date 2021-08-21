@@ -24,3 +24,5 @@ export const API_MODEL_GENERATION = 'https://ddsgq.xyz/api/generate';
 
 
 export const TOKEN_LIFE = 90;
+
+export const BASE_URL = 'https://ddsgq.xyz/api'

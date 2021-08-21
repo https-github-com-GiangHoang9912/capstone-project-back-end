@@ -7,11 +7,12 @@ import {
   UseGuards,
   Param,
   Get,
+  Post
 } from '@nestjs/common';
 import { Response } from 'express';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
-@UseGuards(JwtAuthGuard)
+// @UseGuards(JwtAuthGuard)
 @Controller('subject')
 export class SubjectController {
   constructor(private readonly subjectService: SubjectService) {}
@@ -33,6 +34,22 @@ export class SubjectController {
     try {
       const data = await this.subjectService.getQuestionBankBySubjectId(
         subjectId,
+      );
+      return res.status(HttpStatus.OK).send(data);
+    } catch (error) {
+      
+    }
+  }
+  @Post('/search/')
+  async getQuestionsBankByName(
+    @Res() res: Response,
+    @Body() dataQuestion,
+  ): Promise<any> {
+    console.log('kakaka', dataQuestion)
+    try {
+      const data = await this.subjectService.getQuestionBankByName(
+        dataQuestion.idSubject,
+        dataQuestion.textSearch,
       );
       return res.status(HttpStatus.OK).send(data);
     } catch (error) {

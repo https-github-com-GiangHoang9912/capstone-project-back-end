@@ -19,6 +19,9 @@ import { QuestionDto } from '../dto/question.dto';
 export class QuestionController {
   constructor(private readonly questionService: QuestionService) { }
 
+
+
+  
   @Delete('/delete/:id/')
   async deleteQuestionById(
     @Res() res: Response,
