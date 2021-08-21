@@ -1,3 +1,4 @@
+import { CreateSubjectDto } from './../dto/subject.dto';
 import { SubjectService } from '../services/subjects.service';
 import {
   Body,
@@ -8,8 +9,9 @@ import {
   Param,
   Get,
   Post,
+  Req,
 } from '@nestjs/common';
-import { Response } from 'express';
+import { Response, Request } from 'express';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @UseGuards(JwtAuthGuard)
@@ -24,10 +26,10 @@ export class SubjectController {
       return res.status(HttpStatus.OK).send(data);
     } catch (error) {}
   }
-  @Post('/create/:name')
-  async createSubject(@Res() res: Response, @Param('name') subjectName: any, ): Promise<any> {
+  @Post('/create')
+  async createSubject(@Body() subject: CreateSubjectDto, @Res() res: Response): Promise<any> {
     try {
-      const data = await this.subjectService.createSubject(subjectName);
+      const data = await this.subjectService.createSubject(subject.subjectName);
       return res.status(HttpStatus.OK).send(data);
     } catch (error) {}
   }
