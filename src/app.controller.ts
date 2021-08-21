@@ -107,7 +107,7 @@ export class AppController {
         jwt_token: token,
         refresh_token: refreshToken,
       };
-      return res
+      res
         .status(HttpStatus.ACCEPTED)
         .cookie('token', secretData, {
           sameSite: 'strict',
