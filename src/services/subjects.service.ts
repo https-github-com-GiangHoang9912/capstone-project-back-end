@@ -13,6 +13,13 @@ export class SubjectService {
   async getSubject(): Promise<Subject[]> {
     return this.subjectRepository.find();
   }
+  
+  async createSubject(subjectName): Promise<any>{
+    const subject = await this.subjectRepository.create({
+      subjectName: subjectName
+    }).save()
+    return subject
+  }
 
   async getQuestionBankBySubjectId(subject_id: number): Promise<any> {
     const subject = await this.subjectRepository
