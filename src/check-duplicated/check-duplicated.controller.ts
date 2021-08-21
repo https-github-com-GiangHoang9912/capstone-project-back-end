@@ -117,7 +117,7 @@ export class CheckDuplicatedController {
           if (data.data[0].point < 0.6) {
             console.log(`${row.sentence} : ${data.data[0].point}`);
             await this.questionBankService.addQuestionNoDuplicateToBank(
-              1,
+              req.body.subject,
               row.sentence,
             );
           }
