@@ -11,7 +11,7 @@ export class AnswerGroupService {
     private readonly answerGroupRepository: Repository<AnswerGroup>,
     @InjectRepository(Answer)
     private readonly answerRepository: Repository<Answer>,
-  ) { }
+  ) {}
 
   async getAnswersGroups(): Promise<AnswerGroup[]> {
     return this.answerGroupRepository.find();
@@ -31,19 +31,24 @@ export class AnswerGroupService {
   }
 
   async deleteAnswerGroup(questionId: number): Promise<any> {
-    const result = await this.answerGroupRepository.find({ questionId: questionId });
+    const result = await this.answerGroupRepository.find({
+      questionId: questionId,
+    });
     result.forEach(async (item: any) => {
       await this.answerGroupRepository.delete(item);
-    })
+    });
     return result;
   }
 
   async updateAnswerGroupTrueFalse(
     idAnswerGroup: number,
-    correct: boolean
+    correct: boolean,
   ): Promise<AnswerGroup> {
     try {
-      const answerGroup = await this.answerGroupRepository.findOne({ id: idAnswerGroup });
+      const answerGroup = await this.answerGroupRepository.findOne({
+        id: idAnswerGroup,
+      });
+      console.log('kaakkaakaka', correct);
       answerGroup.correct = correct;
       answerGroup.save();
       return answerGroup;
@@ -55,14 +60,16 @@ export class AnswerGroupService {
   async createAnswerGroup(
     questionId: number,
     answerId: number,
-    correct: boolean
+    correct: boolean,
   ): Promise<AnswerGroup> {
     try {
-      const answerGroup = await this.answerGroupRepository.create({
-        questionId: questionId,
-        answerId: answerId,
-        correct: correct
-      }).save();
+      const answerGroup = await this.answerGroupRepository
+        .create({
+          questionId: questionId,
+          answerId: answerId,
+          correct: correct,
+        })
+        .save();
       return answerGroup;
     } catch (err) {
       console.log('Fail create answerGroup', err);
@@ -75,14 +82,20 @@ export class AnswerGroupService {
     answerText: string,
   ): Promise<any> {
     try {
-      const answer = await this.answerRepository.create({
-        answerText: answerText
-      }).save();
-      const answerGroup = await this.answerGroupRepository.create({
-        questionId: questionId,
-        answerId: answer.id,
-        correct: correct
-      }).save();
+      // console.log(questionId, '-', correct, ':', answerText);
+      const answer = await this.answerRepository
+        .create({
+          answerText: answerText,
+        })
+        .save();
+      const answerGroup = await this.answerGroupRepository
+        .create({
+          questionId: questionId,
+          answerId: answer.id,
+          correct: correct,
+        })
+        .save();
+      console.log('answerGroup', answerGroup);
       return answerGroup;
     } catch (err) {
       console.log('Fail update answerGroup', err);

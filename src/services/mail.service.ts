@@ -7,7 +7,6 @@ import { User } from '../entities/users.entity';
 import SMTPTransport from 'nodemailer/lib/smtp-transport';
 import * as CONSTANTS from '../constant';
 
-
 config();
 
 @Injectable()
@@ -121,7 +120,9 @@ export class MailService {
         to: user.contactInfo.email,
         subject: 'Request to reset password',
         html: `
-        <form style="display: flex; width: 50%; margin: 20px; font-family: 'Source Sans Pro', sans-serif; text-align: center;" action="${CONSTANTS.BASE_URL}/forgot-password">
+        <form style="display: flex; width: 50%; margin: 20px; font-family: 'Source Sans Pro', sans-serif; text-align: center;" action="${
+          CONSTANTS.BASE_URL
+        }/forgot-password">
           <div>
             <h3>
               Hello, ${

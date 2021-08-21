@@ -29,17 +29,14 @@ export class ExamController {
   ) {}
 
   @Get('/:id/')
-  async getExamAndSubjectbyUser(
+  async getExamAndSubjectByUser(
     @Res() res: Response,
     @Param('id') userId: number,
   ): Promise<any> {
-    console.log(userId);
     try {
       const data = await this.examService.getExamAndSubjectByUser(userId);
       return res.status(HttpStatus.OK).send(data);
-    } catch (error) {
-      console.log('getExamAndSubjectbyUser: ', error);
-    }
+    } catch (error) {}
   }
 
   @Get('/:id/search/:nameExam/')
@@ -51,9 +48,7 @@ export class ExamController {
     try {
       const data = await this.examService.searchExamByName(id, examName);
       return res.status(HttpStatus.OK).send(data);
-    } catch (error) {
-      console.log('searchExamByName: ', error);
-    }
+    } catch (error) {}
   }
 
   @Delete('/delete-exam/:id')
@@ -62,12 +57,9 @@ export class ExamController {
     @Param('id') id: number,
   ): Promise<any> {
     try {
-      console.log(id);
       const data = await this.examService.deleteExam(id);
       return res.status(HttpStatus.OK).send(data);
-    } catch (error) {
-      console.log('Delete exam: ', error);
-    }
+    } catch (error) {}
   }
 
   @Post('/create-exam/:id')
@@ -90,7 +82,6 @@ export class ExamController {
       const randomQuestion = this.getRandom(listQuestionBank, 10);
       randomQuestion.forEach(async (question) => {
         const ques = await this.questionService.createQuestion(question, exam);
-        console.log(ques);
       });
 
       await this.historyService.createHistory(
@@ -100,9 +91,7 @@ export class ExamController {
       );
 
       return res.status(HttpStatus.OK).send(exam);
-    } catch (error) {
-      console.log('createExam: ', error);
-    }
+    } catch (error) {}
   }
 
   getRandom(arr: QuestionBank[], n: number) {

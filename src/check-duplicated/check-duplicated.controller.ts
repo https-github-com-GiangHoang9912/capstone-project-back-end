@@ -1,3 +1,4 @@
+import { QuestionBankService } from './../services/question-bank.service';
 import { AuthService } from './../auth/auth.service';
 import { HistoryService } from '../services/histories.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
@@ -19,6 +20,13 @@ import * as CONSTANTS from '../constant';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import * as path from 'path';
+import * as fs from 'fs';
+import * as fastCsv from 'fast-csv';
+
+interface DataTrain {
+  sentence: string;
+  tag: number;
+}
 
 @UseGuards(JwtAuthGuard)
 @Controller('check-duplicated')
@@ -27,6 +35,7 @@ export class CheckDuplicatedController {
     private readonly checkDuplicatedService: CheckDuplicatedService,
     private readonly historyService: HistoryService,
     private readonly authService: AuthService,
+    private readonly questionBankService: QuestionBankService,
   ) {}
 
   @Post('/')
@@ -90,14 +99,33 @@ export class CheckDuplicatedController {
   )
   async uploadDataset(
     @Req() req: Request,
-    // @UploadedFile() file,
+    @UploadedFile() file: any,
     @Res() res: Response,
   ): Promise<any> {
     try {
       const user = this.authService.verifyToken(req.cookies.token.jwt_token);
-      if (user.role !== 2) return;
-      // function to train
-      await this.checkDuplicatedService.trainingData();
+      if (user.role === 3) return;
+
+      fs.createReadStream(file.path)
+        .pipe(fastCsv.parse({ headers: true }))
+        .on('error', (error) => console.error(error))
+        .on('data', async (row: DataTrain) => {
+          const data = await this.checkDuplicatedService.checkDuplicated(
+            row.sentence,
+          );
+
+          if (data.data[0].point < 0.6) {
+            console.log(`${row.sentence} : ${data.data[0].point}`);
+            await this.questionBankService.addQuestionNoDuplicateToBank(
+              req.body.subject,
+              row.sentence,
+            );
+          }
+        })
+        .on('end', async (rowCount: any) => {
+          await this.checkDuplicatedService.trainingData();
+          console.warn(`Training ${rowCount} rows`);
+        });
 
       return res.status(HttpStatus.OK).send('success');
     } catch (error) {}

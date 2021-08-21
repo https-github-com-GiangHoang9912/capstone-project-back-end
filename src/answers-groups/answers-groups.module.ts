@@ -8,10 +8,7 @@ import { LoggerMiddleware } from '../common/middleware/logger.middleware';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([AnswerGroup, Answer]),
-    QuestionModule,
-  ],
+  imports: [TypeOrmModule.forFeature([AnswerGroup, Answer]), QuestionModule],
   controllers: [AnswerGroupController],
   providers: [AnswerGroupService],
   exports: [AnswerGroupService],

@@ -195,7 +195,7 @@ describe('UserController', () => {
   it('update role user', async () => {
     const roleUser: RoleUser = {
       roleId: 1,
-      roleValue: "1",
+      roleValue: '1',
     };
 
     expect(await controller.updateRole(roleUser)).toEqual({

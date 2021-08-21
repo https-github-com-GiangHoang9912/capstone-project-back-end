@@ -7,7 +7,7 @@ export class ExamService {
   constructor(
     @InjectRepository(Exam)
     private readonly examRepository: Repository<Exam>,
-  ) { }
+  ) {}
 
   async getExam(): Promise<Exam[]> {
     return this.examRepository.find();
@@ -22,7 +22,6 @@ export class ExamService {
   }
 
   async getExamAndSubjectByUser(user_id: number): Promise<any> {
-    console.log(user_id);
     const exams = await this.examRepository
       .createQueryBuilder('exams')
       .where('user_id = :user_id', { user_id: user_id })

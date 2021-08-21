@@ -30,9 +30,7 @@ export class AnswerGroupController {
     try {
       const data = await this.answerGroupService.getAnswersGroups();
       return res.status(HttpStatus.OK).send(data);
-    } catch (error) {
-      console.log('getAnswersGroups', error);
-    }
+    } catch (error) {}
   }
 
   @Get('/:id')
@@ -43,9 +41,7 @@ export class AnswerGroupController {
     try {
       const data = await this.answerGroupService.getAnswersGroupsById(id);
       return res.status(HttpStatus.OK).send(data);
-    } catch (error) {
-      console.log('getAnswersGroupsById', error);
-    }
+    } catch (error) {}
   }
 
   @Post('/create/:id')
@@ -76,45 +72,33 @@ export class AnswerGroupController {
         }
       });
       return res.status(HttpStatus.OK).send(data);
-    } catch (error) {
-      console.log('createAnswerGroup: ', error);
-    }
+    } catch (error) {}
   }
 
-  // @Put('/update/multiple/:id')
-  // async updateAnswerGroupMultiple(
-  //   @Res() res: Response,
-  //   @Param() idQuestion: number,
-  //   @Body() dataAnswerGroup: AnswerGroupDto[],
-  // ): Promise<any> {
-  //   try {
-  //     const checkElementEmpty = dataAnswerGroup.filter((item: any) => item.answer.answerText.trim().length > 0)
-  //     dataAnswerGroup.map(async (item: AnswerGroup) => {
-  //       if (item.questionId) {
-  //         const data = await this.answerGroupService.updateAnswerGroupTrueFalse(
-  //           item.id,
-  //           item.correct,
-  //         );
-  //         return data;
-  //       } else {
-  //         if (checkElementEmpty.length > 0) {
-
-  //           console.log('length', checkElementEmpty)
-  //           const data = await this.answerGroupService.createAnswerGroupMultiple(
-  //             idQuestion,
-  //             item.correct,
-  //             item.answer.answerText,
-  //           );
-  //           return data;
-  //         }
-  //         return null;
-  //       }
-  //     });
-  //     return res.status(HttpStatus.OK).send(dataAnswerGroup);
-  //   } catch (error) {
-  //     console.log('updateAnswerGroupMultiple', error);
-  //   }
-  // }
+  @Put('/update/multiple/:id')
+  async updateAnswerGroupMultiple(
+    @Res() res: Response,
+    @Param() idQuestion: number,
+    @Body() dataAnswerGroup: AnswerGroupDto[],
+  ): Promise<any> {
+    try {
+      dataAnswerGroup.forEach(async (item: AnswerGroup) => {
+        if (item.questionId) {
+          const data = await this.answerGroupService.updateAnswerGroupTrueFalse(
+            item.id,
+            item.correct,
+          );
+        } else {
+          const data = await this.answerGroupService.createAnswerGroupMultiple(
+            idQuestion,
+            item.correct,
+            item.answer.answerText,
+          );
+        }
+      });
+      return res.status(HttpStatus.OK).send(dataAnswerGroup);
+    } catch (error) {}
+  }
 
   @Put('/update')
   async updateAnswerGroupTrueFalse(
@@ -130,8 +114,6 @@ export class AnswerGroupController {
         return data;
       });
       return res.status(HttpStatus.OK).send(dataAnswerGroup);
-    } catch (error) {
-      console.log('updateAnswerGroupTrueFalse', error);
-    }
+    } catch (error) {}
   }
 }

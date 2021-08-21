@@ -1,3 +1,4 @@
+import { CreateSubjectDto } from './../dto/subject.dto';
 import { SubjectService } from '../services/subjects.service';
 import {
   Body,
@@ -7,9 +8,10 @@ import {
   UseGuards,
   Param,
   Get,
-  Post
+  Post,
+  Req,
 } from '@nestjs/common';
-import { Response } from 'express';
+import { Response, Request } from 'express';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 // @UseGuards(JwtAuthGuard)
@@ -24,21 +26,25 @@ export class SubjectController {
       return res.status(HttpStatus.OK).send(data);
     } catch (error) {}
   }
+  @Post('/create')
+  async createSubject(@Body() subject: CreateSubjectDto, @Res() res: Response): Promise<any> {
+    try {
+      const data = await this.subjectService.createSubject(subject.subjectName);
+      return res.status(HttpStatus.OK).send(data);
+    } catch (error) {}
+  }
 
   @Get('/:id/')
   async getExamAndSubjectbyUser(
     @Res() res: Response,
     @Param('id') subjectId: number,
   ): Promise<any> {
-
     try {
       const data = await this.subjectService.getQuestionBankBySubjectId(
         subjectId,
       );
       return res.status(HttpStatus.OK).send(data);
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   }
   @Post('/search/')
   async getQuestionsBankByName(

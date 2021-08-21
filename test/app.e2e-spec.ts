@@ -8,7 +8,7 @@ const app = 'http://localhost:3001';
 
 describe('Auth', () => {
   let authService: AuthService;
-  let appController : AppController;
+  let appController: AppController;
 
   const req = httpMocks.createRequest();
   req.res = httpMocks.createResponse();
@@ -27,11 +27,11 @@ describe('Auth', () => {
       .useValue(userService)
       .compile();
 
-      authService = module.get<AuthService>(AuthService);
-      appController = module.get<AppController>(AppController);
+    authService = module.get<AuthService>(AuthService);
+    appController = module.get<AppController>(AppController);
   });
 
   it('should be login', () => {
-    expect(appController.login(req, req.res)).toHaveBeenCalled()
+    expect(appController.login(req, req.res)).toHaveBeenCalled();
   });
 });

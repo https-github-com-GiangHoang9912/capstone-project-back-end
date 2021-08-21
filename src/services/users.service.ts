@@ -257,17 +257,15 @@ export class UserService {
   async forgotPassword(email: string): Promise<any> {
     const user = await this.getUserByEmail(email);
     const randomPassword = Math.random().toString(36).slice(-8);
-    if (user) {
-      user.password = await bcrypt.hash(
-        randomPassword,
-        CONSTANTS.ROUND_HASH_PASSWORD.ROUND,
-      );
-      await user.save();
+    user.password = await bcrypt.hash(
+      randomPassword,
+      CONSTANTS.ROUND_HASH_PASSWORD.ROUND,
+    );
+    await user.save();
 
-      return {
-        password: randomPassword,
-        user: user,
-      };
-    }
+    return {
+      password: randomPassword,
+      user: user,
+    };
   }
 }

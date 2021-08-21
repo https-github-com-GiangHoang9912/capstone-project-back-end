@@ -22,7 +22,6 @@ export const HISTORY_TYPE = {
 export const API_MODEL_DUPLICATED = 'https://ddsgq.xyz/api/duplicate';
 export const API_MODEL_GENERATION = 'https://ddsgq.xyz/api/generate';
 
-
 export const TOKEN_LIFE = 90;
 
-export const BASE_URL = 'https://ddsgq.xyz/api'
+export const BASE_URL = 'https://ddsgq.xyz/api';
