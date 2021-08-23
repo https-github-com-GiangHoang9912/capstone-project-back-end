@@ -13,8 +13,9 @@ import {
 } from '@nestjs/common';
 import { Response } from 'express';
 import { QuestionDto } from '../dto/question.dto';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
-// @UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard)
 @Controller('questions')
 export class QuestionController {
   constructor(private readonly questionService: QuestionService) {}

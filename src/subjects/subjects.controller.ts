@@ -14,7 +14,7 @@ import {
 import { Response, Request } from 'express';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
-// @UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard)
 @Controller('subject')
 export class SubjectController {
   constructor(private readonly subjectService: SubjectService) {}
@@ -51,7 +51,6 @@ export class SubjectController {
     @Res() res: Response,
     @Body() dataQuestion,
   ): Promise<any> {
-    console.log('kakaka', dataQuestion)
     try {
       const data = await this.subjectService.getQuestionBankByName(
         dataQuestion.idSubject,
