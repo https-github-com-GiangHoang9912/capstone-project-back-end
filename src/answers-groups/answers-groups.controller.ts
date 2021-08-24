@@ -14,16 +14,21 @@ import {
 } from '@nestjs/common';
 import { Response } from 'express';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-
+import { HistoryService } from '../services/histories.service';
+import * as CONSTANTS from '../constant';
 interface DataQuestion {
   currentQuestionAnswerGroup: AnswerGroupDto[];
   valueTypeAnswer: string;
+  userId: number
 }
 
 @UseGuards(JwtAuthGuard)
 @Controller('answers-groups')
 export class AnswerGroupController {
-  constructor(private readonly answerGroupService: AnswerGroupService) { }
+  constructor(
+    private readonly answerGroupService: AnswerGroupService,
+    private readonly historyService: HistoryService,
+    ) { }
 
   @Get('/')
   async getAnswersGroups(@Res() res: Response): Promise<any> {
@@ -71,6 +76,11 @@ export class AnswerGroupController {
           }
         }
       });
+      await this.historyService.createHistory(
+        CONSTANTS.HISTORY_TYPE.EDIT_EXAM,
+        'Edit Exam',
+        dataQuestion.userId,
+      );
       return res.status(HttpStatus.OK).send(data);
     } catch (error) {}
   }

@@ -14,15 +14,16 @@ import {
 import { Response } from 'express';
 import { QuestionDto } from '../dto/question.dto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
-
+import { HistoryService } from '../services/histories.service';
+import * as CONSTANTS from '../constant';
 @UseGuards(JwtAuthGuard)
 @Controller('questions')
+
 export class QuestionController {
-  constructor(private readonly questionService: QuestionService) {}
-
-
-
-  
+  constructor(
+    private readonly questionService: QuestionService,
+    private readonly historyService: HistoryService,
+    ) {}
   @Delete('/delete/:id/')
   async deleteQuestionById(
     @Res() res: Response,
@@ -56,9 +57,10 @@ export class QuestionController {
     } catch (error) {}
   }
 
-  @Post('/create/')
+  @Post('/create/:id')
   async createQuestion(
     @Res() res: Response,
+    @Param('id') userId: number,
     @Body() dataQuestion: QuestionDto[],
   ): Promise<any> {
     try {
@@ -67,6 +69,12 @@ export class QuestionController {
           item.questionBankId,
           item.examId,
         );
+        await this.historyService.createHistory(
+          CONSTANTS.HISTORY_TYPE.EDIT_EXAM,
+          'Edit Exam',
+          userId,
+        );
+
         return data;
       });
       return res.status(HttpStatus.OK).send(newData);

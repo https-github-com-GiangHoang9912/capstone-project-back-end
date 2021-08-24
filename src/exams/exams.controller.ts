@@ -12,7 +12,6 @@ import {
   UseGuards,
   Get,
   Post,
-  Delete,
 } from '@nestjs/common';
 import { Response } from 'express';
 import { ExamInfoDto } from '../dto/create-exam.dto';
@@ -52,7 +51,7 @@ export class ExamController {
     } catch (error) {}
   }
 
-  @Delete('/delete-exam/:id')
+  @Post('/delete-exam/:id/')
   async deleteExamById(
     @Res() res: Response,
     @Param('id') id: number,
@@ -70,7 +69,6 @@ export class ExamController {
     @Param('id') userId: number,
   ): Promise<any> {
     try {
-      
       const listQuestionBank =
         await this.questionBankService.getQuestionBankBySubjectId(
           examInfo.subjectId,
