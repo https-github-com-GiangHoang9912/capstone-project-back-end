@@ -128,11 +128,14 @@ export class UserService {
         CONSTANTS.ROUND_HASH_PASSWORD.ROUND,
       );
       await user.save();
-
       return {
         status: HttpStatus.OK,
         message: 'Change Password Successful',
       };
+    }
+    return { 
+      status: HttpStatus.FORBIDDEN,
+      message: 'Change Password Fail',
     }
 
     return {
@@ -245,7 +248,7 @@ export class UserService {
     const user = await this.userRepository
       .createQueryBuilder('users')
       .leftJoinAndSelect('users.contactInfo', 'contacts')
-      .where('contacts.email = :email', { email: email })
+      .where('contacts.email like :email', { email: `%${email}%` })
       .getOne();
 
     return user;

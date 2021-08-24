@@ -46,4 +46,19 @@ export class SubjectController {
       return res.status(HttpStatus.OK).send(data);
     } catch (error) {}
   }
+  @Post('/search/')
+  async getQuestionsBankByName(
+    @Res() res: Response,
+    @Body() dataQuestion,
+  ): Promise<any> {
+    try {
+      const data = await this.subjectService.getQuestionBankByName(
+        dataQuestion.idSubject,
+        dataQuestion.textSearch,
+      );
+      return res.status(HttpStatus.OK).send(data);
+    } catch (error) {
+      
+    }
+  }
 }

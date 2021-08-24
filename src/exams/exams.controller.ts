@@ -1,6 +1,8 @@
 import { QuestionBank } from '../entities/question-bank.entity';
 import { QuestionService } from './../services/questions.service';
 import { ExamService } from '../services/exams.service';
+import { HistoryService } from '../services/histories.service';
+import * as CONSTANTS from '../constant';
 import {
   Body,
   Param,
@@ -15,14 +17,16 @@ import {
 import { Response } from 'express';
 import { ExamInfoDto } from '../dto/create-exam.dto';
 import { QuestionBankService } from '../services/question-bank.service';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
-// @UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard)
 @Controller('exam')
 export class ExamController {
   constructor(
     private readonly examService: ExamService,
     private readonly questionBankService: QuestionBankService,
     private readonly questionService: QuestionService,
+    private readonly historyService: HistoryService,
   ) {}
 
   @Get('/:id/')
@@ -66,6 +70,7 @@ export class ExamController {
     @Param('id') userId: number,
   ): Promise<any> {
     try {
+      
       const listQuestionBank =
         await this.questionBankService.getQuestionBankBySubjectId(
           examInfo.subjectId,
@@ -79,6 +84,12 @@ export class ExamController {
       randomQuestion.forEach(async (question) => {
         const ques = await this.questionService.createQuestion(question, exam);
       });
+
+      await this.historyService.createHistory(
+        CONSTANTS.HISTORY_TYPE.CREATE_EXAM,
+        'Create Exam',
+        userId,
+      );
 
       return res.status(HttpStatus.OK).send(exam);
     } catch (error) {}

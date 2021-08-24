@@ -19,6 +19,16 @@ export class QuestionBankService {
     return questions;
   }
 
+  async getQuestionsBankByName(subjectId: number, questionName: string): Promise<QuestionBank[]> {
+    return this.questionBankRepository
+      .createQueryBuilder('question_bank')
+      .where('subject_id = :subjectId', { subjectId: subjectId })
+      .andWhere('question_bank.question_text like :question_text', {
+        question_text: `%${questionName}%`,
+      })
+      .getMany();
+  }
+
   async addQuestionNoDuplicateToBank(
     subjectId: number,
     questionText: string,

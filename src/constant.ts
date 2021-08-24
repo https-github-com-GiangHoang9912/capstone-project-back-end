@@ -13,10 +13,14 @@ export const HISTORY_TYPE = {
   DUPLICATE: 2,
   UPDATE_PROFILE: 3,
   CHANGE_PASSWORD: 4,
+  FORGOT_PASSWORD: 5,
+  EDIT_EXAM: 6,
+  CREATE_EXAM: 7,
+  DELETE_EXAM: 8
 };
 
-export const API_MODEL_DUPLICATED = 'http://localhost:8000/duplicate';
-export const API_MODEL_GENERATION = 'http://0.0.0.0:8080/generate';
+export const API_MODEL_DUPLICATED = 'https://ddsgq.xyz/api/duplicate';
+export const API_MODEL_GENERATION = 'https://ddsgq.xyz/api/generate';
 
 export const TOKEN_LIFE = 90;
 

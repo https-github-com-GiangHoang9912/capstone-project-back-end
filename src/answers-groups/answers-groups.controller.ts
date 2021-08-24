@@ -23,7 +23,7 @@ interface DataQuestion {
 @UseGuards(JwtAuthGuard)
 @Controller('answers-groups')
 export class AnswerGroupController {
-  constructor(private readonly answerGroupService: AnswerGroupService) {}
+  constructor(private readonly answerGroupService: AnswerGroupService) { }
 
   @Get('/')
   async getAnswersGroups(@Res() res: Response): Promise<any> {
@@ -53,6 +53,7 @@ export class AnswerGroupController {
     try {
       await this.answerGroupService.deleteAnswerGroup(idQuestion);
       let data = null;
+      const checkElementEmpty = dataQuestion.currentQuestionAnswerGroup.filter((item: any) => item.answer.answerText.trim().length <= 0)
       dataQuestion.currentQuestionAnswerGroup.forEach(async (item: any) => {
         if (dataQuestion.valueTypeAnswer == 'tf') {
           data = await this.answerGroupService.createAnswerGroup(
@@ -61,11 +62,13 @@ export class AnswerGroupController {
             item.correct,
           );
         } else {
-          data = await this.answerGroupService.createAnswerGroupMultiple(
-            idQuestion,
-            item.correct,
-            item.answer.answerText,
-          );
+          if (checkElementEmpty.length == 0) {
+            data = await this.answerGroupService.createAnswerGroupMultiple(
+              idQuestion,
+              item.correct,
+              item.answer.answerText,
+            );
+          }
         }
       });
       return res.status(HttpStatus.OK).send(data);

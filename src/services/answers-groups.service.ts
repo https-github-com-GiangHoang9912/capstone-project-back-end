@@ -50,7 +50,6 @@ export class AnswerGroupService {
       });
       console.log('kaakkaakaka', correct);
       answerGroup.correct = correct;
-      console.log('answerGroup', answerGroup);
       answerGroup.save();
       return answerGroup;
     } catch (err) {
