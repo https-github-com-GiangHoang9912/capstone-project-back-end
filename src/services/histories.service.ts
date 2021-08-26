@@ -31,12 +31,19 @@ export class HistoryService {
     users_id: string,
     type_id: string,
   ): Promise<History[]> {
-    if (type_id === 'all') return await this.historyRepository.find();
+    if (type_id === 'all') {
+      const histories = await this.historyRepository
+      .createQueryBuilder('history')
+      .where('users_id = :users_id', { users_id: users_id })
+      .getMany();
+      return histories;
+    }else{
     const histories = await this.historyRepository
       .createQueryBuilder('history')
       .where('users_id = :users_id', { users_id: users_id })
       .andWhere('type_id = :type_id', { type_id: type_id })
       .getMany();
-    return histories;
+      return histories;
+    }
   }
 }
