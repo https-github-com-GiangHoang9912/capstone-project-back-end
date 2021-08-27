@@ -75,7 +75,7 @@ export class ExamController {
         examInfo.examName,
         userId,
       );
-      const randomQuestion = this.getRandom(listQuestionBank, 10);
+      const randomQuestion = this.getRandom(listQuestionBank, 50);
       randomQuestion.forEach(async (question) => {
         const ques = await this.questionService.createQuestion(question, exam);
       });
