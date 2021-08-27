@@ -1,3 +1,4 @@
+import { SubjectService } from './../services/subjects.service';
 import { QuestionBankService } from './../services/question-bank.service';
 import { AuthService } from './../auth/auth.service';
 import { HistoryService } from '../services/histories.service';
@@ -36,6 +37,7 @@ export class CheckDuplicatedController {
     private readonly historyService: HistoryService,
     private readonly authService: AuthService,
     private readonly questionBankService: QuestionBankService,
+    private readonly subjectService: SubjectService,
   ) {}
 
   @Post('/')
@@ -46,13 +48,18 @@ export class CheckDuplicatedController {
   ): Promise<any> {
     try {
       const user = this.authService.verifyToken(req.cookies.token.jwt_token);
+      const listQuestionBank = await this.subjectService.getQuestionBankBySubjectId(questions.subjectId)
       await this.historyService.createHistory(
         CONSTANTS.HISTORY_TYPE.DUPLICATE,
         questions.question,
         user.sub,
       );
+
+      await this.checkDuplicatedService.trainBankWithSubject(listQuestionBank)
+
       const data = await this.checkDuplicatedService.checkDuplicated(
         questions.question,
+        listQuestionBank[0].subjectName
       );
       return res.status(HttpStatus.OK).send(data.data);
     } catch (error) {}
@@ -114,7 +121,7 @@ export class CheckDuplicatedController {
             row.sentence,
           );
 
-          if (data.data[0].point < 0.6) {
+          if (data && data.data[0].point < 0.6) {
             console.log(`${row.sentence} : ${data.data[0].point}`);
             await this.questionBankService.addQuestionNoDuplicateToBank(
               req.body.subject,

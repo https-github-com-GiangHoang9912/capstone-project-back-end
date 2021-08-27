@@ -1,3 +1,4 @@
+import { SubjectModule } from './../subjects/subjects.module';
 import { QuestionBankModule } from './../question-bank/question-bank.module';
 import { AuthModule } from './../auth/auth.module';
 import { HistoryModule } from '../histories/histories.module';
@@ -7,7 +8,7 @@ import { Module, MiddlewareConsumer } from '@nestjs/common';
 import { LoggerMiddleware } from '../common/middleware/logger.middleware';
 
 @Module({
-  imports: [HistoryModule, AuthModule, QuestionBankModule],
+  imports: [HistoryModule, AuthModule, QuestionBankModule, SubjectModule],
   controllers: [CheckDuplicatedController],
   providers: [CheckDuplicatedService],
   exports: [CheckDuplicatedService],
