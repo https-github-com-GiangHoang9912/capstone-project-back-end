@@ -113,12 +113,17 @@ export class CheckDuplicatedController {
       const user = this.authService.verifyToken(req.cookies.token.jwt_token);
       if (user.role === 3) return;
 
+      const subject = await this.subjectService.getSubjectById(req.body.subject)
+
+      console.log(subject)
+
       fs.createReadStream(file.path)
         .pipe(fastCsv.parse({ headers: true }))
         .on('error', (error) => console.error(error))
         .on('data', async (row: DataTrain) => {
           const data = await this.checkDuplicatedService.checkDuplicated(
             row.sentence,
+            subject.subjectName
           );
 
           if (data && data.data[0].point < 0.6) {

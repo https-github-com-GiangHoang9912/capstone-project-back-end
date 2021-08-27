@@ -1,3 +1,11 @@
 sentence,tag
-"Who is NOT reader of system requirements?",1
-
+"Consider the following statements:
+i. 100% statement coverage guarantees 100% branch coverage.
+ii. 100% branch coverage guarantees 100% statement coverage.
+iii. 100% branch coverage guarantees 100% decision coverage.
+iv. 100% decision coverage guarantees 100% branch coverage.
+v. 100% statement coverage guarantees 100% decision coverage.
+",0
+"The Kick Off phase of a formal review includes the ",1
+"Match every stage of the software Development Life cycle with the Testing Life cycle:",2
+"Which of the following is not phase of the Fundamental Test Process?",3
