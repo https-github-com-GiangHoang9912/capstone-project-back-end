@@ -1,3 +1,4 @@
+import { Exception } from 'handlebars';
 import { QuestionBank } from '../entities/question-bank.entity';
 import { QuestionService } from './../services/questions.service';
 import { ExamService } from '../services/exams.service';
@@ -70,6 +71,13 @@ export class ExamController {
         await this.questionBankService.getQuestionBankBySubjectId(
           examInfo.subjectId,
         );
+
+      if (listQuestionBank.length < 50)
+        return res.send({
+          statusCode: 400,
+          message: 'Question bank does not enough',
+        });
+
       const exam = await this.examService.createExam(
         examInfo.subjectId,
         examInfo.examName,
@@ -80,8 +88,10 @@ export class ExamController {
         const ques = await this.questionService.createQuestion(question, exam);
       });
 
-      return res.status(HttpStatus.OK).send(exam);
-    } catch (error) {}
+      return res.status(HttpStatus.OK).send({ ...exam, statusCode: 200 });
+    } catch (error) {
+      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(error);
+    }
   }
 
   getRandom(arr: QuestionBank[], n: number) {
