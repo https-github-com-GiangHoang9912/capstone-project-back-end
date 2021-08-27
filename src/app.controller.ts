@@ -67,6 +67,7 @@ export class AppController {
         })
         .send(info.account);
     } catch (error) {
+      res.send(error.response);
       console.log('login:\n', error);
     }
   }
