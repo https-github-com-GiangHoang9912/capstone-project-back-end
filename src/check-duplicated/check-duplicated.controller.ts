@@ -40,6 +40,37 @@ export class CheckDuplicatedController {
     private readonly subjectService: SubjectService,
   ) {}
 
+  @Post('/all')
+  async checkDuplicatedAll(
+    @Req() req: Request,
+    @Body() questions: QuestionCheckDuplicatedDto,
+    @Res() res: Response,
+  ): Promise<any> {
+    try {
+      const user = this.authService.verifyToken(req.cookies.token.jwt_token);
+      const listQuestionBank =
+        await this.questionBankService.getAllQuestionBank();
+      await this.historyService.createHistory(
+        CONSTANTS.HISTORY_TYPE.DUPLICATE,
+        questions.question,
+        user.sub,
+      );
+
+      await this.checkDuplicatedService.trainingAllQuestionBank(
+        listQuestionBank.map((item) => item.questionText),
+      );
+
+      const data = await this.checkDuplicatedService.checkDuplicated(
+        questions.question,
+        'train',
+      );
+
+      return res.status(HttpStatus.OK).send(data.data);
+    } catch (error) {
+      res.status(HttpStatus.BAD_REQUEST).send(error);
+    }
+  }
+
   @Post('/')
   async checkDuplicated(
     @Req() req: Request,
@@ -48,43 +79,26 @@ export class CheckDuplicatedController {
   ): Promise<any> {
     try {
       const user = this.authService.verifyToken(req.cookies.token.jwt_token);
-      const listQuestionBank = await this.subjectService.getQuestionBankBySubjectId(questions.subjectId)
+      const listQuestionBank =
+        await this.subjectService.getQuestionBankBySubjectId(
+          questions.subjectId,
+        );
       await this.historyService.createHistory(
         CONSTANTS.HISTORY_TYPE.DUPLICATE,
         questions.question,
         user.sub,
       );
 
-      await this.checkDuplicatedService.trainBankWithSubject(listQuestionBank)
+      await this.checkDuplicatedService.trainBankWithSubject(listQuestionBank);
 
       const data = await this.checkDuplicatedService.checkDuplicated(
         questions.question,
-        listQuestionBank[0].subjectName
+        listQuestionBank[0].subjectName,
       );
       return res.status(HttpStatus.OK).send(data.data);
-    } catch (error) {}
-  }
-
-  @Post('/train-sentences')
-  async checkDuplicatedWithSentence(
-    @Req() req: Request,
-    @Body() sentences: QuestionCheckDuplicatedDto,
-    @Res() res: Response,
-  ): Promise<any> {
-    try {
-      const user = this.authService.verifyToken(req.cookies.token.jwt_token);
-      await this.historyService.createHistory(
-        CONSTANTS.HISTORY_TYPE.DUPLICATE,
-        'Training data for duplicate model',
-        user.sub,
-      );
-
-      const data = await this.checkDuplicatedService.trainingDataWithSentence(
-        sentences,
-      );
-
-      return res.status(HttpStatus.OK).send(data.data);
-    } catch (error) {}
+    } catch (error) {
+      res.status(HttpStatus.BAD_REQUEST).send(error);
+    }
   }
 
   @UseGuards(JwtAuthGuard)
@@ -113,9 +127,9 @@ export class CheckDuplicatedController {
       const user = this.authService.verifyToken(req.cookies.token.jwt_token);
       if (user.role === 3) return;
 
-      const subject = await this.subjectService.getSubjectById(req.body.subject)
-
-      console.log(subject)
+      const subject = await this.subjectService.getSubjectById(
+        req.body.subject,
+      );
 
       fs.createReadStream(file.path)
         .pipe(fastCsv.parse({ headers: true }))
@@ -123,7 +137,7 @@ export class CheckDuplicatedController {
         .on('data', async (row: DataTrain) => {
           const data = await this.checkDuplicatedService.checkDuplicated(
             row.sentence,
-            subject.subjectName
+            subject.subjectName,
           );
 
           if (data && data.data[0].point < 0.6) {
@@ -140,6 +154,8 @@ export class CheckDuplicatedController {
         });
 
       return res.status(HttpStatus.OK).send('success');
-    } catch (error) {}
+    } catch (error) {
+      res.status(HttpStatus.BAD_REQUEST).send(error);
+    }
   }
 }
