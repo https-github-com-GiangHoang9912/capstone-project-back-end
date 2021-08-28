@@ -13,12 +13,18 @@ export class SubjectService {
   async getSubject(): Promise<Subject[]> {
     return this.subjectRepository.find();
   }
-  
-  async createSubject(subjectName): Promise<any>{
-    const subject = await this.subjectRepository.create({
-      subjectName: subjectName
-    }).save()
-    return subject
+
+  async getSubjectById(subjectId: number): Promise<Subject> {
+    return this.subjectRepository.findOne({ id: subjectId });
+  }
+
+  async createSubject(subjectName): Promise<any> {
+    const subject = await this.subjectRepository
+      .create({
+        subjectName: subjectName,
+      })
+      .save();
+    return subject;
   }
 
   async getQuestionBankBySubjectId(subject_id: number): Promise<any> {
@@ -26,18 +32,6 @@ export class SubjectService {
       .createQueryBuilder('subjects')
       .where('subjects.id = :id', { id: subject_id })
       .leftJoinAndSelect('subjects.questionBank', 'QuestionBank')
-      .getMany();
-    return subject;
-  }
-
-  async getQuestionBankByName(subject_id: number, nameQuestion: string): Promise<any> {
-    const subject = await this.subjectRepository
-      .createQueryBuilder('subjects')
-      .where('subjects.id = :id', { id: subject_id })
-      .leftJoinAndSelect('subjects.questionBank', 'QuestionBank')
-      .andWhere('QuestionBank.question_text like :question_text', {
-        question_text: `%${nameQuestion}%`,
-      })
       .getMany();
     return subject;
   }

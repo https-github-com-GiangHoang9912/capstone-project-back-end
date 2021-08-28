@@ -1,3 +1,4 @@
+import { Exception } from 'handlebars';
 import { QuestionBank } from '../entities/question-bank.entity';
 import { QuestionService } from './../services/questions.service';
 import { ExamService } from '../services/exams.service';
@@ -12,6 +13,7 @@ import {
   UseGuards,
   Get,
   Post,
+  Delete
 } from '@nestjs/common';
 import { Response } from 'express';
 import { ExamInfoDto } from '../dto/create-exam.dto';
@@ -51,7 +53,7 @@ export class ExamController {
     } catch (error) {}
   }
 
-  @Post('/delete-exam/:id/')
+  @Delete('/delete-exam/:id/')
   async deleteExamById(
     @Res() res: Response,
     @Param('id') id: number,
@@ -73,6 +75,13 @@ export class ExamController {
         await this.questionBankService.getQuestionBankBySubjectId(
           examInfo.subjectId,
         );
+
+      if (listQuestionBank.length < 50)
+        return res.send({
+          statusCode: 400,
+          message: 'Question bank does not enough',
+        });
+
       const exam = await this.examService.createExam(
         examInfo.subjectId,
         examInfo.examName,
@@ -89,7 +98,7 @@ export class ExamController {
         userId,
       );
 
-      return res.status(HttpStatus.OK).send(exam);
+      return res.status(HttpStatus.OK).send({ ...exam, statusCode: 200 });
     } catch (error) {}
   }
 
