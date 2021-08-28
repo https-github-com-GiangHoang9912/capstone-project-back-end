@@ -61,13 +61,14 @@ export class QuestionController {
   async createQuestion(
     @Res() res: Response,
     @Param('id') userId: number,
-    @Body() dataQuestion: QuestionDto[],
+    @Body() dataQuestion: QuestionDto,
   ): Promise<any> {
     try {
-      const newData = dataQuestion.map(async (item: QuestionDto) => {
+      const idExam = dataQuestion.examId;
+      const newData = dataQuestion.questionBankId.map(async (itemQues: any) => {
         const data = await this.questionService.createNewQuestion(
-          item.questionBankId,
-          item.examId,
+          itemQues,
+          idExam,
         );
         await this.historyService.createHistory(
           CONSTANTS.HISTORY_TYPE.EDIT_EXAM,
@@ -77,7 +78,9 @@ export class QuestionController {
         return data;
       });
       return res.status(HttpStatus.OK).send(newData);
-    } catch (error) {}
+    } catch (error) {
+      res.status(HttpStatus.BAD_REQUEST).send(error);
+    }
   }
 
   @Put('/update/:id')
