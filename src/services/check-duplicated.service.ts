@@ -61,15 +61,14 @@ export class CheckDuplicatedService {
     }
   }
 
-  async trainingDataWithSentence(sentences: Sentence) {
+  async trainingAllQuestionBank(sentences: string[]) {
     try {
       const response = await axios
-        .post(`${CONSTANTS.API_MODEL_DUPLICATED}/train-data-sentence`, {
-          question: sentences.question,
-        })
+        .post(`${CONSTANTS.API_MODEL_DUPLICATED}/train-all-data`, sentences)
         .catch((err) => {
           return err;
         });
+
       return response;
     } catch (error) {
       console.log(error);

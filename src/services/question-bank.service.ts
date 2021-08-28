@@ -11,6 +11,10 @@ export class QuestionBankService {
     private readonly questionBankRepository: Repository<QuestionBank>,
   ) {}
 
+  async getAllQuestionBank(): Promise<QuestionBank[]> {
+    return this.questionBankRepository.find()
+  }
+
   async getQuestionBankBySubjectId(subjectId: number): Promise<QuestionBank[]> {
     const questions = await this.questionBankRepository
       .createQueryBuilder('question_bank')
