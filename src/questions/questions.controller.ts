@@ -74,7 +74,6 @@ export class QuestionController {
           'Edit Exam',
           userId,
         );
-
         return data;
       });
       return res.status(HttpStatus.OK).send(newData);
