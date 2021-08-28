@@ -20,4 +20,8 @@ export const API_MODEL_GENERATION = 'http://0.0.0.0:8080/generate';
 
 export const TOKEN_LIFE = 90;
 
+export const QUESTION_QUANTITY = 50;
+
+
+
 export const BASE_URL = 'https://ddsgq.xyz/api';
