@@ -19,6 +19,7 @@ import { Response } from 'express';
 import { ExamInfoDto } from '../dto/create-exam.dto';
 import { QuestionBankService } from '../services/question-bank.service';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import * as CONSTANT from '../constant';
 
 @UseGuards(JwtAuthGuard)
 @Controller('exam')
@@ -76,10 +77,10 @@ export class ExamController {
           examInfo.subjectId,
         );
 
-      if (listQuestionBank.length < 50)
+      if (listQuestionBank.length < CONSTANT.QUESTION_QUANTITY)
         return res.send({
           statusCode: 400,
-          message: 'Question bank does not enough',
+          message: 'This subject bank does not have enough question',
         });
 
       const exam = await this.examService.createExam(
@@ -87,7 +88,7 @@ export class ExamController {
         examInfo.examName,
         userId,
       );
-      const randomQuestion = this.getRandom(listQuestionBank, 50);
+      const randomQuestion = this.getRandom(listQuestionBank, CONSTANT.QUESTION_QUANTITY);
       randomQuestion.forEach(async (question) => {
         const ques = await this.questionService.createQuestion(question, exam);
       });

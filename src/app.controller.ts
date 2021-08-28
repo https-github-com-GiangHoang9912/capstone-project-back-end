@@ -12,7 +12,6 @@ import {
   HttpStatus,
   Query,
 } from '@nestjs/common';
-import { AppService } from './app.service';
 import { LocalAuthGuard } from './auth/local-auth.guard';
 import { Response, Request } from 'express';
 import { RefreshTokenGuard } from './auth/refresh-token.guard';
