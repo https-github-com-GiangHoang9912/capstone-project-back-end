@@ -9,10 +9,13 @@ export const ROUND_HASH_PASSWORD = {
 };
 
 export const HISTORY_TYPE = {
-  GENERATE: 1,
-  DUPLICATE: 2,
+  DUPLICATE: 1,
+  GENERATE: 2,
   UPDATE_PROFILE: 3,
   CHANGE_PASSWORD: 4,
+  FORGOT_PASSWORD: 5,
+  EDIT_EXAM: 6,
+  CREATE_EXAM: 7,
 };
 
 export const API_MODEL_DUPLICATED = 'http://localhost:8000/duplicate';
