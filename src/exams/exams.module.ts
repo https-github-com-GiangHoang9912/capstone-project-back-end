@@ -7,12 +7,14 @@ import { ExamController } from './exams.controller';
 import { Module, MiddlewareConsumer } from '@nestjs/common';
 import { LoggerMiddleware } from '../common/middleware/logger.middleware';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { HistoryModule } from 'src/histories/histories.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Exam, Subject]),
+    TypeOrmModule.forFeature([Exam, Subject ]),
     QuestionBankModule,
     QuestionModule,
+    HistoryModule
   ],
   controllers: [ExamController],
   providers: [ExamService],

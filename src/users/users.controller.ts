@@ -28,7 +28,7 @@ export class UserController {
   constructor(
     private readonly userService: UserService,
     private readonly historyService: HistoryService,
-  ) {}
+  ) { }
 
   @Get('/users')
   getAllUsers(): Promise<User[]> {
@@ -43,7 +43,7 @@ export class UserController {
     try {
       const data = await this.userService.searchUserByName(username);
       return res.status(HttpStatus.OK).send(data);
-    } catch (error) {}
+    } catch (error) { }
   }
 
   @Get('/role/:id/')

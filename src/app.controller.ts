@@ -16,6 +16,9 @@ import { LocalAuthGuard } from './auth/local-auth.guard';
 import { Response, Request } from 'express';
 import { RefreshTokenGuard } from './auth/refresh-token.guard';
 import * as CONSTANT from './constant';
+import * as bcrypt from 'bcrypt';
+import { HistoryService } from './services/histories.service';
+
 interface IEmail {
   email: string;
 }
@@ -25,7 +28,8 @@ export class AppController {
     private readonly authService: AuthService,
     private readonly mailService: MailService,
     private readonly userService: UserService,
-  ) {}
+    private readonly historyService: HistoryService,
+  ) { }
 
   @Get('/forgot-password')
   async forgotPassword(@Res() res: Response, @Query() query: IEmail) {

@@ -2,6 +2,8 @@ import { Exception } from 'handlebars';
 import { QuestionBank } from '../entities/question-bank.entity';
 import { QuestionService } from './../services/questions.service';
 import { ExamService } from '../services/exams.service';
+import { HistoryService } from '../services/histories.service';
+import * as CONSTANTS from '../constant';
 import {
   Body,
   Param,
@@ -11,20 +13,22 @@ import {
   UseGuards,
   Get,
   Post,
-  Delete,
+  Delete
 } from '@nestjs/common';
 import { Response } from 'express';
 import { ExamInfoDto } from '../dto/create-exam.dto';
 import { QuestionBankService } from '../services/question-bank.service';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import * as CONSTANT from '../constant';
 
-// @UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard)
 @Controller('exam')
 export class ExamController {
   constructor(
     private readonly examService: ExamService,
     private readonly questionBankService: QuestionBankService,
     private readonly questionService: QuestionService,
+    private readonly historyService: HistoryService,
   ) {}
 
   @Get('/:id/')
@@ -50,7 +54,7 @@ export class ExamController {
     } catch (error) {}
   }
 
-  @Delete('/delete-exam/:id')
+  @Delete('/delete-exam/:id/')
   async deleteExamById(
     @Res() res: Response,
     @Param('id') id: number,
@@ -89,10 +93,14 @@ export class ExamController {
         const ques = await this.questionService.createQuestion(question, exam);
       });
 
+      await this.historyService.createHistory(
+        CONSTANTS.HISTORY_TYPE.CREATE_EXAM,
+        'Create Exam',
+        userId,
+      );
+
       return res.status(HttpStatus.OK).send({ ...exam, statusCode: 200 });
-    } catch (error) {
-      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(error);
-    }
+    } catch (error) {}
   }
 
   getRandom(arr: QuestionBank[], n: number) {

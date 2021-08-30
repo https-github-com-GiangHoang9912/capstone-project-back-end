@@ -18,8 +18,8 @@ export const HISTORY_TYPE = {
   CREATE_EXAM: 7,
 };
 
-export const API_MODEL_DUPLICATED = 'http://localhost:8000/duplicate';
-export const API_MODEL_GENERATION = 'http://0.0.0.0:8080/generate';
+export const API_MODEL_DUPLICATED = 'https://ddsgq.xyz/api/duplicate';
+export const API_MODEL_GENERATION = 'https://ddsgq.xyz/api/generate';
 
 export const TOKEN_LIFE = 90;
 

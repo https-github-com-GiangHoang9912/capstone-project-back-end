@@ -13,12 +13,17 @@ import {
 } from '@nestjs/common';
 import { Response } from 'express';
 import { QuestionDto } from '../dto/question.dto';
-
-// @UseGuards(JwtAuthGuard)
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { HistoryService } from '../services/histories.service';
+import * as CONSTANTS from '../constant';
+@UseGuards(JwtAuthGuard)
 @Controller('questions')
-export class QuestionController {
-  constructor(private readonly questionService: QuestionService) {}
 
+export class QuestionController {
+  constructor(
+    private readonly questionService: QuestionService,
+    private readonly historyService: HistoryService,
+    ) {}
   @Delete('/delete/:id/')
   async deleteQuestionById(
     @Res() res: Response,
@@ -52,21 +57,30 @@ export class QuestionController {
     } catch (error) {}
   }
 
-  @Post('/create/')
+  @Post('/create/:id')
   async createQuestion(
     @Res() res: Response,
-    @Body() dataQuestion: QuestionDto[],
+    @Param('id') userId: number,
+    @Body() dataQuestion: QuestionDto,
   ): Promise<any> {
     try {
-      const newData = dataQuestion.map(async (item: QuestionDto) => {
+      const idExam = dataQuestion.examId;
+      const newData = dataQuestion.questionBankId.map(async (itemQues: any) => {
         const data = await this.questionService.createNewQuestion(
-          item.questionBankId,
-          item.examId,
+          itemQues,
+          idExam,
+        );
+        await this.historyService.createHistory(
+          CONSTANTS.HISTORY_TYPE.EDIT_EXAM,
+          'Edit Exam',
+          userId,
         );
         return data;
       });
       return res.status(HttpStatus.OK).send(newData);
-    } catch (error) {}
+    } catch (error) {
+      res.status(HttpStatus.BAD_REQUEST).send(error);
+    }
   }
 
   @Put('/update/:id')
