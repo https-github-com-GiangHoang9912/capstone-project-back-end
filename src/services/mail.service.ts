@@ -34,8 +34,7 @@ export class MailService {
       process.env.REDIRECT_URI,
     );
     oauth2Client.setCredentials({
-      refresh_token:
-        '1//04zdFsXe6lIiKCgYIARAAGAQSNwF-L9Ir4lHTBQeKZgbnoAO2xGMOKPcpndoIiEjqUDRNE9J1QT5-htR0pGNufaq_z0rg4Fb6JE0',
+      refresh_token: process.env.REFRESH_TOKEN,
     });
 
     try {
@@ -51,8 +50,7 @@ export class MailService {
           user: 'giangnhhe130936@fpt.edu.vn',
           clientId: process.env.CLIENT_ID,
           clientSecret: process.env.CLIENT_SECRET,
-          refreshToken:
-            '1//04zdFsXe6lIiKCgYIARAAGAQSNwF-L9Ir4lHTBQeKZgbnoAO2xGMOKPcpndoIiEjqUDRNE9J1QT5-htR0pGNufaq_z0rg4Fb6JE0',
+          refreshToken: process.env.REFRESH_TOKEN,
           accessToken: accessToken,
         },
       };
@@ -84,9 +82,7 @@ export class MailService {
 
       const result = await transport.sendMail(mailOptions);
       return result;
-    } catch (error) {
-      console.log('mail.service.ts-sendGoogleEmail', error);
-    }
+    } catch (error) {}
   }
 
   async sendGoogleEmailForgot(user: User) {
@@ -157,8 +153,6 @@ export class MailService {
 
       const result = await transport.sendMail(mailOptions);
       return result;
-    } catch (error) {
-      console.log('mail.service.ts-sendGoogleEmail', error);
-    }
+    } catch (error) {}
   }
 }

@@ -73,6 +73,7 @@ describe('QuestionController', () => {
         },
       ],
       valueTypeAnswer: 'tf',
+      userId: 1
     };
 
     await controller.createAnswerGroup(req.res, 1, dataQuestion);
@@ -94,6 +95,7 @@ describe('QuestionController', () => {
         },
       ],
       valueTypeAnswer: 'multi',
+      userId: 1
     };
 
     await controller.createAnswerGroup(req.res, 1, dataQuestion);
@@ -101,54 +103,5 @@ describe('QuestionController', () => {
     expect(mockAnswerGroupService.deleteAnswerGroup).toBeCalledWith(1);
 
     expect(mockAnswerGroupService.createAnswerGroupMultiple).toBeCalled();
-  });
-
-  it('Update Answer Group tf', async () => {
-    const answerGroupDto: AnswerGroupDto[] = [
-      {
-        questionId: 1,
-        id: 1,
-        correct: true,
-        answer: {
-          answerText: '',
-        },
-      },
-    ];
-    expect(
-      await controller.updateAnswerGroupMultiple(req.res, 1, answerGroupDto),
-    ).toEqual(req.res);
-    expect(mockAnswerGroupService.updateAnswerGroupTrueFalse).toBeCalled();
-  });
-
-  it('Update Answer Group Multiple', async () => {
-    const answerGroupDto: AnswerGroupDto[] = [
-      {
-        id: 1,
-        correct: true,
-        answer: {
-          answerText: '',
-        },
-      },
-    ];
-    expect(
-      await controller.updateAnswerGroupMultiple(req.res, 1, answerGroupDto),
-    ).toEqual(req.res);
-    expect(mockAnswerGroupService.createAnswerGroupMultiple).toBeCalled();
-  });
-
-  it('Update Answer Group True False', async () => {
-    const answerGroupDto: AnswerGroupDto[] = [
-      {
-        id: 1,
-        correct: true,
-        answer: {
-          answerText: '',
-        },
-      },
-    ];
-    expect(
-      await controller.updateAnswerGroupTrueFalse(req.res, answerGroupDto),
-    ).toEqual(req.res);
-    expect(mockAnswerGroupService.updateAnswerGroupTrueFalse).toBeCalled();
   });
 });
