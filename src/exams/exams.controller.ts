@@ -13,7 +13,7 @@ import {
   UseGuards,
   Get,
   Post,
-  Delete
+  Delete,
 } from '@nestjs/common';
 import { Response } from 'express';
 import { ExamInfoDto } from '../dto/create-exam.dto';
@@ -88,7 +88,10 @@ export class ExamController {
         examInfo.examName,
         userId,
       );
-      const randomQuestion = this.getRandom(listQuestionBank, CONSTANT.QUESTION_QUANTITY);
+      const randomQuestion = this.getRandom(
+        listQuestionBank,
+        CONSTANT.QUESTION_QUANTITY,
+      );
       randomQuestion.forEach(async (question) => {
         const ques = await this.questionService.createQuestion(question, exam);
       });

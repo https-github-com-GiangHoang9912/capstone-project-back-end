@@ -26,7 +26,6 @@ export class AnswerGroupService {
         .getOne();
       return answerGroup;
     } catch (error) {
-      console.log('Fail to get answer group by id', error);
     }
   }
 
@@ -48,12 +47,10 @@ export class AnswerGroupService {
       const answerGroup = await this.answerGroupRepository.findOne({
         id: idAnswerGroup,
       });
-      console.log('kaakkaakaka', correct);
       answerGroup.correct = correct;
       answerGroup.save();
       return answerGroup;
     } catch (err) {
-      console.log('Fail update answerGroup', err);
     }
   }
 
@@ -72,7 +69,6 @@ export class AnswerGroupService {
         .save();
       return answerGroup;
     } catch (err) {
-      console.log('Fail create answerGroup', err);
     }
   }
 
@@ -82,7 +78,6 @@ export class AnswerGroupService {
     answerText: string,
   ): Promise<any> {
     try {
-      // console.log(questionId, '-', correct, ':', answerText);
       const answer = await this.answerRepository
         .create({
           answerText: answerText,
@@ -95,10 +90,8 @@ export class AnswerGroupService {
           correct: correct,
         })
         .save();
-      console.log('answerGroup', answerGroup);
       return answerGroup;
     } catch (err) {
-      console.log('Fail update answerGroup', err);
     }
   }
 }

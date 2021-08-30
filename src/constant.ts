@@ -25,6 +25,4 @@ export const TOKEN_LIFE = 90;
 
 export const QUESTION_QUANTITY = 50;
 
-
-
 export const BASE_URL = 'https://ddsgq.xyz/api';

@@ -18,12 +18,11 @@ import { HistoryService } from '../services/histories.service';
 import * as CONSTANTS from '../constant';
 @UseGuards(JwtAuthGuard)
 @Controller('questions')
-
 export class QuestionController {
   constructor(
     private readonly questionService: QuestionService,
     private readonly historyService: HistoryService,
-    ) {}
+  ) {}
   @Delete('/delete/:id/')
   async deleteQuestionById(
     @Res() res: Response,

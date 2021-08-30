@@ -29,7 +29,7 @@ export class AppController {
     private readonly mailService: MailService,
     private readonly userService: UserService,
     private readonly historyService: HistoryService,
-  ) { }
+  ) {}
 
   @Get('/forgot-password')
   async forgotPassword(@Res() res: Response, @Query() query: IEmail) {
@@ -41,7 +41,7 @@ export class AppController {
       );
       return res.redirect('https://ddsgq.xyz/login');
     } catch (error) {
-      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(error);
+      return res.status(HttpStatus.BAD_REQUEST).send(error);
     }
   }
 
@@ -66,8 +66,7 @@ export class AppController {
         })
         .send(info.account);
     } catch (error) {
-      res.send(error.response);
-      console.log('login:\n', error);
+      return res.status(HttpStatus.BAD_REQUEST).send(error.response);
     }
   }
 
@@ -91,8 +90,7 @@ export class AppController {
         })
         .send(info.account);
     } catch (error) {
-      res.send(error.response);
-      console.log('loginByGoogle\n', error);
+      return res.status(HttpStatus.BAD_REQUEST).send(error.response);
     }
   }
 
@@ -121,7 +119,7 @@ export class AppController {
         })
         .send('refresh token successful');
     } catch (error) {
-      console.log('refreshJwtToken:\n', error);
+      return res.status(HttpStatus.BAD_REQUEST).send(error.response);
     }
   }
 
@@ -138,7 +136,7 @@ export class AppController {
         })
         .send('logout');
     } catch (error) {
-      console.log('logout\n', error);
+      return res.status(HttpStatus.BAD_REQUEST).send(error.response);
     }
   }
 
@@ -156,7 +154,7 @@ export class AppController {
       await this.mailService.sendGoogleEmailForgot(dataResponse);
       return res.status(HttpStatus.OK).send('send verify to ' + req.body.email);
     } catch (error) {
-      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(error);
+      return res.status(HttpStatus.BAD_REQUEST).send(error.response);
     }
   }
 }

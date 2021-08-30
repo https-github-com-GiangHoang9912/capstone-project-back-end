@@ -19,7 +19,7 @@ import * as CONSTANTS from '../constant';
 interface DataQuestion {
   currentQuestionAnswerGroup: AnswerGroupDto[];
   valueTypeAnswer: string;
-  userId: number
+  userId: number;
 }
 
 @UseGuards(JwtAuthGuard)
@@ -28,14 +28,14 @@ export class AnswerGroupController {
   constructor(
     private readonly answerGroupService: AnswerGroupService,
     private readonly historyService: HistoryService,
-  ) { }
+  ) {}
 
   @Get('/')
   async getAnswersGroups(@Res() res: Response): Promise<any> {
     try {
       const data = await this.answerGroupService.getAnswersGroups();
       return res.status(HttpStatus.OK).send(data);
-    } catch (error) { }
+    } catch (error) {}
   }
 
   @Get('/:id')
@@ -46,7 +46,7 @@ export class AnswerGroupController {
     try {
       const data = await this.answerGroupService.getAnswersGroupsById(id);
       return res.status(HttpStatus.OK).send(data);
-    } catch (error) { }
+    } catch (error) {}
   }
 
   @Post('/create/:id')
@@ -79,7 +79,7 @@ export class AnswerGroupController {
         dataQuestion.userId,
       );
       return res.status(HttpStatus.OK).send(data);
-    } catch (error) { }
+    } catch (error) {}
   }
 
   // @Put('/update/multiple/:id')

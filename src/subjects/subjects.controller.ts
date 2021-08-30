@@ -27,7 +27,10 @@ export class SubjectController {
     } catch (error) {}
   }
   @Post('/create')
-  async createSubject(@Body() subject: CreateSubjectDto, @Res() res: Response): Promise<any> {
+  async createSubject(
+    @Body() subject: CreateSubjectDto,
+    @Res() res: Response,
+  ): Promise<any> {
     try {
       const data = await this.subjectService.createSubject(subject.subjectName);
       return res.status(HttpStatus.OK).send(data);

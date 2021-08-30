@@ -47,7 +47,6 @@ export class CheckDuplicatedService {
         __dirname,
         '../../uploads/datasets/train.csv',
       );
-      console.log(fileTrain);
       const response = await axios
         .post(`${CONSTANTS.API_MODEL_DUPLICATED}/train-data`, {
           path: fileTrain,
@@ -57,7 +56,6 @@ export class CheckDuplicatedService {
         });
       return response;
     } catch (error) {
-      console.log(error);
     }
   }
 
@@ -71,7 +69,6 @@ export class CheckDuplicatedService {
 
       return response;
     } catch (error) {
-      console.log(error);
     }
   }
 }

@@ -47,7 +47,6 @@ export class ExamService {
       const dataDelete = await this.examRepository.remove(result);
       return {"raw": dataDelete};
     } catch (err) {
-      console.log('deleteExam...!', err);
     }
   }
 

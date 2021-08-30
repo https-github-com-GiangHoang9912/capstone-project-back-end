@@ -9,8 +9,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { HistoryModule } from 'src/histories/histories.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Exam, Question, AnswerGroup]),
-    HistoryModule
+  imports: [
+    TypeOrmModule.forFeature([Exam, Question, AnswerGroup]),
+    HistoryModule,
   ],
   controllers: [QuestionController],
   providers: [QuestionService],

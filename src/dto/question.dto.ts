@@ -9,6 +9,4 @@ export class QuestionDto {
 
   @IsNumber()
   readonly answerGroupId?: number;
-
-  
 }

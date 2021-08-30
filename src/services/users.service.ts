@@ -133,10 +133,10 @@ export class UserService {
         message: 'Change Password Successful',
       };
     }
-    return { 
+    return {
       status: HttpStatus.FORBIDDEN,
       message: 'Change Password Fail',
-    }
+    };
 
     return {
       status: HttpStatus.UNPROCESSABLE_ENTITY,

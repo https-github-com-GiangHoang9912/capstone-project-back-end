@@ -9,7 +9,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { HistoryModule } from 'src/histories/histories.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([AnswerGroup, Answer]), QuestionModule, HistoryModule],
+  imports: [
+    TypeOrmModule.forFeature([AnswerGroup, Answer]),
+    QuestionModule,
+    HistoryModule,
+  ],
   controllers: [AnswerGroupController],
   providers: [AnswerGroupService],
   exports: [AnswerGroupService],

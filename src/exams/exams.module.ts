@@ -11,10 +11,10 @@ import { HistoryModule } from 'src/histories/histories.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Exam, Subject ]),
+    TypeOrmModule.forFeature([Exam, Subject]),
     QuestionBankModule,
     QuestionModule,
-    HistoryModule
+    HistoryModule,
   ],
   controllers: [ExamController],
   providers: [ExamService],

@@ -12,7 +12,7 @@ export class QuestionBankService {
   ) {}
 
   async getAllQuestionBank(): Promise<QuestionBank[]> {
-    return this.questionBankRepository.find()
+    return this.questionBankRepository.find();
   }
 
   async getQuestionBankBySubjectId(subjectId: number): Promise<QuestionBank[]> {
@@ -23,7 +23,10 @@ export class QuestionBankService {
     return questions;
   }
 
-  async getQuestionsBankByName(subjectId: number, questionName: string): Promise<QuestionBank[]> {
+  async getQuestionsBankByName(
+    subjectId: number,
+    questionName: string,
+  ): Promise<QuestionBank[]> {
     return this.questionBankRepository
       .createQueryBuilder('question_bank')
       .where('subject_id = :subjectId', { subjectId: subjectId })
