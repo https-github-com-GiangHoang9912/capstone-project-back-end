@@ -15,7 +15,7 @@ export class CheckDuplicatedService {
       const response = await axios
         .post(`${CONSTANTS.API_MODEL_DUPLICATED}/find-duplicate`, {
           question,
-          subject: questionBankName
+          subject: questionBankName,
         })
         .catch((err) => {
           return err;
@@ -27,8 +27,8 @@ export class CheckDuplicatedService {
   async trainBankWithSubject(subject: any) {
     try {
       const dataBank = subject[0].questionBank.map((element: any) => {
-        return element.questionText
-      })
+        return element.questionText;
+      });
       const response = await axios
         .post(`${CONSTANTS.API_MODEL_DUPLICATED}/train-data-subject`, {
           subject: subject[0].subjectName,
@@ -55,8 +55,7 @@ export class CheckDuplicatedService {
           return err;
         });
       return response;
-    } catch (error) {
-    }
+    } catch (error) {}
   }
 
   async trainingAllQuestionBank(sentences: string[]) {
@@ -68,7 +67,6 @@ export class CheckDuplicatedService {
         });
 
       return response;
-    } catch (error) {
-    }
+    } catch (error) {}
   }
 }

@@ -45,9 +45,8 @@ export class ExamService {
     try {
       const result = await this.examRepository.findOne({ id: id });
       const dataDelete = await this.examRepository.remove(result);
-      return {"raw": dataDelete};
-    } catch (err) {
-    }
+      return { raw: dataDelete };
+    } catch (err) {}
   }
 
   async createExam(subjectId: number, examName: string, userId: number) {

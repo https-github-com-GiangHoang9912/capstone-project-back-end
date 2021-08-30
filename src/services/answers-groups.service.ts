@@ -25,8 +25,7 @@ export class AnswerGroupService {
         .where('answers_groups.id = :id', { id: id })
         .getOne();
       return answerGroup;
-    } catch (error) {
-    }
+    } catch (error) {}
   }
 
   async deleteAnswerGroup(questionId: number): Promise<any> {
@@ -50,8 +49,7 @@ export class AnswerGroupService {
       answerGroup.correct = correct;
       answerGroup.save();
       return answerGroup;
-    } catch (err) {
-    }
+    } catch (err) {}
   }
 
   async createAnswerGroup(
@@ -68,8 +66,7 @@ export class AnswerGroupService {
         })
         .save();
       return answerGroup;
-    } catch (err) {
-    }
+    } catch (err) {}
   }
 
   async createAnswerGroupMultiple(
@@ -91,7 +88,6 @@ export class AnswerGroupService {
         })
         .save();
       return answerGroup;
-    } catch (err) {
-    }
+    } catch (err) {}
   }
 }

@@ -73,7 +73,7 @@ describe('QuestionController', () => {
         },
       ],
       valueTypeAnswer: 'tf',
-      userId: 1
+      userId: 1,
     };
 
     await controller.createAnswerGroup(req.res, 1, dataQuestion);
@@ -95,7 +95,7 @@ describe('QuestionController', () => {
         },
       ],
       valueTypeAnswer: 'multi',
-      userId: 1
+      userId: 1,
     };
 
     await controller.createAnswerGroup(req.res, 1, dataQuestion);
