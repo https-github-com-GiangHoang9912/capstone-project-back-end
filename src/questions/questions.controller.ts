@@ -13,7 +13,7 @@ import {
 } from '@nestjs/common';
 import { Response } from 'express';
 import { QuestionDto } from '../dto/question.dto';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { HistoryService } from '../services/histories.service';
 import * as CONSTANTS from '../constant';
 @UseGuards(JwtAuthGuard)
@@ -71,14 +71,14 @@ export class QuestionController {
         );
         await this.historyService.createHistory(
           CONSTANTS.HISTORY_TYPE.EDIT_EXAM,
-          'Edit Exam',
+          'Edit Exam: Add Questions',
           userId,
         );
         return data;
       });
       return res.status(HttpStatus.OK).send(newData);
     } catch (error) {
-      res.status(HttpStatus.BAD_REQUEST).send(error);
+      return res.status(HttpStatus.BAD_REQUEST).send(error);
     }
   }
 

@@ -3,6 +3,7 @@ import { QuestionController } from './questions.controller';
 import * as httpMocks from 'node-mocks-http';
 import { QuestionService } from '../services/questions.service';
 import { QuestionDto } from './../dto/question.dto';
+import { HistoryService } from '../services/histories.service';
 
 describe('QuestionController', () => {
   let controller: QuestionController;
@@ -40,15 +41,22 @@ describe('QuestionController', () => {
       };
     }),
   };
+
+  const mockHistoryService = {
+    createHistory: jest.fn(() => {}),
+  }
+  
   const req = httpMocks.createRequest();
   req.res = httpMocks.createResponse();
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [QuestionController],
-      providers: [QuestionService],
+      providers: [QuestionService, HistoryService],
     })
       .overrideProvider(QuestionService)
       .useValue(mockQuestion)
+      .overrideProvider(HistoryService)
+      .useValue(mockHistoryService)
       .compile();
 
     controller = module.get<QuestionController>(QuestionController);
@@ -71,7 +79,7 @@ describe('QuestionController', () => {
   });
   it('update question', async () => {
     const questionDto: QuestionDto = {
-      questionBankId: 1,
+      questionBankId: [1, 2, 3],
       examId: 1,
     };
     expect(await controller.updateQuestion(req.res, questionDto, 1)).toEqual(
@@ -81,11 +89,9 @@ describe('QuestionController', () => {
   });
 
   it('create question', async () => {
-    const questionDtos: QuestionDto[] = [{}];
-    expect(await controller.createQuestion(req.res, questionDtos)).toEqual(
+    const questionDtos: QuestionDto = {};
+    expect(await controller.createQuestion(req.res, 1, questionDtos)).toEqual(
       req.res,
     );
-
-    expect(mockQuestion.createNewQuestion).toHaveBeenCalled();
   });
 });

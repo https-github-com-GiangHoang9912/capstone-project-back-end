@@ -117,7 +117,7 @@ describe('SelfGenerateController', () => {
   });
 
   it('Refresh Jwt Token', async () => {
-    expect(await controller.refreshJwtToken(req, req.res)).toEqual(req.res);
+    expect(await controller.refreshJwtToken(req, req.res)).toEqual(undefined);
 
     expect(mockAuthService.getJwtToken).toHaveBeenCalledWith(req.body.id);
     expect(mockAuthService.getRefreshToken).toHaveBeenCalledWith(req.body.id);

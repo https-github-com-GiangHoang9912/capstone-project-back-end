@@ -75,52 +75,10 @@ export class AnswerGroupController {
       });
       await this.historyService.createHistory(
         CONSTANTS.HISTORY_TYPE.EDIT_EXAM,
-        'Edit Exam',
+        'Edit Exam: Add Answers',
         dataQuestion.userId,
       );
       return res.status(HttpStatus.OK).send(data);
     } catch (error) {}
   }
-
-  // @Put('/update/multiple/:id')
-  // async updateAnswerGroupMultiple(
-  //   @Res() res: Response,
-  //   @Param() idQuestion: number,
-  //   @Body() dataAnswerGroup: AnswerGroupDto[],
-  // ): Promise<any> {
-  //   try {
-  //     dataAnswerGroup.forEach(async (item: AnswerGroup) => {
-  //       if (item.questionId) {
-  //         const data = await this.answerGroupService.updateAnswerGroupTrueFalse(
-  //           item.id,
-  //           item.correct,
-  //         );
-  //       } else {
-  //         const data = await this.answerGroupService.createAnswerGroupMultiple(
-  //           idQuestion,
-  //           item.correct,
-  //           item.answer.answerText,
-  //         );
-  //       }
-  //     });
-  //     return res.status(HttpStatus.OK).send(dataAnswerGroup);
-  //   } catch (error) { }
-  // }
-
-  // @Put('/update')
-  // async updateAnswerGroupTrueFalse(
-  //   @Res() res: Response,
-  //   @Body() dataAnswerGroup: AnswerGroupDto[],
-  // ): Promise<any> {
-  //   try {
-  //     dataAnswerGroup.map(async (item: AnswerGroup) => {
-  //       const data = await this.answerGroupService.updateAnswerGroupTrueFalse(
-  //         item.id,
-  //         item.correct,
-  //       );
-  //       return data;
-  //     });
-  //     return res.status(HttpStatus.OK).send(dataAnswerGroup);
-  //   } catch (error) { }
-  // }
 }

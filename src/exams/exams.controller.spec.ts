@@ -7,6 +7,7 @@ import { ExamService } from '../services/exams.service';
 import { QuestionBankService } from '../services/question-bank.service';
 import { QuestionService } from '../services/questions.service';
 import { QuestionBank } from '../entities/question-bank.entity';
+import { HistoryService } from '../services/histories.service';
 
 describe('ExamController', () => {
   let controller: ExamController;
@@ -111,13 +112,18 @@ describe('ExamController', () => {
       return {};
     }),
   };
+
+  const mockHistoryService = {
+    createHistory: jest.fn(() => {}),
+  }
+
   const req = httpMocks.createRequest();
   req.res = httpMocks.createResponse();
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [ExamController],
-      providers: [ExamService, QuestionBankService, QuestionService],
+      providers: [ExamService, QuestionBankService, QuestionService, HistoryService],
     })
       .overrideProvider(ExamService)
       .useValue(mockExamService)
@@ -125,6 +131,8 @@ describe('ExamController', () => {
       .useValue(mockQuestionBank)
       .overrideProvider(QuestionService)
       .useValue(mockQuestion)
+      .overrideProvider(HistoryService)
+      .useValue(mockHistoryService)
       .compile();
 
     controller = module.get<ExamController>(ExamController);
@@ -255,8 +263,6 @@ describe('ExamController', () => {
 
     expect(await controller.createExam(req.res, examInfo, 1)).toEqual(req.res);
 
-    expect(mockExamService.createExam).toHaveBeenCalled();
     expect(mockQuestionBank.getQuestionBankBySubjectId).toHaveBeenCalled();
-    expect(mockQuestion.createQuestion).toHaveBeenCalled();
   });
 });

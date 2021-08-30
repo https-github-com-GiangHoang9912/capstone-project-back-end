@@ -18,7 +18,7 @@ import {
 import { Response } from 'express';
 import { ExamInfoDto } from '../dto/create-exam.dto';
 import { QuestionBankService } from '../services/question-bank.service';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import * as CONSTANT from '../constant';
 
 @UseGuards(JwtAuthGuard)
@@ -98,7 +98,7 @@ export class ExamController {
 
       await this.historyService.createHistory(
         CONSTANTS.HISTORY_TYPE.CREATE_EXAM,
-        'Create Exam',
+        `Create Exam: ${examInfo.examName}`,
         userId,
       );
 

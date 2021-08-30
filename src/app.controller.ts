@@ -28,7 +28,6 @@ export class AppController {
     private readonly authService: AuthService,
     private readonly mailService: MailService,
     private readonly userService: UserService,
-    private readonly historyService: HistoryService,
   ) {}
 
   @Get('/forgot-password')

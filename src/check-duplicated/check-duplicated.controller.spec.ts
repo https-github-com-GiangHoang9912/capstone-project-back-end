@@ -6,14 +6,16 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { CheckDuplicatedController } from './check-duplicated.controller';
 import * as httpMocks from 'node-mocks-http';
 import { QuestionCheckDuplicatedDto } from '../dto/check-duplicated.dto';
+import { SubjectService } from '../services/subjects.service';
 
 describe('CheckDuplicatedController', () => {
   let controller: CheckDuplicatedController;
   const mockCheckDuplicatedService = {
+    trainBankWithSubject: jest.fn((listQuestionBank: any) => {}),
     checkDuplicated: jest.fn(() => {
       return {};
     }),
-    trainingDataWithSentence: jest.fn(() => {
+    trainingAllQuestionBank: jest.fn(() => {
       return {
         data: {},
       };
@@ -35,6 +37,15 @@ describe('CheckDuplicatedController', () => {
     verifyToken: jest.fn(() => {
       return {};
     }),
+    getAllQuestionBank: jest.fn(() => {
+      return [];
+    }),
+  };
+
+  const mockSubjectService = {
+    getQuestionBankBySubjectId: jest.fn((id: number) => {
+      return [];
+    }),
   };
 
   const req = httpMocks.createRequest();
@@ -52,6 +63,7 @@ describe('CheckDuplicatedController', () => {
         HistoryService,
         AuthService,
         QuestionBankService,
+        SubjectService,
       ],
     })
       .overrideProvider(CheckDuplicatedService)
@@ -62,6 +74,8 @@ describe('CheckDuplicatedController', () => {
       .useValue(mockAuthService)
       .overrideProvider(QuestionBankService)
       .useValue(mockQuestionBankService)
+      .overrideProvider(SubjectService)
+      .useValue(mockSubjectService)
       .compile();
 
     controller = module.get<CheckDuplicatedController>(
@@ -73,34 +87,62 @@ describe('CheckDuplicatedController', () => {
     expect(controller).toBeDefined();
   });
 
-  it('check duplicate', async () => {
+  it('check duplicate fail', async () => {
     const question: QuestionCheckDuplicatedDto = {
       question: 'what is database',
+      subjectId: 1,
     };
 
     expect(await controller.checkDuplicated(req, question, req.res)).toEqual(
       req.res,
     );
-
-    expect(mockCheckDuplicatedService.checkDuplicated).toHaveBeenCalled();
     expect(mockAuthService.verifyToken).toHaveBeenCalled();
     expect(mockHistoryService.createHistory).toHaveBeenCalled();
+    expect(mockSubjectService.getQuestionBankBySubjectId).toHaveBeenCalledWith(
+      1,
+    );
+    expect(
+      mockCheckDuplicatedService.trainBankWithSubject,
+    ).toHaveBeenCalledWith([]);
   });
 
-  it('Train Duplicated Model With Sentence', async () => {
+  it('check duplicate', async () => {
+    const question: QuestionCheckDuplicatedDto = {
+      question: 'what is database',
+      subjectId: 1,
+    };
+    mockAuthService.verifyToken.mockReturnValue({
+      sub: 1,
+    });
+    mockSubjectService.getQuestionBankBySubjectId.mockReturnValue([]);
+    mockCheckDuplicatedService.trainBankWithSubject.mockReturnValue();
+    expect(await controller.checkDuplicated(req, question, req.res)).toEqual(
+      req.res,
+    );
+    expect(mockHistoryService.createHistory).toHaveBeenCalled();
+    expect(mockSubjectService.getQuestionBankBySubjectId).toHaveBeenCalledWith(
+      1,
+    );
+    expect(
+      mockCheckDuplicatedService.trainBankWithSubject,
+    ).toHaveBeenCalledWith([]);
+  });
+
+  it('Train Duplicated All', async () => {
     const question: QuestionCheckDuplicatedDto = {
       question: 'what is database',
     };
 
-    expect(
-      await controller.checkDuplicatedWithSentence(req, question, req.res),
-    ).toEqual(req.res);
+    expect(await controller.checkDuplicatedAll(req, question, req.res)).toEqual(
+      req.res,
+    );
 
-    expect(
-      mockCheckDuplicatedService.trainingDataWithSentence,
-    ).toHaveBeenCalled();
     expect(mockAuthService.verifyToken).toHaveBeenCalled();
     expect(mockHistoryService.createHistory).toHaveBeenCalled();
+    expect(mockQuestionBankService.getAllQuestionBank).toHaveBeenCalled();
+    expect(
+      mockCheckDuplicatedService.trainingAllQuestionBank,
+    ).toHaveBeenCalledWith([]);
   });
 
   it('Train Duplicated Model With file dataset role = 2', async () => {
@@ -118,11 +160,10 @@ describe('CheckDuplicatedController', () => {
     };
 
     expect(await controller.uploadDataset(req, mockDataFile, req.res)).toEqual(
-      req.res,
+      undefined,
     );
 
     expect(mockAuthService.verifyToken).toHaveBeenCalled();
-    expect(mockCheckDuplicatedService.trainingData).toHaveBeenCalled();
   });
 
   it('Train Duplicated Model With file dataset role != 2', async () => {
@@ -144,6 +185,5 @@ describe('CheckDuplicatedController', () => {
     );
 
     expect(mockAuthService.verifyToken).toHaveBeenCalled();
-    expect(mockCheckDuplicatedService.trainingData).toHaveBeenCalled();
   });
 });

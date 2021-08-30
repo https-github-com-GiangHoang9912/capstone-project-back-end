@@ -90,14 +90,14 @@ export class CheckDuplicatedController {
       );
 
       await this.checkDuplicatedService.trainBankWithSubject(listQuestionBank);
-
       const data = await this.checkDuplicatedService.checkDuplicated(
         questions.question,
         listQuestionBank[0].subjectName,
       );
+
       return res.status(HttpStatus.OK).send(data.data);
     } catch (error) {
-      res.status(HttpStatus.BAD_REQUEST).send(error);
+      return res.status(HttpStatus.BAD_REQUEST).send(error);
     }
   }
 

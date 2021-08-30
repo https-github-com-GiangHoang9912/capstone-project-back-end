@@ -1,8 +1,8 @@
+import { HistoryService } from './../services/histories.service';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AnswerGroupService } from '../services/answers-groups.service';
 import { AnswerGroupController } from './answers-groups.controller';
 import * as httpMocks from 'node-mocks-http';
-import { AnswerGroupDto } from '../dto/answer-group.dto';
 
 describe('QuestionController', () => {
   let controller: AnswerGroupController;
@@ -28,6 +28,8 @@ describe('QuestionController', () => {
     }),
   };
 
+  const mockHistoryService = {}
+
   const req = httpMocks.createRequest();
   req.res = httpMocks.createResponse();
 
@@ -38,10 +40,12 @@ describe('QuestionController', () => {
 
     const module: TestingModule = await Test.createTestingModule({
       controllers: [AnswerGroupController],
-      providers: [AnswerGroupService],
+      providers: [AnswerGroupService, HistoryService],
     })
       .overrideProvider(AnswerGroupService)
       .useValue(mockAnswerGroupService)
+      .overrideProvider(HistoryService)
+      .useValue(mockHistoryService)
       .compile();
 
     controller = module.get<AnswerGroupController>(AnswerGroupController);
