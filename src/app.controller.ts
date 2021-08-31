@@ -72,6 +72,12 @@ export class AppController {
   @Post('google-auth/login')
   async loginByGoogle(@Req() req: Request, @Res() res: Response) {
     try {
+      const patten = new RegExp('(@fpt.edu.vn)|(@fe.edu.vn)');
+      const isFPTEmail = patten.test(req.body.email);
+
+      if (!isFPTEmail)
+        return res.status(HttpStatus.FORBIDDEN).send({ isFPTEmail });
+
       const info = await this.authService.loginGoogle(req);
       const secretData = {
         jwt_token: info.access_token,
