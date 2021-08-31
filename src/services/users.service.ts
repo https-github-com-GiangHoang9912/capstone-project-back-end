@@ -137,11 +137,6 @@ export class UserService {
       status: HttpStatus.FORBIDDEN,
       message: 'Change Password Fail',
     };
-
-    return {
-      status: HttpStatus.UNPROCESSABLE_ENTITY,
-      message: 'Password Was Duplicate Or Wrong',
-    };
   }
 
   async insertUserByLoginGoogle(user: GoogleUser): Promise<any> {
