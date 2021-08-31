@@ -95,6 +95,8 @@ export class CheckDuplicatedController {
         listQuestionBank[0].subjectName,
       );
 
+      if (!data.data) return res.status(HttpStatus.BAD_REQUEST).send(data.data);
+
       return res.status(HttpStatus.OK).send(data.data);
     } catch (error) {
       return res.status(HttpStatus.BAD_REQUEST).send(error);
@@ -131,21 +133,31 @@ export class CheckDuplicatedController {
         req.body.subject,
       );
 
+      const subjectQuestion =
+        await this.subjectService.getQuestionBankBySubjectId(subject.id);
+
       fs.createReadStream(file.path)
         .pipe(fastCsv.parse({ headers: true }))
         .on('error', (error) => console.error(error))
         .on('data', async (row: DataTrain) => {
-          const data = await this.checkDuplicatedService.checkDuplicated(
-            row.sentence,
-            subject.subjectName,
-          );
-
-          if (data && data.data[0].point < 0.6) {
-            console.log(`${row.sentence} : ${data.data[0].point}`);
+          if (subjectQuestion[0].questionBank.length === 0) {
             await this.questionBankService.addQuestionNoDuplicateToBank(
               req.body.subject,
               row.sentence,
             );
+          } else {
+            const data = await this.checkDuplicatedService.checkDuplicated(
+              row.sentence,
+              subject.subjectName,
+            );
+
+            if (data && data.data[0].point < 0.6) {
+              console.log(`${row.sentence} : ${data.data[0].point}`);
+              await this.questionBankService.addQuestionNoDuplicateToBank(
+                req.body.subject,
+                row.sentence,
+              );
+            }
           }
         })
         .on('end', async (rowCount: any) => {

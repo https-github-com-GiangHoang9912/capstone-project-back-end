@@ -35,4 +35,26 @@ export class SubjectService {
       .getMany();
     return subject;
   }
+
+  async editSubject(subjectId: number, subjectName: string): Promise<any> {
+    const subject = await this.getSubjectById(subjectId);
+    subject.subjectName = subjectName;
+    const newSubject = await subject.save();
+    return newSubject;
+  }
+
+  async deleteSubject(subjectId: number): Promise<any> {
+    const subject = await this.getSubjectById(subjectId);
+    const newSubject = await subject.remove();
+    return newSubject;
+  }
+
+  async searchSubjectByName(subjectName: string): Promise<Subject[]> {
+    return this.subjectRepository
+      .createQueryBuilder('subject')
+      .andWhere('subject.subject_name like :subjectName', {
+        subjectName: `%${subjectName}%`,
+      })
+      .getMany();
+  }
 }

@@ -11,17 +11,15 @@ interface Sentence {
 @Injectable()
 export class CheckDuplicatedService {
   async checkDuplicated(question: string, questionBankName?: string) {
-    try {
-      const response = await axios
-        .post(`${CONSTANTS.API_MODEL_DUPLICATED}/find-duplicate`, {
-          question,
-          subject: questionBankName,
-        })
-        .catch((err) => {
-          return err;
-        });
-      return response;
-    } catch (error) {}
+    const response = await axios
+      .post(`${CONSTANTS.API_MODEL_DUPLICATED}/find-duplicate`, {
+        question,
+        subject: questionBankName,
+      })
+      .catch((err) => {
+        return err;
+      });
+    return response;
   }
 
   async trainBankWithSubject(subject: any) {
